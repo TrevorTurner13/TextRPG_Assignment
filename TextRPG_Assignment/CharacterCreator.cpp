@@ -2,7 +2,7 @@
 int m_Ancestry;
 int m_Warrior;
 
-Character::Character(int str, int dex, int con, int iq, int wis, int cha, int hp) :
+Character::Character(int str, int dex, int con, int iq, int wis, int cha, int hp, int ac, int gold) :
 	
 	m_Strength(str),
 	m_Dexterity(dex),
@@ -11,7 +11,9 @@ Character::Character(int str, int dex, int con, int iq, int wis, int cha, int hp
 	m_Wisdom(wis),
 	m_Charisma(cha),
 	m_MaxHP(hp),
-	m_CurrentHP(hp)
+	m_CurrentHP(hp),
+	m_ArmorClass(ac),
+	m_Gold(gold)
 {}
 
 void Character::SetPlayerName(std::string name) {
@@ -60,6 +62,14 @@ void Character::SetCharisma(int cha) {
 
 void Character::SetMaxHP(int hp) {
 	m_MaxHP = hp;
+}
+
+void Character::SetArmorClass(int ac) {
+	m_ArmorClass = ac;
+}
+
+void Character::SetCharacterGold(int gold) {
+	m_Gold = gold;
 }
 
 int Character::GetModifier(int stat) {

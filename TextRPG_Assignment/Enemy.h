@@ -2,28 +2,11 @@
 
 #include <iostream>
 #include <string>
+#include "CharacterCreator.h"
 
-struct modifiers {
-	int strMod;
-	int dexMod;
-	int conMod;
-	int intMod;
-	int wisMod;
-	int chaMod;
-	int hpMaxMod;
+class Enemy: public Character {
+public:
+	Enemy(std::string name, std::string desc, int str, int dex, int con, int iq, int wis, int cha, int hp, int ac);
 
-	int attackMod;
-	int speedMod;
-	int defenseMod;
-	int manaMod;
-	int specialAtkMod;
-	int diplomacyMod;
 };
 
-class Item {
-	std::string m_Name;
-	std::string m_Description;
-	std::string m_Rarity;
-	int damage;
-	int defense;
-};

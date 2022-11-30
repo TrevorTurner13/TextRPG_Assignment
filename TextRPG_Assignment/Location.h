@@ -18,7 +18,12 @@ public:
 	std::vector<Location*> m_Exits;
 
 	// list of interactable items
+	std::vector<Location*> m_Items;
 
+	// list of items that you can pick up
 
+	// list of monsters/enemies
+
+	// list of npcs
 
 };

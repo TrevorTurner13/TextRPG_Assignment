@@ -1,5 +1,6 @@
 #pragma once
 #include <string>
+#include <vector>
 #include <iostream>
 
 enum characterAncestry { DWARF = 1, DRAGONBORN, ELF, GNOME, HALFING, HUMAN, ORC };
@@ -7,7 +8,7 @@ enum characterWarrior { BARD = 1, FIGHTER, MONK, PALADIN, ROGUE, WIZARD };
 
 class Character {
 public:
-	Character(int str, int dex, int con, int iq, int wis, int cha, int hp);
+	Character(int str, int dex, int con, int iq, int wis, int cha, int hp, int ac, int gold);
 	characterAncestry m_Ancestry;
 	characterWarrior m_Warrior;
 
@@ -33,6 +34,8 @@ public:
 	void SetMaxHP(int maxHP);
 	void SetSpellAbility(int warrior);
 	void SetSpellModifier(int warrior);
+	void SetArmorClass(int dex);
+	void SetCharacterGold(int gold);
 
 	std::string GetName() { return m_Name; }
 	std::string GetSpellAbility(int warrior);
@@ -47,6 +50,8 @@ public:
 	int GetHP() { return m_CurrentHP; }
 	int GetMaxHP() { return m_MaxHP; }
 	int GetSpellModifier(int warrior);
+	int GetArmorClass() { return m_ArmorClass; }
+	int GetCharacterGold() { return m_Gold; }
 	
 
 private:
@@ -61,5 +66,6 @@ private:
 	int m_CurrentHP;
 	int m_MaxHP;
 	int m_SpellModifier;
-	
+	int m_ArmorClass;
+	int m_Gold;
 };
