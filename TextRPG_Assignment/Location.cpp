@@ -11,3 +11,4 @@ void Location::Display() {
 	std::cout << "-----------------------------------" << std::endl;
 	std::cout << m_ShortDescription << std::endl;
 }
+
