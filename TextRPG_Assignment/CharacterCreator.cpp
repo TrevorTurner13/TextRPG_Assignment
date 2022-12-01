@@ -59,6 +59,9 @@ void Character::SetWisdom(int wis) {
 void Character::SetCharisma(int cha) {
 	m_Charisma = cha;
 }
+void Character::SetHP(int hp) {
+	m_CurrentHP = hp;
+}
 
 void Character::SetMaxHP(int hp) {
 	m_MaxHP = hp;
@@ -71,6 +74,10 @@ void Character::SetArmorClass(int ac) {
 void Character::SetCharacterGold(int gold) {
 	m_Gold = gold;
 }
+
+//void Character::SetInventory(int warrior) {
+//	m_Warrior == warrior;
+//}
 
 int Character::GetModifier(int stat) {
 	int modifier = 0;
@@ -241,4 +248,12 @@ void Character::Heal() {
 void Character::CastSpell(Character& character) {
 
 }
-
+//void DisplayInventory(const std::vector<Item>& inventory) {
+//	std::cout << "\nINVENTORY" << std::endl;
+//	std::cout << "---------------------------------" << std::endl;
+//	std::cout << " " << std::left << std::setw(30) << "Item" << std::right << std::setw(20) << "Price (GOLD)"
+//		<< std::right << std::setw(8) << "Stock" << std::left << std::setw(100) << std::endl << std::endl;
+//	for (int i = 0; i < inventory.size(); ++i) {
+//		std::cout << i + 1 << inventory[i] << std::endl;
+//	}
+//}

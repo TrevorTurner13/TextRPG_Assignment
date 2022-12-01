@@ -2,6 +2,7 @@
 #include <string>
 #include <vector>
 #include <iostream>
+#include "Item.h"
 
 enum characterAncestry { DWARF = 1, DRAGONBORN, ELF, GNOME, HALFING, HUMAN, ORC };
 enum characterWarrior { BARD = 1, FIGHTER, MONK, PALADIN, ROGUE, WIZARD };
@@ -11,6 +12,7 @@ public:
 	Character(int str, int dex, int con, int iq, int wis, int cha, int hp, int ac, int gold);
 	characterAncestry m_Ancestry;
 	characterWarrior m_Warrior;
+	void DisplayInventory(const std::vector<Item>& inventory);
 
 	void SetPlayerName(std::string name);
 	void Attack(Character& character);
@@ -36,7 +38,7 @@ public:
 	void SetSpellModifier(int warrior);
 	void SetArmorClass(int dex);
 	void SetCharacterGold(int gold);
-
+	
 	std::string GetName() { return m_Name; }
 	std::string GetSpellAbility(int warrior);
 	std::string GetCharacterAncestry(int ancestry);
@@ -52,6 +54,8 @@ public:
 	int GetSpellModifier(int warrior);
 	int GetArmorClass() { return m_ArmorClass; }
 	int GetCharacterGold() { return m_Gold; }
+	
+	
 	
 
 private:

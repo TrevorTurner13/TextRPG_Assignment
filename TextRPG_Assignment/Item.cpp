@@ -1,26 +1,30 @@
 #include "Item.h"
 
-Item::Item(std::string name, std::string description, std::string rarity, int value) :
+Item::Item(std::string name, std::string description, std::string rarity, double value) :
 	m_Name(name),
 	m_Description(description),
 	m_Rarity(rarity),
 	m_Value(value)
 {}
 
-Weapon::Weapon(std::string name, std::string description, std::string rarity, int value, int toHitBonus, int damage) :
+Weapon::Weapon(std::string name, std::string description, std::string rarity, double value, int toHitBonus, int damage) :
+	Item(name, description, rarity, value),
 	m_ToHitBonus(toHitBonus),
 	m_AttackDamage(damage)
 {}
 
-Armor::Armor(std::string name, std::string description, std::string rarity, int value, int acBonus, int strRequirement) :
+Armor::Armor(std::string name, std::string description, std::string rarity, double value, int acBonus, int strRequirement) :
+	Item(name, description, rarity, value),
 	m_AcBonus(acBonus),
 	m_StrengthRequirement(strRequirement)
 {}
 
-HealingPotion::HealingPotion(std::string name, std::string description, std::string rarity, int value, int heal) :
+HealingPotion::HealingPotion(std::string name, std::string description, std::string rarity, double value, int heal) :
+	Item(name, description, rarity, value),
 	m_HpHealAmount(heal)
 {}
 
-UseableItems::UseableItems(std::string name, std::string description, std::string rarity, int value, std::string use) :
+UseableItems::UseableItems(std::string name, std::string description, std::string rarity, double value, std::string use) :
+	Item(name, description, rarity, value),
 	m_Use(use)
 {}
