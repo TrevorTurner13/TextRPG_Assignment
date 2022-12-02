@@ -12,15 +12,16 @@ public:
 	Character(int str, int dex, int con, int iq, int wis, int cha, int hp, int ac, int gold);
 	characterAncestry m_Ancestry;
 	characterWarrior m_Warrior;
-	void DisplayInventory(const std::vector<Item>& inventory);
+	
 
 	void SetPlayerName(std::string name);
 	void Attack(Character& character);
 	void TakeDamage(int damage);
 	void Heal();
 	void CastSpell(Character& character);
-	
-	
+	void Objectives(std::vector<std::string> objectives);
+	void DisplayObjectives();
+
 	int RollDice(int numberOfDice, int numberOfSides);
 	int GetModifier(int stat);
 
@@ -39,6 +40,7 @@ public:
 	void SetArmorClass(int dex);
 	void SetCharacterGold(int gold);
 	
+	
 	std::string GetName() { return m_Name; }
 	std::string GetSpellAbility(int warrior);
 	std::string GetCharacterAncestry(int ancestry);
@@ -53,12 +55,10 @@ public:
 	int GetMaxHP() { return m_MaxHP; }
 	int GetSpellModifier(int warrior);
 	int GetArmorClass() { return m_ArmorClass; }
-	int GetCharacterGold() { return m_Gold; }
-	
-	
-	
+	int GetCharacterGold() { return m_Gold; }	
 
 private:
+	/*std::vector<std::string> Objectives;*/
 	std::string m_Name;
 	std::string m_SpellAbility;
 	int m_Strength;
@@ -72,4 +72,5 @@ private:
 	int m_SpellModifier;
 	int m_ArmorClass;
 	int m_Gold;
+	
 };

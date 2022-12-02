@@ -28,3 +28,16 @@ UseableItems::UseableItems(std::string name, std::string description, std::strin
 	Item(name, description, rarity, value),
 	m_Use(use)
 {}
+
+void Item::SetItemName(std::string name) {
+	m_Name = name;
+}
+void Item::SetItemDescription(std::string description) {
+	m_Description = description;
+}
+void Item::SetItemRarity(std::string rarity) {
+	m_Rarity = rarity;
+}
+void Item::SetItemValue(double value) {
+	m_Value = value;
+}

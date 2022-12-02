@@ -8,11 +8,20 @@
 class Item {
 public:
 	Item(std::string name, std::string description, std::string rarity, double value);
-protected:
+	void SetItemName(std::string name);
+	void SetItemDescription(std::string description);
+	void SetItemRarity(std::string rarity);
+	void SetItemValue(double value);
+
+	std::string GetItemName() { return m_Name; }
+	std::string GetItemDescription() { return m_Description; }
+	std::string GetItemRarity() { return m_Rarity; }
+	int GetItemValue() { return m_Value; }
+private:
 	std::string m_Name;
 	std::string m_Description;
 	std::string m_Rarity;
-	int m_Value;
+	double m_Value;
 };
 
 class Weapon: public Item {
@@ -44,3 +53,4 @@ public:
 private:
 	std::string m_Use;
 };
+

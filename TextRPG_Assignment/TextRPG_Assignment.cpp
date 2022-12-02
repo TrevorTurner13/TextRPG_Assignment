@@ -4,6 +4,7 @@
 #include <algorithm>
 #include "CharacterCreator.h"
 #include "Location.h"
+#include "Item.h"
 #include <cstdlib>
 #include <iomanip>
 #include <limits>
@@ -15,7 +16,7 @@ int rollStat();
 
 int main() {
 	srand((unsigned)time(NULL));
-
+	void DisplayInventory(std::vector<Item> inventory);
 	Character player(8, 8, 8, 8, 8, 8, 10, 10, 15);
 	std::vector<Item> PlayerInventory;
 	std::vector<Item> MerchantInventory;
@@ -36,33 +37,91 @@ int main() {
 	Location preachersInterior("Preacher's: Interior", "The interior of Preacher's Cottage", "You are in a small square room dimly lit by candle light. A table lies in the middle of the room and Preacher reads a book in a comfortable chair. A small bedroom lies off to one side through a small doorway.");
 	Location oldRoad("The Old Road", "A narrow road leading from Preacher's cottage to Misty Hollow.", "This old road is overgrown with weeds and brush. The forest around you seems to loom around. Its stifling.");
 	Location mistyHollowSouth("Misty Hollow: South", "The southern edge of Misty Hollow.", "The town is shrouded in a dense fog. You can just make out a few flickering torches through the squat, packed buildings.");
-	Location mistyHollowEast("Misty Hollow: East", "The eastern edge of Misty Hollow.", "");
+	Location mistyHollowEast("Misty Hollow: East", "The eastern edge of Misty Hollow.", "The buildings here seem all but abandoned. And there is a strange glow pulsing down an alley.");
 	Location mistyHollowWest("Misty Hollow: West", "The western edge of Misty Hollow.", "The squat buildings of the town thin out here as the forest encroaches the boundry.  A toppled guard tower lies in ruin next to the outer wall. A small opening in the wall leads to an old hunter's trail that leads off into the woods.");
 	Location mistyHollowNorth("Misty Hollow: North", "The northern edge of Misty Hollow.", "A town gate sits here abandoned by any sort of guards. The rotted boards of the gate hanging limp on rusted hinges. A dirt road leads out of town towards a few farmsteads. You can see a strange glow pulsing in the distance.");
 	Location boarsHeadExterior("The Boar's Head Inn: Exterior", "A large dilapidated building in the center of Misty Hollow.", "The roof seems to lean heavily to one side of this two story stone and wood building. Light flickers from behind the windows and you can hear raucus noises coming from within.");
 	Location boarsHeadInterior("The Boar's Head Inn: Interior", "The interior of The Boar's Head Inn", "Smells of old food and ale permeate the air within the well lit room. Gruff people crowd the interior talking loudly about current events.");
-	Location jeremiahsFarm("Jeremiah's Farm", "The farm of a man known as Jeremiah.", "A squat farmhouse sits nestled between rows of dessicated crops. You can see a strange pulsing blue light emanating from behind the farmhouse.");
+	Location boarsHeadCellar("The Boar's Head Inn: Cellar", "The cellar of the Boar's Head Inn", "The Cellar door is locked but you can hear a clatter of noises coming from beyond.");
+	Location farmRoad("The Farm Road", "A dirt road leading to a few farmsteads", "This dirt road seems to lead out of town passing a few farmsteads on the way. Crows surround the homes that seem abandoned. One farmhouse stands out a strange glow pulsing from the property.");
+	Location jeremiahsFarmFront("Jeremiah's Farm", "The farm of a man known as Jeremiah.", "A squat farmhouse sits nestled between rows of dessicated crops. You can see a strange pulsing blue light emanating from behind the farmhouse.");
+	Location jeremiahsFarmRear("", "", "");
+	Location strangeLight("", "", "");
+	Location jeremiahsHomesteadExteriorFront("Jeremiah's Homestead: Exterior Front", "A small home of a man known as Jeremiah.", "The front door of this farmhouse rests partially ajar, and you can hear a rustling within.");
+	Location jeremiahsHomesteadExteriorRear("", "", "");
+	Location jeremiahsHomesteadInterior("Jeremiah's Homestead: Interior", "", "");
 	Location hunterPath("Hunter's Path", "An old hunter's path that leads into the woods.", "This path is overgrown but traversing it shouldn't be too difficult.");
-	Location tradersHut("Mysterious Hut", "A strange hut stands in a clearing beyond the edge of the forest.", "The rickety old house stands on what look like giant chicken legs. A rope ladder dangles from the porch to the ground.");
-
+	Location tradersHutExterior("Mysterious Hut", "A strange hut stands in a clearing beyond the edge of the forest.", "The rickety old house stands on what look like giant chicken legs. A rope ladder dangles from the porch to the ground.");
+	Location tradersHutInterior("", "", "");
+	Location tradersHutBackRoom("", "", "");
 	// built exits
 	preachersInterior.m_Exits.push_back(&preachersExterior);
+	
 	preachersExterior.m_Exits.push_back(&oldRoad);
 	preachersExterior.m_Exits.push_back(&preachersInterior);
+	
 	oldRoad.m_Exits.push_back(&preachersExterior);
 	oldRoad.m_Exits.push_back(&mistyHollowSouth);
 	oldRoad.m_Exits.push_back(&hunterPath);
+	
 	mistyHollowSouth.m_Exits.push_back(&oldRoad);
 	mistyHollowSouth.m_Exits.push_back(&boarsHeadExterior);
+	mistyHollowSouth.m_Exits.push_back(&mistyHollowWest);
+	mistyHollowSouth.m_Exits.push_back(&mistyHollowEast);
+	
+	mistyHollowWest.m_Exits.push_back(&mistyHollowSouth);
+	mistyHollowWest.m_Exits.push_back(&mistyHollowNorth);
+	mistyHollowWest.m_Exits.push_back(&boarsHeadExterior);
+	mistyHollowWest.m_Exits.push_back(&hunterPath);
+
+	mistyHollowNorth.m_Exits.push_back(&boarsHeadExterior);
+	mistyHollowNorth.m_Exits.push_back(&mistyHollowEast);
+	mistyHollowNorth.m_Exits.push_back(&mistyHollowWest);
+	mistyHollowNorth.m_Exits.push_back(&farmRoad);
+
+	hunterPath.m_Exits.push_back(&oldRoad);
+	hunterPath.m_Exits.push_back(&tradersHutExterior);
+	hunterPath.m_Exits.push_back(&mistyHollowWest);
+
+	tradersHutExterior.m_Exits.push_back(&hunterPath);
+	tradersHutExterior.m_Exits.push_back(&tradersHutInterior);
+
+	tradersHutInterior.m_Exits.push_back(&tradersHutExterior);
+	tradersHutInterior.m_Exits.push_back(&tradersHutBackRoom);
+
+	boarsHeadExterior.m_Exits.push_back(&mistyHollowEast);
+	boarsHeadExterior.m_Exits.push_back(&mistyHollowNorth);
+	boarsHeadExterior.m_Exits.push_back(&mistyHollowSouth);
+	boarsHeadExterior.m_Exits.push_back(&mistyHollowWest);
+	boarsHeadExterior.m_Exits.push_back(&boarsHeadInterior);
+
+	boarsHeadInterior.m_Exits.push_back(&boarsHeadExterior);
+	boarsHeadInterior.m_Exits.push_back(&boarsHeadCellar);
+
+	jeremiahsFarmFront.m_Exits.push_back(&farmRoad);
+	jeremiahsFarmFront.m_Exits.push_back(&jeremiahsHomesteadExteriorFront);
+	jeremiahsFarmFront.m_Exits.push_back(&jeremiahsFarmRear);
+
+	jeremiahsFarmRear.m_Exits.push_back(&jeremiahsFarmFront);
+	jeremiahsFarmRear.m_Exits.push_back(&jeremiahsHomesteadExteriorRear);
+	jeremiahsFarmRear.m_Exits.push_back(&strangeLight);
+	
+	jeremiahsHomesteadExteriorFront.m_Exits.push_back(&jeremiahsFarmFront);
+	jeremiahsHomesteadExteriorFront.m_Exits.push_back(&jeremiahsHomesteadInterior);
+	jeremiahsHomesteadExteriorFront.m_Exits.push_back(&jeremiahsFarmRear);
+
+	jeremiahsHomesteadExteriorRear.m_Exits.push_back(&jeremiahsFarmRear);
+	jeremiahsHomesteadExteriorRear.m_Exits.push_back(&jeremiahsHomesteadExteriorFront);
+	jeremiahsHomesteadExteriorRear.m_Exits.push_back(&jeremiahsHomesteadInterior);
 	// build Items
 	// Weapons
 		// junk
-	Weapon rustyRapier("Rusty Rapier", "A worn and rusty rapier. The won't be skewering anything but a piece of soft cheese with this thing. (Dexterity)", "Junk", .5, player.GetModifier(player.GetDexterity()), player.RollDice(1, 4) + player.GetModifier(player.GetDexterity()));
+	Weapon rustyRapier("Rusty Rapier", "A worn and rusty rapier. You won't be skewering anything but a piece of soft cheese with this thing. (Dexterity)", "Junk", .5, player.GetModifier(player.GetDexterity()), player.RollDice(1, 4) + player.GetModifier(player.GetDexterity()));
 	Weapon rustyLongsword("Rusty Longsword", "A worn and rusty Longsword. You could probably cut someone deep with this. Emotionally. If you insulted them while you fail to cut them physically. (Strength)", "Junk", .5, player.GetModifier(player.GetStrength()), player.RollDice(1, 4) + player.GetModifier(player.GetStrength()));
 	Weapon rustyDagger("Rusty Dagger", "A worn and rusty Dagger. A butter knife is probably sharper (Dexterity)", "Junk", .2, player.GetModifier(player.GetDexterity()), player.RollDice(1, 2) + player.GetModifier(player.GetDexterity()));
 	Weapon rustyWarhammer("Rusty Warhammer", "A worn and rusty Warhammer. Careful, you'll get rust in someone's eye when this thing disintegrates on impact. (Strength)", "Junk", .5, player.GetModifier(player.GetStrength()), player.RollDice(1, 4) + player.GetModifier(player.GetStrength()));
 	Weapon splinteredWand("Splintered Wand", "A splintered Wand. It might look like just a stick... But you have to admit, it's a very nice stick. Careful not to get a sliver. (Intelligence)", "Junk", .5, player.GetModifier(player.GetIntelligence()), player.RollDice(1, 6) + player.GetModifier(player.GetIntelligence()));
-	Weapon brokenLute("Broken Lute", "A cracked lute that is missing a few strings. Look, if you can't cast spells through is at least you can use it to bludgeon you enemies to death. (Charisma)", "Junk", 1, player.GetModifier(player.GetCharisma()), player.RollDice(1, 4) + player.GetModifier(player.GetCharisma()));
+	Weapon brokenLute("Broken Lute", "A cracked lute that is missing a few strings. Look, if you can't cast spells through is at least you can use it to bludgeon your enemies to death. (Charisma)", "Junk", 1, player.GetModifier(player.GetCharisma()), player.RollDice(1, 4) + player.GetModifier(player.GetCharisma()));
 	Weapon bloodyKnuckles("Bloody Knuckles", "Some blood stained brass knuckles. You don't know who's blood that is but at least you know they work. (Dexterity)", "Junk", .5, player.GetModifier(player.GetDexterity()), player.RollDice(1, 2) + player.GetModifier(player.GetDexterity()));
 		// common
 	Weapon rapier("Rapier", "A rapier. Clean metal, sharp point, this will do nicely. (Dexterity)", "Common", 25, player.GetModifier(player.GetDexterity()), player.RollDice(1, 8) + player.GetModifier(player.GetDexterity()));
@@ -435,7 +494,7 @@ int main() {
 				std::cout << "\nCHA: " << player.GetCharisma() << "\t\tModifier = " << player.GetModifier(player.GetCharisma());
 				std::cout << "\n\nSpell Attack Ability: " << player.GetSpellAbility(warriorChoice);
 				std::cout << "\nSpell Attack Modifier: " << player.GetSpellModifier(warriorChoice);
-				//player.DisplayInventory(PlayerInventory);
+				DisplayInventory(PlayerInventory);
 				_getch();
 
 			} while (ancestryChoice == 8 || warriorChoice == 7);
@@ -484,6 +543,8 @@ int main() {
 					std::cin >> playerChoice;
 					switch (playerChoice) {
 					case 0:
+						std::cout << "Good-bye " << player.GetName() << ", until next time.";
+						std::cout << "If you ever need a rest, feel free to return here. My door is always open.";
 						break;
 					case 1:
 						std::cout << "\n\nPreacher: You are in a small town known as Misty Hollow.\n";
@@ -504,10 +565,21 @@ int main() {
 					case 4:
 						break;
 					case 5:
+						std::cout << "\n\nIt is here.\n";
+						std::cout << "[0] Back.\n";
+						std::cout << "[1] Collect.\n";
+						std::cin >> playerChoice;
+						switch (playerChoice) {
+						case 0:
+							break;
+						case 1:
+							;
+							break;
+						}
 						break;
 					}
 				} while (playerChoice != 0);
-		} while (playerAction != 'm' || playerAction != 'M');
+		} while (playerAction != 'm' && playerAction != 'M');
 		break;
 	case 2:
 		return 0;
@@ -522,3 +594,12 @@ int rollStat() {
 	return 8 + rand() % 11;
 }
 
+void DisplayInventory(std::vector<Item> inventory) {
+	std::cout << std::endl << "Inventory" << std::endl;
+	std::cout << "-----------------------------------" << std::endl;
+	std::vector<Item>::const_iterator iter;
+	for (iter = inventory.begin(); iter < inventory.end(); ++iter ) {
+		std::cout << std::left << std::setw(30) << iter->GetItemName() << std::left << std::setw(12) << iter->GetItemRarity();
+		std::cout << std::left << std::setw(12) << iter->GetItemValue() << std::left << iter->GetItemDescription();
+	}
+}

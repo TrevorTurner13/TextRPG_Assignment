@@ -8,7 +8,7 @@
 class Location {
 public: 
 	Location(std::string name, std::string shortDescription, std::string longDescription);
-	void Display();
+	void DisplayLocation();
 public:
 	std::string m_Name;
 	std::string m_ShortDescription;

@@ -6,7 +6,7 @@ Location::Location(std::string name, std::string shortDescription, std::string l
 	m_LongDescription(longDescription)
 {}
 
-void Location::Display() {
+void Location::DisplayLocation() {
 	std::cout << std::endl << m_Name << std::endl;
 	std::cout << "-----------------------------------" << std::endl;
 	std::cout << m_LongDescription << std::endl;
