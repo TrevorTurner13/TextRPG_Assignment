@@ -33,15 +33,27 @@ int main() {
 
 	// build Locations
 	Location preachersExterior("Preacher's: Exterior", "A small cottage belonging to the man known as Preacher.", "This small square home is nestled beyond the southern edge of Misty Hollow. It's seems like a safe location to rest.");
-	Location preacherInterior("Preacher's: Interior", "The interior of Preacher's Cottage", "There is a small square room dimly lit by candle light. A small bedroom lies off to one side through a small doorway.");
+	Location preachersInterior("Preacher's: Interior", "The interior of Preacher's Cottage", "You are in a small square room dimly lit by candle light. A table lies in the middle of the room and Preacher reads a book in a comfortable chair. A small bedroom lies off to one side through a small doorway.");
 	Location oldRoad("The Old Road", "A narrow road leading from Preacher's cottage to Misty Hollow.", "This old road is overgrown with weeds and brush. The forest around you seems to loom around. Its stifling.");
 	Location mistyHollowSouth("Misty Hollow: South", "The southern edge of Misty Hollow.", "The town is shrouded in a dense fog. You can just make out a few flickering torches through the squat, packed buildings.");
+	Location mistyHollowEast("Misty Hollow: East", "The eastern edge of Misty Hollow.", "");
+	Location mistyHollowWest("Misty Hollow: West", "The western edge of Misty Hollow.", "The squat buildings of the town thin out here as the forest encroaches the boundry.  A toppled guard tower lies in ruin next to the outer wall. A small opening in the wall leads to an old hunter's trail that leads off into the woods.");
+	Location mistyHollowNorth("Misty Hollow: North", "The northern edge of Misty Hollow.", "A town gate sits here abandoned by any sort of guards. The rotted boards of the gate hanging limp on rusted hinges. A dirt road leads out of town towards a few farmsteads. You can see a strange glow pulsing in the distance.");
 	Location boarsHeadExterior("The Boar's Head Inn: Exterior", "A large dilapidated building in the center of Misty Hollow.", "The roof seems to lean heavily to one side of this two story stone and wood building. Light flickers from behind the windows and you can hear raucus noises coming from within.");
 	Location boarsHeadInterior("The Boar's Head Inn: Interior", "The interior of The Boar's Head Inn", "Smells of old food and ale permeate the air within the well lit room. Gruff people crowd the interior talking loudly about current events.");
-
 	Location jeremiahsFarm("Jeremiah's Farm", "The farm of a man known as Jeremiah.", "A squat farmhouse sits nestled between rows of dessicated crops. You can see a strange pulsing blue light emanating from behind the farmhouse.");
 	Location hunterPath("Hunter's Path", "An old hunter's path that leads into the woods.", "This path is overgrown but traversing it shouldn't be too difficult.");
 	Location tradersHut("Mysterious Hut", "A strange hut stands in a clearing beyond the edge of the forest.", "The rickety old house stands on what look like giant chicken legs. A rope ladder dangles from the porch to the ground.");
+
+	// built exits
+	preachersInterior.m_Exits.push_back(&preachersExterior);
+	preachersExterior.m_Exits.push_back(&oldRoad);
+	preachersExterior.m_Exits.push_back(&preachersInterior);
+	oldRoad.m_Exits.push_back(&preachersExterior);
+	oldRoad.m_Exits.push_back(&mistyHollowSouth);
+	oldRoad.m_Exits.push_back(&hunterPath);
+	mistyHollowSouth.m_Exits.push_back(&oldRoad);
+	mistyHollowSouth.m_Exits.push_back(&boarsHeadExterior);
 	// build Items
 	// Weapons
 		// junk
@@ -449,11 +461,16 @@ int main() {
 		
 		std::cout << "\nPreacher: Now that that is settled, I'm sure you have questions.\n";
 
+		//currentLocation = &preachersInterior;
+		//do {
+			
+		//}
+
 		do {
-			std::cout << "\n" << std::left << std::setw(10) << look << "" << std::left << std::setw(10) << interact << "" << std::left << std::setw(10) << talk << "" << std::left << std::setw(10) << move << "\n\n> ";
+			std::cout << "\n" << std::left << std::setw(10) << look << "" << std::left << std::setw(15) << interact << "" << std::left << std::setw(10) << talk << "" << std::left << std::setw(10) << move << "\n\n> ";
 			std::cin >> playerAction;
 			if (playerAction == 'l' || playerAction == 'L') {
-				std::cout << preacherInterior.m_LongDescription;
+				std::cout << "\n" << preachersInterior.m_LongDescription << "\n";
 			}
 			else if (playerAction == 't' || playerAction == 'T')
 				do {
