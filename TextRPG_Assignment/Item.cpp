@@ -29,6 +29,7 @@ UseableItems::UseableItems(std::string name, std::string description, std::strin
 	m_Use(use)
 {}
 
+
 void Item::SetItemName(std::string name) {
 	m_Name = name;
 }

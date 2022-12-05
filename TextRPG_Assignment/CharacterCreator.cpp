@@ -74,6 +74,8 @@ void Character::SetCharacterGold(int gold) {
 }
 
 
+
+
 int Character::GetModifier(int stat) {
 	int modifier = 0;
 	switch (stat) {

@@ -19,8 +19,8 @@ public:
 	void TakeDamage(int damage);
 	void Heal();
 	void CastSpell(Character& character);
-	void Objectives(std::vector<std::string> objectives);
-	void DisplayObjectives();
+
+	
 
 	int RollDice(int numberOfDice, int numberOfSides);
 	int GetModifier(int stat);
@@ -41,6 +41,7 @@ public:
 	void SetCharacterGold(int gold);
 	
 	
+	
 	std::string GetName() { return m_Name; }
 	std::string GetSpellAbility(int warrior);
 	std::string GetCharacterAncestry(int ancestry);
@@ -58,7 +59,7 @@ public:
 	int GetCharacterGold() { return m_Gold; }	
 
 private:
-	/*std::vector<std::string> Objectives;*/
+	std::vector<std::string> m_Objectives;
 	std::string m_Name;
 	std::string m_SpellAbility;
 	int m_Strength;

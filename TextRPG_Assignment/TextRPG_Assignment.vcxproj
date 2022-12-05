@@ -138,6 +138,7 @@
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="Item.h" />
     <ClInclude Include="Location.h" />
+    <ClInclude Include="TextTools.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

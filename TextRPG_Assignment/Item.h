@@ -16,7 +16,7 @@ public:
 	std::string GetItemName() { return m_Name; }
 	std::string GetItemDescription() { return m_Description; }
 	std::string GetItemRarity() { return m_Rarity; }
-	int GetItemValue() { return m_Value; }
+	double GetItemValue() { return m_Value; }
 private:
 	std::string m_Name;
 	std::string m_Description;

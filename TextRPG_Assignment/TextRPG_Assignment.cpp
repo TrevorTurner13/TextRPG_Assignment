@@ -4,7 +4,9 @@
 #include <algorithm>
 #include "CharacterCreator.h"
 #include "Location.h"
+#include "Enemy.h"
 #include "Item.h"
+#include "TextTools.h"
 #include <cstdlib>
 #include <iomanip>
 #include <limits>
@@ -12,14 +14,17 @@
 #include <sstream>
 
 int rollStat();
-
+void DisplayInventory(std::vector<Item> inventory);
+void DisplayObjectives(std::vector<std::string> objectives);
 
 int main() {
 	srand((unsigned)time(NULL));
-	void DisplayInventory(std::vector<Item> inventory);
+	Location* currentLocation;
 	Character player(8, 8, 8, 8, 8, 8, 10, 10, 15);
 	std::vector<Item> PlayerInventory;
 	std::vector<Item> MerchantInventory;
+	std::vector<Item> GoblinInventory;
+	std::vector<std::string> Objectives;
 	std::string name;
 	std::string look = "(L)ook";
 	std::string interact = "(I)nteract";
@@ -32,9 +37,10 @@ int main() {
 	int ancestryChoice = 0;
 	int warriorChoice = 0;
 
+
 	// build Locations
 	Location preachersExterior("Preacher's: Exterior", "A small cottage belonging to the man known as Preacher.", "This small square home is nestled beyond the southern edge of Misty Hollow. It's seems like a safe location to rest.");
-	Location preachersInterior("Preacher's: Interior", "The interior of Preacher's Cottage", "You are in a small square room dimly lit by candle light. A table lies in the middle of the room and Preacher reads a book in a comfortable chair. A small bedroom lies off to one side through a small doorway.");
+	Location preachersInterior("Preacher's: Interior", "The interior of Preacher's Cottage", "You are in a small square room dimly lit by candle light. A table lies in the middle of the room and Preacher sits reading a book in a comfortable chair. A small bedroom lies off to one side through a small doorway.");
 	Location oldRoad("The Old Road", "A narrow road leading from Preacher's cottage to Misty Hollow.", "This old road is overgrown with weeds and brush. The forest around you seems to loom around. Its stifling.");
 	Location mistyHollowSouth("Misty Hollow: South", "The southern edge of Misty Hollow.", "The town is shrouded in a dense fog. You can just make out a few flickering torches through the squat, packed buildings.");
 	Location mistyHollowEast("Misty Hollow: East", "The eastern edge of Misty Hollow.", "The buildings here seem all but abandoned. And there is a strange glow pulsing down an alley.");
@@ -116,57 +122,90 @@ int main() {
 	// build Items
 	// Weapons
 		// junk
-	Weapon rustyRapier("Rusty Rapier", "A worn and rusty rapier. You won't be skewering anything but a piece of soft cheese with this thing. (Dexterity)", "Junk", .5, player.GetModifier(player.GetDexterity()), player.RollDice(1, 4) + player.GetModifier(player.GetDexterity()));
-	Weapon rustyLongsword("Rusty Longsword", "A worn and rusty Longsword. You could probably cut someone deep with this. Emotionally. If you insulted them while you fail to cut them physically. (Strength)", "Junk", .5, player.GetModifier(player.GetStrength()), player.RollDice(1, 4) + player.GetModifier(player.GetStrength()));
-	Weapon rustyDagger("Rusty Dagger", "A worn and rusty Dagger. A butter knife is probably sharper (Dexterity)", "Junk", .2, player.GetModifier(player.GetDexterity()), player.RollDice(1, 2) + player.GetModifier(player.GetDexterity()));
-	Weapon rustyWarhammer("Rusty Warhammer", "A worn and rusty Warhammer. Careful, you'll get rust in someone's eye when this thing disintegrates on impact. (Strength)", "Junk", .5, player.GetModifier(player.GetStrength()), player.RollDice(1, 4) + player.GetModifier(player.GetStrength()));
-	Weapon splinteredWand("Splintered Wand", "A splintered Wand. It might look like just a stick... But you have to admit, it's a very nice stick. Careful not to get a sliver. (Intelligence)", "Junk", .5, player.GetModifier(player.GetIntelligence()), player.RollDice(1, 6) + player.GetModifier(player.GetIntelligence()));
-	Weapon brokenLute("Broken Lute", "A cracked lute that is missing a few strings. Look, if you can't cast spells through is at least you can use it to bludgeon your enemies to death. (Charisma)", "Junk", 1, player.GetModifier(player.GetCharisma()), player.RollDice(1, 4) + player.GetModifier(player.GetCharisma()));
-	Weapon bloodyKnuckles("Bloody Knuckles", "Some blood stained brass knuckles. You don't know who's blood that is but at least you know they work. (Dexterity)", "Junk", .5, player.GetModifier(player.GetDexterity()), player.RollDice(1, 2) + player.GetModifier(player.GetDexterity()));
+	Weapon rustyRapier("Rusty Rapier", "A worn and rusty rapier.\nYou won't be skewering anything but a piece of soft cheese with this thing.\n\nTo Hit: 1d20 + DEX Mod\nDamage: 1d4 + DEX Mod", "Junk", .5, player.GetModifier(player.GetDexterity()), player.RollDice(1, 4) + player.GetModifier(player.GetDexterity()));
+	Weapon rustyLongsword("Rusty Longsword", "A worn and rusty Longsword. \nYou could probably cut someone deep with this. Emotionally. If you insult them while you fail to cut them physically. \nTo Hit: 1d20 + STR Mod\nDamage: 1d4 + STR Mod", "Junk", .5, player.GetModifier(player.GetStrength()), player.RollDice(1, 4) + player.GetModifier(player.GetStrength()));
+	Weapon rustyDagger("Rusty Dagger", "A worn and rusty Dagger. \nA butter knife is probably sharper \nTo Hit: 1d20 + DEX Mod\nDamage: 1d2 + DEX Mod", "Junk", .2, player.GetModifier(player.GetDexterity()), player.RollDice(1, 2) + player.GetModifier(player.GetDexterity()));
+	Weapon rustyWarhammer("Rusty Warhammer", "A worn and rusty Warhammer. \nCareful, you'll get rust in someone's eye when this thing disintegrates on impact. \nTo Hit: 1d20 + STR Mod\nDamage: 1d4 + STR Mod", "Junk", .5, player.GetModifier(player.GetStrength()), player.RollDice(1, 4) + player.GetModifier(player.GetStrength()));
+	Weapon splinteredWand("Splintered Wand", "A splintered Wand. \nIt might look like just a stick... But you have to admit, it's a very nice stick. Careful not to get a sliver. \nTo Hit: 1d20 + INT Mod\nDamage: 1d6 + INT Mod", "Junk", .5, player.GetModifier(player.GetIntelligence()), player.RollDice(1, 6) + player.GetModifier(player.GetIntelligence()));
+	Weapon brokenLute("Broken Lute", "A cracked lute that is missing a few strings. \nLook, if you can't cast spells through is at least you can use it to bludgeon your enemies to death. \nTo Hit: 1d20 + CHA Mod\nDamage: 1d4 + CHA Mod", "Junk", 1, player.GetModifier(player.GetCharisma()), player.RollDice(1, 4) + player.GetModifier(player.GetCharisma()));
+	Weapon bloodyKnuckles("Bloody Knuckles", "Some blood stained brass knuckles. \nYou don't know who's blood that is but at least you know they work. \nTo Hit: 1d20 + DEX Mod\nDamage: 1d2 + DEX Mod", "Junk", .5, player.GetModifier(player.GetDexterity()), player.RollDice(1, 2) + player.GetModifier(player.GetDexterity()));
 		// common
-	Weapon rapier("Rapier", "A rapier. Clean metal, sharp point, this will do nicely. (Dexterity)", "Common", 25, player.GetModifier(player.GetDexterity()), player.RollDice(1, 8) + player.GetModifier(player.GetDexterity()));
-	Weapon longsword("Longsword", "A longsword. It's sharp and looks pretty. Just point the sharp part away from you and you'll do fine. (Strength)", "Common", 25, player.GetModifier(player.GetStrength()), player.RollDice(1, 10) + player.GetModifier(player.GetStrength()));
-	Weapon dagger("Dagger", "A dagger. Great for picking your teeth and cleaning your fingernails. Also works good for stabbing. I don't judge. (Dexterity)", "Common", 2, player.GetModifier(player.GetDexterity()), player.RollDice(1, 4) + player.GetModifier(player.GetDexterity()));
-	Weapon warhammer("Warhammer", "A warhammer. You could use it to fix your house, but it's better at smashing femurs. (Strength)", "Common", 15, player.GetModifier(player.GetStrength()), player.RollDice(1, 8) + player.GetModifier(player.GetStrength()));
-	Weapon wand("Wand", "A wand. Smooth polished wood. Clean lines. Now your fireballs will be extra spicy. (Intelligence)", "Common", 25, player.GetModifier(player.GetIntelligence()), player.RollDice(1, 10) + player.GetModifier(player.GetIntelligence()));
-	Weapon lute("Lute", "A lute. It's tuned, the wood is polished, and it has all its strings. You can finally hear the music. (Charisma)", "Common", 50, player.GetModifier(player.GetCharisma()), player.RollDice(1, 8) + player.GetModifier(player.GetCharisma()));
-	Weapon brassKnuckles("Brass Knuckles", "A pair of brass knuckles. You can feel the weight of them. And they're clean. Now go get some blood on them. (Dexterity)", "Common", 10, player.GetModifier(player.GetDexterity()), player.RollDice(1, 6) + player.GetModifier(player.GetDexterity()));
+	Weapon rapier("Rapier", "A rapier. \nClean metal, sharp point, this will do nicely. \nTo Hit: 1d20 + DEX Mod\nDamage: 1d8 + DEX Mod", "Common", 25, player.GetModifier(player.GetDexterity()), player.RollDice(1, 8) + player.GetModifier(player.GetDexterity()));
+	Weapon longsword("Longsword", "A longsword. \nIt's sharp and looks pretty. Just point the sharp part away from you and you'll do fine. \nTo Hit: 1d20 + STR Mod\nDamage: 1d10 + STR Mod", "Common", 25, player.GetModifier(player.GetStrength()), player.RollDice(1, 10) + player.GetModifier(player.GetStrength()));
+	Weapon dagger("Dagger", "A dagger. \nGreat for picking your teeth and cleaning your fingernails. Also works good for stabbing. I don't judge. \nTo Hit: 1d20 + DEX Mod\nDamage: 1d4 + DEX Mod", "Common", 2, player.GetModifier(player.GetDexterity()), player.RollDice(1, 4) + player.GetModifier(player.GetDexterity()));
+	Weapon warhammer("Warhammer", "A warhammer. \nYou could use it to fix your house, but it's better at smashing femurs. \nTo Hit: 1d20 + STR Mod\nDamage: 1d8 + STR Mod", "Common", 15, player.GetModifier(player.GetStrength()), player.RollDice(1, 8) + player.GetModifier(player.GetStrength()));
+	Weapon wand("Wand", "A wand. \nSmooth polished wood. Clean lines. Now your fireballs will be extra spicy. \nTo Hit: 1d20 + INT Mod\nDamage: 1d10 + INT Mod", "Common", 25, player.GetModifier(player.GetIntelligence()), player.RollDice(1, 10) + player.GetModifier(player.GetIntelligence()));
+	Weapon lute("Lute", "A lute. \nIt's tuned, the wood is polished, and it has all its strings. You can finally hear the music. \nTo Hit: 1d20 + CHA Mod\nDamage: 1d4 + CHA Mod", "Common", 50, player.GetModifier(player.GetCharisma()), player.RollDice(1, 8) + player.GetModifier(player.GetCharisma()));
+	Weapon brassKnuckles("Brass Knuckles", "A pair of brass knuckles. \nYou can feel the weight of them. And they're clean. Now go get some blood on them. \nTo Hit: 1d20 + DEX Mod\nDamage: 1d6 + DEX Mod", "Common", 10, player.GetModifier(player.GetDexterity()), player.RollDice(1, 6) + player.GetModifier(player.GetDexterity()));
 		// Rare
-	Weapon elvenRapier("Elven Rapier", "An elven rapier. You've never seen a more beautiful Rapier. The subtle off-white colouring, the tasteful thickness of it. It even has a watermark. (Dexterity)", "Rare", 500, player.GetModifier(player.GetDexterity()), player.RollDice(1, 8) + player.RollDice(1, 4) + player.GetModifier(player.GetDexterity()));
-	Weapon commandersLongsword("Commander's Longsword", "A Commander's longsword. You're pretty sure it sings as it cuts through the air. And laughs as it cuts through other things. (Strength)", "Rare", 500, player.GetModifier(player.GetStrength()), player.RollDice(1, 10) + player.RollDice(1, 6) + player.GetModifier(player.GetStrength()));
-	Weapon cutthroatDagger("Cutthroat Dagger", "A Cutthroat's dagger. Great for, well, cutting throats. And so pretty you would probably steal it. If you were into that sort of thing. (Dexterity)", "Rare", 300, player.GetModifier(player.GetDexterity()), player.RollDice(2, 4) + player.GetModifier(player.GetDexterity()));
-	Weapon dwarvenWarhammer("Dwarven Warhammer", "A Dwarven warhammer. It's beautiful, The embossed edges, the gold inlay, the heft of it. Now go smash some skulls (Strength)", "Rare", 500, player.GetModifier(player.GetStrength()), player.RollDice(2, 8) + player.GetModifier(player.GetStrength()));
-	Weapon wizardsWand("Wizard's Wand", "A wizard's wand. How did they get the wood to look like that? I don't know, probably magic. Pretty though. (Intelligence)", "Rare", 400, player.GetModifier(player.GetIntelligence()), player.RollDice(1, 10) + player.GetModifier(player.GetIntelligence()));
-	Weapon gibsonLute("Gibson Lute", "A Gibson lute. If you know, you know. (Charisma)", "Rare", 750, player.GetModifier(player.GetCharisma()), player.RollDice(1, 8) + player.GetModifier(player.GetCharisma()));
-	Weapon spikedKnuckles("Spiked Knuckles", "A pair of spiked knuckles. They do one thing, and, boy, do they do it well. (Dexterity)", "Rare", 400, player.GetModifier(player.GetDexterity()), player.RollDice(2, 6) + player.GetModifier(player.GetDexterity()));
+	Weapon elvenRapier("Elven Rapier", "An elven rapier. \nYou've never seen a more beautiful Rapier. The subtle off-white colouring, the tasteful thickness of it. It even has a watermark. \nTo Hit: 1d20 + DEX Mod\nDamage: 1d8 + 1d4 + DEX Mod", "Rare", 500, player.GetModifier(player.GetDexterity()), player.RollDice(1, 8) + player.RollDice(1, 4) + player.GetModifier(player.GetDexterity()));
+	Weapon commandersLongsword("Commander's Longsword", "A Commander's longsword. \nYou're pretty sure it sings as it cuts through the air. And laughs as it cuts through other things. \nTo Hit: 1d20 + STR Mod\nDamage: 1d10 + 1d6 + STR Mod", "Rare", 500, player.GetModifier(player.GetStrength()), player.RollDice(1, 10) + player.RollDice(1, 6) + player.GetModifier(player.GetStrength()));
+	Weapon cutthroatDagger("Cutthroat Dagger", "A Cutthroat's dagger. \nGreat for, well, cutting throats. And so pretty you would probably steal it. If you were into that sort of thing. \nTo Hit: 1d20 + DEX Mod\nDamage: 2d4 + DEX Mod", "Rare", 300, player.GetModifier(player.GetDexterity()), player.RollDice(2, 4) + player.GetModifier(player.GetDexterity()));
+	Weapon dwarvenWarhammer("Dwarven Warhammer", "A Dwarven warhammer. \nIt's beautiful, The embossed edges, the gold inlay, the heft of it. Now go smash some skulls \nTo Hit: 1d20 + STR Mod\nDamage: 2d8 + STR Mod", "Rare", 500, player.GetModifier(player.GetStrength()), player.RollDice(2, 8) + player.GetModifier(player.GetStrength()));
+	Weapon wizardsWand("Wizard's Wand", "A wizard's wand. \nHow did they get the wood to look like that? I don't know, probably magic. Pretty though. \nTo Hit: 1d20 + INT Mod\nDamage: 1d10 + 1d6 + INT Mod", "Rare", 400, player.GetModifier(player.GetIntelligence()), player.RollDice(1, 10) + player.RollDice(1, 6) + player.GetModifier(player.GetIntelligence()));
+	Weapon gibsonLute("Gibson Lute", "A Gibson lute. \nIf you know, you know. \nTo Hit: 1d20 + CHA Mod\nDamage: 1d8 + 1d4 + CHA Mod", "Rare", 750, player.GetModifier(player.GetCharisma()), player.RollDice(1, 8) + player.RollDice(1, 4) + player.GetModifier(player.GetCharisma()));
+	Weapon spikedKnuckles("Spiked Knuckles", "A pair of spiked knuckles. \nThey do one thing, and, boy, do they do it well. \nTo Hit: 1d20 + DEX Mod\nDamage: 2d6 + DEX Mod", "Rare", 400, player.GetModifier(player.GetDexterity()), player.RollDice(2, 6) + player.GetModifier(player.GetDexterity()));
 		// Armour
 		// junk
-	Armor wornLeather("Worn Leather", "Some worn leather armour. At least it covers your body. Mostly. There are some holes. A lot of holes.", "Junk", 1, 1, -1);
-	Armor dentedCuirass("Dented Cuirass", "A dented Cuirass. Sure the chest is caved in, it still counts as armour.", "Junk", 1, 3, 2);
-	Armor tornRobes("Torn Robes", "A torn robe. Honestly a towel would probably offer more protection. But, look on the bright side, at least you will look like you can cast spells in it.", "Junk", 1, 0, -5);
-	Armor rustyChainmail("Rusty Chainmail", "Some rusted chainmail. So, most of the chain links are broken, the padding is worn, and the helmet is missing. If you were expecting a 'but' there isn't one.", "Junk", 2, 4, 3);
-	Armor oldUniform("Old uniform", "An old martial arts uniform. It smells like its never been washed and there is stains on it you are pretty sure aren't yours.", "Junk", .5, 1, -1);
-	Armor wornShield("Worn Shield", "A worn and dented shield. It's probably better than nothing.", "Junk", 1, 1, 2);
+	Armor wornLeather("Worn Leather", "Some worn leather armour. \nAt least it covers your body. Mostly. There are some holes. A lot of holes.\nAC Bonus: +1\nSTR Score Requirement: 8+", "Junk", 1, 1, -1);
+	Armor dentedCuirass("Dented Cuirass", "A dented Cuirass. \nSure the chest is caved in, it still counts as armour.\nAC Bonus: +3\nSTR SCORE Requirement: 14+", "Junk", 1, 3, 2);
+	Armor tornRobes("Torn Robes", "A torn robe. \nHonestly a towel would probably offer more protection. But, look on the bright side, at least you will look like you can cast spells in it.\nAC Bonus: 0\nSTR SCORE Requirement: NO", "Junk", 1, 0, -5);
+	Armor rustyChainmail("Rusty Chainmail", "Some rusted chainmail. \nSo, most of the chain links are broken, the padding is worn, and the helmet is missing. If you were expecting a 'but' there isn't one.\nAC Bonus: +4\nSTR SCORE Requirement: 16+", "Junk", 2, 4, 3);
+	Armor oldUniform("Old uniform", "An old martial arts uniform. \nIt smells like its never been washed and there is stains on it you are pretty sure aren't yours.\nAC Bonus: +1\nSTR SCORE Requirement: 8+", "Junk", .5, 1, -1);
+	Armor wornShield("Worn Shield", "A worn and dented shield. \nIt's probably better than nothing.\nAC Bonus: +1\nSTR SCORE Requirement: 14+", "Junk", 1, 1, 2);
 		// common
-	Armor studdedLeather("Studded Leather", "Some studded leather armour. Smells like new leather and the studs are shiny. This is awesome.", "Common", 50, 2, -1);
-	Armor breastplate("Breastplate", "A breastplate. Its so shiny you can see your face in it.", "Common", 100, 4, 2);
-	Armor wizardsRobes("Wizard's Robes", "A set of wizard robes. The cloth is soft and is that embroidery? Amazing", "Common", 30, 1, -5);
-	Armor scaleMail("Scale Mail", "Some Scalemail. The scales shimmer in the light and best of all, there isn't any holes in it that aren't functional.", "Common", 200, 5, 3);	
-	Armor martialArtistsUniform("Martial Artist's Uniform", "The clothes of a matial artist. They're clean. They're pressed. And you think there is even some padding in there.", "Common", 50, 2, -1);
-	Armor buckler("Buckler", "A shield. It's a shield. Use it as intended.", "Common", 10, 2, 2);
+	Armor studdedLeather("Studded Leather", "Some studded leather armour. \nSmells like new leather and the studs are shiny. This is awesome.\nAC Bonus: +2\nSTR SCORE Requirement: 8+", "Common", 50, 2, -1);
+	Armor breastplate("Breastplate", "A breastplate. \nIts so shiny you can see your face in it.\nAC Bonus: +4\nSTR SCORE Requirement: 14+", "Common", 100, 4, 2);
+	Armor wizardsRobes("Wizard's Robes", "A set of wizard robes. \nThe cloth is soft and is that embroidery? Amazing\nAC Bonus: +1\nSTR SCORE Requirement: NO", "Common", 30, 1, -5);
+	Armor scaleMail("Scale Mail", "Some Scalemail. \nThe scales shimmer in the light and best of all, there isn't any holes in it that aren't functional.\nAC Bonus: +5\nSTR SCORE Requirement: 16+", "Common", 200, 5, 3);	
+	Armor martialArtistsUniform("Martial Artist's Uniform", "The clothes of a matial artist. \nThey're clean. They're pressed. And you think there is even some padding in there.\nAC Bonus: +2\nSTR SCORE Requirement: 8+", "Common", 50, 2, -1);
+	Armor buckler("Buckler", "A shield. It's a shield. \nUse it as intended.\nAC Bonus: +2\nSTR SCORE Requirement: 14+", "Common", 10, 2, 2);
 		// Rare
-	Armor elvenLeather("Elven Leather", "Elven leather armour. If armour could be considered art, you're looking at it. And did it just change colour?", "Rare", 800, 3, -1);
-	Armor draconicBreastplate("Draconic Breastplate", "Draconic breastplate. It looks like a dragon. It. Looks. Like. A. DRAGON.", "Rare", 1000, 5, 2);
-	Armor robeOfTheArchmage("Robe of the Archmage", "Archmage Robes. UNLIMITED POWER!!!!", "Rare", 800, 2, -5);
-	Armor dwarvenPlate("Dwarven Plate", "Dwarven Plate Armour. Did you ever want to be Iron Man? Well this armour is for you.", "Rare", 1500, 6, 3);
-	Armor mastersRobe("Master's Robes", "The clothes of a Master. So this is what inner peace feels like.", "Rare", 800, 3, -1);
-	Armor kiteShield("Kite Shield", "More shield. More protection.", "Rare", 300, 3, 2);
+	Armor elvenLeather("Elven Leather", "Elven leather armour. \nIf armour could be considered art, you're looking at it. And did it just change colour?\nAC Bonus: +3\nSTR SCORE Requirement: 8+", "Rare", 800, 3, -1);
+	Armor draconicBreastplate("Draconic Breastplate", "Draconic breastplate. \nIt looks like a dragon. It. Looks. Like. A. DRAGON.\nAC Bonus: +4\nSTR SCORE Requirement: 14+", "Rare", 1000, 5, 2);
+	Armor robeOfTheArchmage("Robe of the Archmage", "Archmage Robes. \nUNLIMITED POWER!!!!\nAC Bonus: +2\nSTR SCORE Requirement: NO", "Rare", 800, 2, -5);
+	Armor dwarvenPlate("Dwarven Plate", "Dwarven Plate Armour. \nDid you ever want to be Iron Man? Well this armour is for you.\nAC Bonus: +6\nSTR SCORE Requirement: 16+", "Rare", 1500, 6, 3);
+	Armor mastersRobe("Master's Robes", "The clothes of a Master. \nSo this is what inner peace feels like.\nAC Bonus: +3\nSTR SCORE Requirement: 8+", "Rare", 800, 3, -1);
+	Armor kiteShield("Kite Shield", "More shield. More protection.\nAC Bonus: +3\nSTR SCORE Requirement: 14+", "Rare", 300, 3, 2);
 		//Items
 	Item waterskin("Waterskin", "A waterskin filled with water.", "Common", .1);
-	Item rations("Rations", "Rations of food for the road. Looks better than it tastes and it does not look good.", "Common", .2);
-		//Useable Items
-	UseableItems rope("Rope", "A length of rope. Very useful.", "Common", 1, "Use: to climb up or down something.");
+	
+	Item goldPouch("Gold Pouch", "A pouch full of gold.", "Common", 100);
 
+	// healing Items
+	HealingPotion bread("Fresh Bread", "Some fresh bread. It smells good", "Common", 1, 5);
+	HealingPotion rations("Rations", "Rations of food for the road. Looks better than it tastes and it does not look good.", "Common", .2, 2);
+	HealingPotion ale("Pint of Ale", "A pint of ale. Its foamy and looks pretty good.", "Common", 1, 3);
+	HealingPotion cheese("A wheel of cheese", "A wheel of cheese. It seems fresh. Great with bread.", "Common", 10, 10);
+	HealingPotion healingpotion("Healing potion", "A vial of red liquid. It smells faintly of elderberries.", "Rare", 100, 25);
+	//Useable Items
+	UseableItems rope("Rope", "A length of rope. Very useful.", "Common", 1, "Use: to climb up or down something.");
+	UseableItems bed("Bed", "A bed.",  "Common", 50, "Use: for sleeping");
+	UseableItems door("Door", "A door.", "Common", 20, "Use: Its a door");
+	UseableItems chest("Chest", "A chest.", "Common", 100, "Use: It holds things");
+	UseableItems oldKey("Old Key", "An old key found on Jeremiah's body.", "Uncommon", 1, "Use: Its a key. Find the keyhole.");
+	UseableItems oldChest("Old Chest", "An old chest. Its wood is warped and it hinges rusty. You'll probably need a crowbar to open it", "Uncommon", 100, "Use: You can hear something inside");
+	//build enemies
+	Enemy corruptedDog("Strange Dog", "A angry and mangy looking dog. There are bulbous protrusions sticking out of its flesh. Something seems to writhe beneath the skin.", 12, 14, 9, 2, 10, 4, 10, 13, 0);
+	Enemy huskOfJeremiah("Jeremiah", "What remains of the farmer Jeremiah. Three dark, slick tentacles protrude from where his head once was.", 15, 11, 13, 9, 12, 6, 27, 13, 50);
+	Enemy corruptedFarmhand("Corrupted Farmhand", "What appears to have once been a farmhand. Black tentacles have torn out of its body. It hold a bloody sickle in one hand.", 12, 9, 12, 7, 11, 6, 16, 13, 10);
+	Enemy corruptedPlowHorse("Corrupted Plow Horse", "A black plow horse whinnies angrily. Its skin seems to writhe beneath the fur.", 16, 12, 16, 2, 12, 5, 32, 12, 0);
+	Enemy goblin("Goblin Bandit", "A goblin bandit. It is brandishing a dagger.", 8, 16, 12, 8, 14, 10, 7, 15, 20);
+	Enemy goblinCaptain("Goblin Captain", "A larger goblin. He is wearing armor and brandishing a longsword.", 10, 18, 14, 8, 16, 10, 21, 16, 200);
+
+	preachersInterior.m_InteractableItems.push_back(&bed);
+	preachersInterior.m_InteractableItems.push_back(&chest);
+
+	preachersExterior.m_Items.push_back(&rustyLongsword);
+	preachersExterior.m_Items.push_back(&goldPouch);
+
+	oldRoad.m_Enemies.push_back(&corruptedDog);
+	oldRoad.m_Items.push_back(&oldChest);
+
+	hunterPath.m_Enemies.push_back(&goblin);
+	hunterPath.m_Enemies.push_back(&goblin);
+	hunterPath.m_Enemies.push_back(&goblin);
+	hunterPath.m_Enemies.push_back(&goblinCaptain);
 
 	std::cout << std::right << std::setw(50) << "MISTY HOLLOW\n\n";
 	std::cout << std:: right << std::setw(58) << "A game by Trevor Turner\n\n\n";
@@ -174,12 +213,12 @@ int main() {
 	_getch();
 	std::cout << "\n[1] NEW GAME";
 	std::cout << "\n[2] QUIT\n";
-	std::cout << "\n> ";
+	askNumber("Choose a Number: ", 2, 1);
 	std::cin >> playerChoice;
 	switch (playerChoice) {
 	case 1:
 		std::cout << "\nYour eyes open slowly. Your head is throbbing and you can feel a dampness to your clothing.\n";
-		std::cout << "\n" << std::left << std::setw(10) << look << "" << std::left << std::setw(10) << interact << "" << std::left << std::setw(10) << talk << "\n\n> ";
+		std::cout << "\n" << std::left << std::setw(10) << look << "" << std::left << std::setw(15) << interact << "" << std::left << std::setw(10) << talk << "\n\n> ";
 		std::cin >> playerAction;
 		do {
 			if (playerAction == 'l' || playerAction == 'L') {
@@ -191,7 +230,7 @@ int main() {
 				_getch();
 				std::cout << "He looks to you when your eyes flutter open.\n";
 				do {
-					std::cout << "\n" << std::left << std::setw(10) << look << "" << std::left << std::setw(10) << interact << "" << std::left << std::setw(10) << talk << "\n\n> ";
+					std::cout << "\n" << std::left << std::setw(10) << look << "" << std::left << std::setw(15) << interact << "" << std::left << std::setw(10) << talk << "\n\n> ";
 					std::cin >> playerAction;
 
 					if (playerAction == 'l' || playerAction == 'L') {
@@ -253,6 +292,7 @@ int main() {
 				player.SetMaxHP(10);
 				player.SetArmorClass(10);
 				player.SetCharacterGold(15);
+				PlayerInventory.clear();
 				std::cout << "\n" << player.GetName() << " is it?\n";
 				std::cout << "A fine name.\n";
 				_getch();
@@ -266,7 +306,7 @@ int main() {
 				std::cout << "[6] Grade-A Human, my good man.\n";
 				std::cout << "[7] Hrmm. Orc.\n";
 				std::cout << "OR\n8. Change your character's name.\n\n";
-				std::wcout << "(1 - 8)> ";
+				askNumber("What is your Ancestry: ", 8, 1);
 				while (true) {
 					std::cin >> ancestryChoice;
 					player.SetCharacterAncestry(ancestryChoice);
@@ -494,7 +534,6 @@ int main() {
 				std::cout << "\nCHA: " << player.GetCharisma() << "\t\tModifier = " << player.GetModifier(player.GetCharisma());
 				std::cout << "\n\nSpell Attack Ability: " << player.GetSpellAbility(warriorChoice);
 				std::cout << "\nSpell Attack Modifier: " << player.GetSpellModifier(warriorChoice);
-				DisplayInventory(PlayerInventory);
 				_getch();
 
 			} while (ancestryChoice == 8 || warriorChoice == 7);
@@ -519,17 +558,21 @@ int main() {
 		} while (yesNo == 'N' || yesNo == 'n');
 		
 		std::cout << "\nPreacher: Now that that is settled, I'm sure you have questions.\n";
+		_getch();
 
-		//currentLocation = &preachersInterior;
-		//do {
-			
-		//}
-
+		currentLocation = &preachersInterior;
+		
+		do {
+			std::cout << std::endl << currentLocation->m_Name << "\n--------------------------\n";
+			std::cout << currentLocation->m_ShortDescription << std::endl;
 		do {
 			std::cout << "\n" << std::left << std::setw(10) << look << "" << std::left << std::setw(15) << interact << "" << std::left << std::setw(10) << talk << "" << std::left << std::setw(10) << move << "\n\n> ";
 			std::cin >> playerAction;
+			std::vector<std::string>::iterator iter;
+			iter = std::find(Objectives.begin(), Objectives.end(), Objectives);
 			if (playerAction == 'l' || playerAction == 'L') {
-				std::cout << "\n" << preachersInterior.m_LongDescription << "\n";
+				std::cout << "\n" << currentLocation->m_LongDescription << "\n";
+				break;
 			}
 			else if (playerAction == 't' || playerAction == 'T')
 				do {
@@ -538,8 +581,8 @@ int main() {
 					std::cout << "\n[1] Where am I?";
 					std::cout << "\n[2] Who are you?";
 					std::cout << "\n[3] What happened to me?";
-					std::cout << "\n[4] You mentioned dangerous times...";
-					std::cout << "\n[5] Where is my equipment?";
+					std::cout << "\n[4] Where is my equipment?";
+					askNumber("Choose a number: ", 4, 0);
 					std::cin >> playerChoice;
 					switch (playerChoice) {
 					case 0:
@@ -556,15 +599,23 @@ int main() {
 						case 0:
 							break;
 						case 1:
-							std::cout << "\n\nYes. Something fell out of the sky over near Jerimiah's farm. A large glowing rock of some kind. Since then there has been strange goings ons.";
+							std::cout << "\n\nYes. Something fell out of the sky over near Jerimiah's farm. A large glowing rock of some kind. Since then there has been strange going ons.\n";
+							std::cout << "\nThe folks in town will have more information. Why don't you head to The Boar's Head Inn if you're curious.\n\n";
+							Objectives.push_back("Head to The Boars Head Inn in Misty Hollow and speak with the villagers.");
+							Objectives.push_back("Investigate Jeremiah's farm");
+							DisplayObjectives(Objectives);
+							break;
 						}
 					case 2:
+						std::cout << "\nI am Reverend Dorian. You can call me Preacher. I am a what this town has for a cleric.";
 						break;
 					case 3:
+						std::cout << "\nI'm not sure. I found you lying on the old Hunter path with a nasty head wound. We have had problems with goblin's recently.\n\n";
+						Objectives.push_back("Investigate the hunter's path");
+						Objectives.push_back("Deal with the goblins");
+						DisplayObjectives(Objectives);
 						break;
 					case 4:
-						break;
-					case 5:
 						std::cout << "\n\nIt is here.\n";
 						std::cout << "[0] Back.\n";
 						std::cout << "[1] Collect.\n";
@@ -573,13 +624,17 @@ int main() {
 						case 0:
 							break;
 						case 1:
-							;
+							std::cout << "Items Collected!\n\n";
+							DisplayInventory(PlayerInventory);
 							break;
 						}
 						break;
 					}
 				} while (playerChoice != 0);
+			else if (playerAction == 'i' || playerAction == 'I')
+				currentLocation->DisplayInteractableItems();
 		} while (playerAction != 'm' && playerAction != 'M');
+		} while (true);
 		break;
 	case 2:
 		return 0;
@@ -597,9 +652,19 @@ int rollStat() {
 void DisplayInventory(std::vector<Item> inventory) {
 	std::cout << std::endl << "Inventory" << std::endl;
 	std::cout << "-----------------------------------" << std::endl;
-	std::vector<Item>::const_iterator iter;
+	std::cout << std::left << std::setw(30) << "Item Name" << std::left << std::setw(12) << "Rarity"; 
+	std::cout << std::right << std::setw(12) << "Value\n\n";
+	std::vector<Item>::iterator iter;
 	for (iter = inventory.begin(); iter < inventory.end(); ++iter ) {
 		std::cout << std::left << std::setw(30) << iter->GetItemName() << std::left << std::setw(12) << iter->GetItemRarity();
-		std::cout << std::left << std::setw(12) << iter->GetItemValue() << std::left << iter->GetItemDescription();
+		std::cout << std::right << std::setw(12) << iter->GetItemValue() << "\n\nDescription: " << iter->GetItemDescription() << std::endl << std::endl;
+	}
+}
+
+void DisplayObjectives(std::vector<std::string> objectives) {
+	std::cout << std::endl << "Objectives" << std::endl;
+	std::cout << "-------------------------------------" << std::endl;
+	for (int i = 0; i < objectives.size(); ++i) {
+		std::cout << objectives[i] << std::endl;
 	}
 }

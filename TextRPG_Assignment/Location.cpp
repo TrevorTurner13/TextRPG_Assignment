@@ -13,6 +13,22 @@ void Location::DisplayLocation() {
 	std::cout << "\nThe following exits are availabel:\n";
 	for (std::vector<Location*>::const_iterator iter = m_Exits.begin();
 		iter != m_Exits.end(); ++iter) {
-		std::cout << (*iter)->m_Name << std::endl;
+		std::cout << "[" << m_Exits.begin() - iter << "]" << (*iter)->m_Name << std::endl;
+	}
+}
+
+void Location::DisplayExits() {
+	std::cout << "\nThe following exits are availabel:\n";
+	for (std::vector<Location*>::const_iterator iter = m_Exits.begin();
+		iter != m_Exits.end(); ++iter) {
+		std::cout << "[" << m_Exits.begin() - iter << "] " << (*iter)->m_Name << std::endl;
+	}
+}
+
+void Location::DisplayInteractableItems() {
+	std::cout << "What would you like to interact with?\n";
+	for (std::vector<Item*>::const_iterator iter = m_Items.begin();
+		iter != m_Items.end(); ++iter) {
+		std::cout << "[" << m_Items.begin() - iter << "] " << (*iter)->GetItemName() << std::endl;
 	}
 }
