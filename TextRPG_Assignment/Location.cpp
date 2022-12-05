@@ -18,7 +18,7 @@ void Location::DisplayLocation() {
 }
 
 void Location::DisplayExits() {
-	std::cout << "\nThe following exits are availabel:\n";
+	std::cout << "\nThe following exits are available:\n";
 	for (std::vector<Location*>::const_iterator iter = m_Exits.begin();
 		iter != m_Exits.end(); ++iter) {
 		std::cout << "[" << m_Exits.begin() - iter << "] " << (*iter)->m_Name << std::endl;
