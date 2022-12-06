@@ -54,3 +54,18 @@ private:
 	std::string m_Use;
 };
 
+class Interactables {
+public:
+	Interactables(std::string name, std::string description, std::string interaction);
+	void SetInteractableName(std::string name);
+	void SetInteractableDescription(std::string description);
+	void SetInteractableInteraction(std::string interaction);
+
+	std::string GetInteractableName() { return m_Name; }
+	std::string GetInteractableDescription() { return m_Description; }
+	std::string GetInteractableInteraction() { return m_Interaction; }
+private:
+	std::string m_Name;
+	std::string m_Description;
+	std::string m_Interaction;
+};

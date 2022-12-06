@@ -13,20 +13,17 @@ public:
 	characterAncestry m_Ancestry;
 	characterWarrior m_Warrior;
 	
-
 	void SetPlayerName(std::string name);
 	void Attack(Character& character);
 	void TakeDamage(int damage);
 	void Heal();
 	void CastSpell(Character& character);
 
-	
-
 	int RollDice(int numberOfDice, int numberOfSides);
 	int GetModifier(int stat);
 
-	void SetCharacterWarrior(int warrior);
-	void SetCharacterAncestry(int ancestry);
+	void SetCharacterWarrior(characterWarrior warrior);
+	void SetCharacterAncestry(characterAncestry ancestry);
 	void SetStrength(int str);
 	void SetDexterity(int dex);
 	void SetConstitution(int con);
@@ -35,17 +32,15 @@ public:
 	void SetCharisma(int cha);
 	void SetHP(int hp);
 	void SetMaxHP(int maxHP);
-	void SetSpellAbility(int warrior);
-	void SetSpellModifier(int warrior);
+	void SetSpellAbility(characterWarrior warrior);
+	void SetSpellModifier(characterWarrior warrior);
 	void SetArmorClass(int dex);
 	void SetCharacterGold(int gold);
 	
-	
-	
 	std::string GetName() { return m_Name; }
-	std::string GetSpellAbility(int warrior);
-	std::string GetCharacterAncestry(int ancestry);
-	std::string GetCharacterWarrior(int warrior);
+	std::string GetSpellAbility(characterWarrior warrior);
+	std::string GetCharacterAncestry(characterAncestry ancestry);
+	std::string GetCharacterWarrior(characterWarrior warrior);
 	int GetStrength() { return m_Strength; }
 	int GetDexterity() { return m_Dexterity; }
 	int GetConstitution() { return m_Constitution; }
@@ -54,7 +49,7 @@ public:
 	int GetCharisma() { return m_Charisma; }
 	int GetHP() { return m_CurrentHP; }
 	int GetMaxHP() { return m_MaxHP; }
-	int GetSpellModifier(int warrior);
+	int GetSpellModifier(characterWarrior warrior);
 	int GetArmorClass() { return m_ArmorClass; }
 	int GetCharacterGold() { return m_Gold; }	
 

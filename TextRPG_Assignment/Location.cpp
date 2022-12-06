@@ -19,16 +19,26 @@ void Location::DisplayLocation() {
 
 void Location::DisplayExits() {
 	std::cout << "\nThe following exits are available:\n";
+	std::cout << "[0] Back\n";
 	for (std::vector<Location*>::const_iterator iter = m_Exits.begin();
 		iter != m_Exits.end(); ++iter) {
-		std::cout << "[" << m_Exits.begin() - iter << "] " << (*iter)->m_Name << std::endl;
+		std::cout << "[" << iter - m_Exits.begin() + 1 << "] " << (*iter)->m_Name << std::endl;
 	}
 }
 
-void Location::DisplayInteractableItems() {
+void Location::DisplayInteractables() {
 	std::cout << "What would you like to interact with?\n";
+	std::cout << "[0] Back\n";
+	for (std::vector<Interactables*>::const_iterator iter = m_Interactables.begin();
+		iter != m_Interactables.end(); ++iter) {
+		std::cout << "[" << iter - m_Interactables.begin() + 1 << "] " << (*iter)->GetInteractableName() << std::endl;
+	}
+}
+
+void Location::DisplayItems() {
+	std::cout << "You find\n";
 	for (std::vector<Item*>::const_iterator iter = m_Items.begin();
 		iter != m_Items.end(); ++iter) {
-		std::cout << "[" << m_Items.begin() - iter << "] " << (*iter)->GetItemName() << std::endl;
+		std::cout << "[" << iter - m_Items.begin() + 1 << "] " << (*iter)->GetItemName() << std::endl;
 	}
 }

@@ -29,6 +29,11 @@ UseableItems::UseableItems(std::string name, std::string description, std::strin
 	m_Use(use)
 {}
 
+Interactables::Interactables(std::string name, std::string description, std::string interaction) :
+	m_Name(name),
+	m_Description(description),
+	m_Interaction(interaction)
+{}
 
 void Item::SetItemName(std::string name) {
 	m_Name = name;
@@ -41,4 +46,10 @@ void Item::SetItemRarity(std::string rarity) {
 }
 void Item::SetItemValue(double value) {
 	m_Value = value;
+}
+void Interactables::SetInteractableName(std::string name) {
+	m_Name = name;
+}
+void Interactables::SetInteractableInteraction(std::string interaction) {
+	m_Interaction = interaction;
 }

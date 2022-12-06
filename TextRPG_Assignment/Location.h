@@ -12,7 +12,8 @@ public:
 	Location(std::string name, std::string shortDescription, std::string longDescription);
 	void DisplayLocation();
 	void DisplayExits();
-	void DisplayInteractableItems();
+	void DisplayInteractables();
+	void DisplayItems();
 public:
 	std::string m_Name;
 	std::string m_ShortDescription;
@@ -22,7 +23,7 @@ public:
 	std::vector<Location*> m_Exits;
 
 	// list of interactable items
-	std::vector<Item*> m_InteractableItems;
+	std::vector<Interactables*> m_Interactables;
 
 	// list of items that you can pick up
 	std::vector<Item*> m_Items;

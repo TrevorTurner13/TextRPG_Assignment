@@ -18,20 +18,20 @@ void Character::SetPlayerName(std::string name) {
 	m_Name = name;
 }
 
-void Character::SetCharacterAncestry(int ancestry) {
-	m_Ancestry == ancestry;
+void Character::SetCharacterAncestry(characterAncestry ancestry) {
+	m_Ancestry = ancestry;
 }
 
-void Character::SetCharacterWarrior(int warrior) {
-	m_Warrior == warrior;
+void Character::SetCharacterWarrior(characterWarrior warrior) {
+	m_Warrior = warrior;
 }
 
-void Character::SetSpellAbility(int warrior) {
-	m_Warrior == warrior;
+void Character::SetSpellAbility(characterWarrior warrior) {
+	m_Warrior = warrior;
 }
 
-void Character::SetSpellModifier(int warrior) {
-	m_Warrior == warrior;
+void Character::SetSpellModifier(characterWarrior warrior) {
+	m_Warrior = warrior;
 }
 
 void Character::SetStrength(int str) {
@@ -119,8 +119,7 @@ int Character::GetModifier(int stat) {
 	}
 	return modifier;
 }
-std::string Character::GetCharacterAncestry(int ancestry) {
-	m_Ancestry == ancestry;
+std::string Character::GetCharacterAncestry(characterAncestry ancestry) {
 	std::string m_pAncestry;
 	switch (ancestry) {
 	case DWARF:
@@ -147,8 +146,7 @@ std::string Character::GetCharacterAncestry(int ancestry) {
 	}
 	return m_pAncestry;
 }
-std::string Character::GetCharacterWarrior(int warrior) {
-	m_Warrior == warrior;
+std::string Character::GetCharacterWarrior(characterWarrior warrior) {
 	std::string m_pWarrior;
 	switch (warrior) {
 	case BARD:
@@ -172,7 +170,7 @@ std::string Character::GetCharacterWarrior(int warrior) {
 	}
 	return m_pWarrior;
 }
-int Character::GetSpellModifier(int warrior) {
+int Character::GetSpellModifier(characterWarrior warrior) {
 	int spellModifier = 0;
 	switch (warrior) {
 	case BARD:
@@ -197,7 +195,7 @@ int Character::GetSpellModifier(int warrior) {
 	return spellModifier;
 }
 
-std::string Character::GetSpellAbility(int warrior) {
+std::string Character::GetSpellAbility(characterWarrior warrior) {
 	std::string spellAbility;
 	switch (warrior) {
 	case BARD:

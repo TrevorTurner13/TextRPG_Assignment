@@ -36,7 +36,6 @@ int main() {
 	int ancestryChoice = 0;
 	int warriorChoice = 0;
 
-
 	// build Locations
 	Location preachersExterior("Preacher's: Exterior", "A small cottage belonging to the man known as Preacher.", "This small square home is nestled beyond the southern edge of Misty Hollow. It's seems like a safe location to rest.");
 	Location preachersInterior("Preacher's: Interior", "The interior of Preacher's Cottage", "You are in a small square room dimly lit by candle light. A table lies in the middle of the room and Preacher sits reading a book in a comfortable chair. A small bedroom lies off to one side through a small doorway.");
@@ -60,10 +59,9 @@ int main() {
 	Location tradersHutInterior("", "", "");
 	Location tradersHutBackRoom("", "", "");
 	// built exits
-	preachersInterior.m_Exits.push_back(&preachersExterior);
+	
 
-	preachersExterior.m_Exits.push_back(&oldRoad);
-	preachersExterior.m_Exits.push_back(&preachersInterior);
+	
 
 	oldRoad.m_Exits.push_back(&preachersExterior);
 	oldRoad.m_Exits.push_back(&mistyHollowSouth);
@@ -179,12 +177,11 @@ int main() {
 	HealingPotion healingpotion("Healing potion", "A vial of red liquid. It smells faintly of elderberries.", "Rare", 100, 25);
 	//Useable Items
 	UseableItems rope("Rope", "A length of rope. Very useful.", "Common", 1, "Use: to climb up or down something.");
-	UseableItems bed("Bed", "A bed.", "Common", 50, "Use: for sleeping");
-	UseableItems door("Door", "A door.", "Common", 20, "Use: Its a door");
-	UseableItems chest("Chest", "A chest.", "Common", 100, "Use: It holds things");
+	UseableItems shovel("A Shovel", "An old shovel. Probably still work.", "Common", .2, "Use: To dig things up.");
+	UseableItems crowbar("A crowbar", "A crowbar. Great when you need some leverage.", "Common", 2, "Use: To pry things open.");
 	UseableItems oldKey("Old Key", "An old key found on Jeremiah's body.", "Uncommon", 1, "Use: Its a key. Find the keyhole it goes to.");
 	UseableItems chestKey("Chest Key", "A key to a chest.", "Common", 1, "Use: It's a key. Find the keyhole it goes to.");
-	UseableItems oldChest("Old Chest", "An old chest. Its wood is warped and it hinges rusty. You'll probably need a crowbar to open it", "Uncommon", 100, "Use: You can hear something inside");
+	
 	//build enemies
 	Enemy corruptedDog("Strange Dog", "A angry and mangy looking dog. There are bulbous protrusions sticking out of its flesh. Something seems to writhe beneath the skin.", 12, 14, 9, 2, 10, 4, 10, 13, 0);
 	Enemy huskOfJeremiah("Jeremiah", "What remains of the farmer Jeremiah. Three dark, slick tentacles protrude from where his head once was.", 15, 11, 13, 9, 12, 6, 27, 13, 50);
@@ -192,15 +189,31 @@ int main() {
 	Enemy corruptedPlowHorse("Corrupted Plow Horse", "A black plow horse whinnies angrily. Its skin seems to writhe beneath the fur.", 16, 12, 16, 2, 12, 5, 32, 12, 0);
 	Enemy goblin("Goblin Bandit", "A goblin bandit. It is brandishing a dagger.", 8, 16, 12, 8, 14, 10, 7, 15, 20);
 	Enemy goblinCaptain("Goblin Captain", "A larger goblin. He is wearing armor and brandishing a longsword.", 10, 18, 14, 8, 16, 10, 21, 16, 200);
-
-	preachersInterior.m_InteractableItems.push_back(&bed);
-	preachersInterior.m_InteractableItems.push_back(&chest);
-
-	preachersExterior.m_Items.push_back(&rustyLongsword);
-	preachersExterior.m_Items.push_back(&goldPouch);
-
+	// interactables
+	Interactables bed("Bed", "A small wooden bed with a hay mattress. Hey it's better than the ground.", "To sleep");
+	Interactables door("Door", "A wooden door", "Its a door");
+	Interactables chest("Chest", "A wooden chest. It seems to be locked.", "It holds things");
+	Interactables oldChest("Old Chest", "An old chest. Its wood is warped and it hinges rusty. You'll probably need a crowbar to open it", "You can hear something inside");
+	Interactables oldShed("Old Shed", "An old wood shed. It's barely standing.", "It holds things.");
+	
+	//Preachers interior
+//exits
+	preachersInterior.m_Exits.push_back(&preachersExterior);
+	//Interacatables
+	preachersInterior.m_Interactables.push_back(&bed);
+	preachersInterior.m_Interactables.push_back(&chest);
+	// preachers Exterior
+			// exits
+	preachersExterior.m_Exits.push_back(&oldRoad);
+	preachersExterior.m_Exits.push_back(&preachersInterior);
+	// interactables
+	preachersExterior.m_Interactables.push_back(&oldShed);
+	// items
+	preachersExterior.m_Items.push_back(&shovel);
+	// enemies
+	//Old Road
 	oldRoad.m_Enemies.push_back(&corruptedDog);
-	oldRoad.m_Items.push_back(&oldChest);
+	oldRoad.m_Interactables.push_back(&oldChest);
 
 	hunterPath.m_Enemies.push_back(&goblin);
 	hunterPath.m_Enemies.push_back(&goblin);
@@ -213,16 +226,16 @@ int main() {
 	_getch();
 	std::cout << "\n[1] NEW GAME";
 	std::cout << "\n[2] QUIT\n";
-	askNumber("Choose a Number: ", 2, 1);
-	std::cin >> playerChoice;
+	playerChoice = askNumber("Choose a Number: ", 2, 1);
+	
 	switch (playerChoice) {
 	case 1:
 		std::cout << "\nYour eyes open slowly. Your head is throbbing and you can feel a dampness to your clothing.\n";
-		std::cout << "[1] Look";
-		std::cout << "[2] Interact";
-		std::cout << "[3] Talk";
-		askNumber("> ", 3, 1);
-		std::cin >> playerChoice;
+		std::cout << "[1] Look\n";
+		std::cout << "[2] Interact\n";
+		std::cout << "[3] Talk\n";
+		playerChoice = askNumber("> ", 3, 1);
+		
 		do {
 			switch (playerChoice) {
 			case 1:
@@ -234,12 +247,11 @@ int main() {
 				_getch();
 				std::cout << "He looks to you when your eyes flutter open.\n";
 				do {
-					std::cout << "[1] Look";
-					std::cout << "[2] Interact";
-					std::cout << "[3] Talk";
-					askNumber("> ", 3, 1);
-					std::cin >> playerChoice;
-
+					std::cout << "[1] Look\n";
+					std::cout << "[2] Interact\n";
+					std::cout << "[3] Talk\n";
+					playerChoice = askNumber("> ", 3, 1);
+				
 					switch (playerChoice) {
 					case 1:
 						std::cout << "\nHe appears to be in his mid to late fifties with deep, sunken eyes and a greying beard.\n";
@@ -250,7 +262,7 @@ int main() {
 					case 3:
 						break;
 					}
-				} while (playerChoice != 2 || playerChoice != 3);
+				} while (playerChoice != 2 && playerChoice != 3);
 			case 2:
 				std::cout << "\nYou try to move but your arms are heavy. Someone reaches out and grabs your arm, assiting you.\n";
 				break;
@@ -258,7 +270,7 @@ int main() {
 				std::cout << "\nYou try and speak, a raspy, hollow sound coming from your mouth.\n";
 				break;
 			}
-		} while (playerChoice != 2 || playerChoice != 3);
+		} while (playerChoice != 2 && playerChoice != 3);
 		std::cout << "\nStranger: Oh, you're finally awake.\n";
 		_getch();
 		std::cout << "Stranger: I thought we'd lost you there. Dangerous times. Dangerous times, indeed.\n";
@@ -314,9 +326,8 @@ int main() {
 					std::cout << "[6] Grade-A Human, my good man.\n";
 					std::cout << "[7] Hrmm. Orc.\n";
 					std::cout << "OR\n8. Change your character's name.\n\n";
-					askNumber("What is your Ancestry: ", 8, 1);
-					std::cin >> ancestryChoice;
-
+					ancestryChoice = askNumber("What is your Ancestry: ", 8, 1);
+					
 					switch (ancestryChoice) {
 					case DWARF:
 						std::cout << "\n\nPreacher: Ah, a stout and hardy Dwarf! (+2 con, +1 str)\n";
@@ -373,9 +384,8 @@ int main() {
 				std::cout << "[5] I feel quick and quiet with a penchant for mischief, I'm definitely a Rogue!\n";
 				std::cout << "[6] I can feel the power of magic flowing through me, obviously I am a Wizard!\nOR\n";
 				std::cout << "7. Change your ancestry.\n";
-				askNumber("What is your class? ", 7, 0);
-				std::cin >> warriorChoice;
-
+				warriorChoice = askNumber("What is your class? ", 7, 0);
+				
 				switch (warriorChoice) {
 				case BARD:
 					std::cout << "\n\nPreacher: The charismatic and acrobatic Bard! Hmm, Perhaps you'll play me a song?\n";
@@ -386,8 +396,8 @@ int main() {
 					player.SetWisdom(player.GetWisdom() + 2);
 					player.SetCharisma(player.GetCharisma() + 7);
 					player.SetMaxHP(player.GetMaxHP() + player.GetModifier(player.GetConstitution()));
-					player.SetSpellAbility(warriorChoice);
-					player.SetSpellModifier(warriorChoice);
+					player.SetSpellAbility(static_cast<characterWarrior>(warriorChoice));
+					player.SetSpellModifier(static_cast<characterWarrior>(warriorChoice));
 					player.SetArmorClass(player.GetArmorClass() + player.GetModifier(player.GetDexterity()));
 					PlayerInventory.push_back(rustyRapier);
 					PlayerInventory.push_back(brokenLute);
@@ -405,8 +415,8 @@ int main() {
 					player.SetWisdom(player.GetWisdom() + 4);
 					player.SetCharisma(player.GetCharisma() + 0);
 					player.SetMaxHP(player.GetMaxHP() + player.GetModifier(player.GetConstitution()));
-					player.SetSpellAbility(warriorChoice);
-					player.SetSpellModifier(warriorChoice);
+					player.SetSpellAbility(static_cast<characterWarrior>(warriorChoice));
+					player.SetSpellModifier(static_cast<characterWarrior>(warriorChoice));
 					player.SetArmorClass(player.GetArmorClass() + player.GetModifier(player.GetDexterity()));
 					PlayerInventory.push_back(rustyWarhammer);
 					PlayerInventory.push_back(dentedCuirass);
@@ -424,8 +434,8 @@ int main() {
 					player.SetWisdom(player.GetWisdom() + 6);
 					player.SetCharisma(player.GetCharisma() + 2);
 					player.SetMaxHP(player.GetMaxHP() + player.GetModifier(player.GetConstitution()));
-					player.SetSpellAbility(warriorChoice);
-					player.SetSpellModifier(warriorChoice);
+					player.SetSpellAbility(static_cast<characterWarrior>(warriorChoice));
+					player.SetSpellModifier(static_cast<characterWarrior>(warriorChoice));
 					player.SetArmorClass(player.GetArmorClass() + player.GetModifier(player.GetDexterity()));
 					PlayerInventory.push_back(bloodyKnuckles);
 					PlayerInventory.push_back(oldUniform);
@@ -442,8 +452,8 @@ int main() {
 					player.SetWisdom(player.GetWisdom() + 4);
 					player.SetCharisma(player.GetCharisma() + 6);
 					player.SetMaxHP(player.GetMaxHP() + player.GetModifier(player.GetConstitution()));
-					player.SetSpellAbility(warriorChoice);
-					player.SetSpellModifier(warriorChoice);
+					player.SetSpellAbility(static_cast<characterWarrior>(warriorChoice));
+					player.SetSpellModifier(static_cast<characterWarrior>(warriorChoice));
 					player.SetArmorClass(player.GetArmorClass() + player.GetModifier(player.GetDexterity()));
 					PlayerInventory.push_back(rustyLongsword);
 					PlayerInventory.push_back(rustyChainmail);
@@ -461,8 +471,8 @@ int main() {
 					player.SetWisdom(player.GetWisdom() + 4);
 					player.SetCharisma(player.GetCharisma() + 5);
 					player.SetMaxHP(player.GetMaxHP() + player.GetModifier(player.GetConstitution()));
-					player.SetSpellAbility(warriorChoice);
-					player.SetSpellModifier(warriorChoice);
+					player.SetSpellAbility(static_cast<characterWarrior>(warriorChoice));
+					player.SetSpellModifier(static_cast<characterWarrior>(warriorChoice));
 					player.SetArmorClass(player.GetArmorClass() + player.GetModifier(player.GetDexterity()));
 					PlayerInventory.push_back(rustyRapier);
 					PlayerInventory.push_back(wornLeather);
@@ -480,8 +490,8 @@ int main() {
 					player.SetWisdom(player.GetWisdom() + 6);
 					player.SetCharisma(player.GetCharisma() + 2);
 					player.SetMaxHP(player.GetMaxHP() + player.GetModifier(player.GetConstitution()));
-					player.SetSpellAbility(warriorChoice);
-					player.SetSpellModifier(warriorChoice);
+					player.SetSpellAbility(static_cast<characterWarrior>(warriorChoice));
+					player.SetSpellModifier(static_cast<characterWarrior>(warriorChoice));
 					player.SetArmorClass(player.GetArmorClass() + player.GetModifier(player.GetDexterity()));
 					PlayerInventory.push_back(splinteredWand);
 					PlayerInventory.push_back(tornRobes);
@@ -500,9 +510,9 @@ int main() {
 			_getch();
 			std::cout << "Your name is: " << player.GetName() << "\n";
 			_getch();
-			std::cout << "Your ancestry is: " << player.GetCharacterAncestry(ancestryChoice);
+			std::cout << "Your ancestry is: " << player.GetCharacterAncestry(static_cast<characterAncestry>(ancestryChoice));
 			_getch();
-			std::cout << "\nYour class is: " << player.GetCharacterWarrior(warriorChoice);
+			std::cout << "\nYour class is: " << player.GetCharacterWarrior(static_cast<characterWarrior>(warriorChoice));
 			_getch();
 			std::cout << "\n\nMax Hit Points: " << player.GetMaxHP();
 			std::cout << "\nBase Armor Class (10 + Dex Modifier): " << player.GetArmorClass();
@@ -515,8 +525,8 @@ int main() {
 			std::cout << "\nINT: " << player.GetIntelligence() << "\t\tModifier = " << player.GetModifier(player.GetIntelligence());
 			std::cout << "\nWIS: " << player.GetWisdom() << "\t\tModifier = " << player.GetModifier(player.GetWisdom());
 			std::cout << "\nCHA: " << player.GetCharisma() << "\t\tModifier = " << player.GetModifier(player.GetCharisma());
-			std::cout << "\n\nSpell Attack Ability: " << player.GetSpellAbility(warriorChoice);
-			std::cout << "\nSpell Attack Modifier: " << player.GetSpellModifier(warriorChoice);
+			std::cout << "\n\nSpell Attack Ability: " << player.GetSpellAbility(static_cast<characterWarrior>(warriorChoice));
+			std::cout << "\nSpell Attack Modifier: " << player.GetSpellModifier(static_cast<characterWarrior>(warriorChoice));
 			_getch();
 
 			std::cout << "\n\nDo I have everything right?";
@@ -529,7 +539,7 @@ int main() {
 				}
 				else if (yesNo == 'n' || yesNo == 'N') {
 					std::cout << "\nPreacher: Hmm, perhaps we should start from the top.\n\n";
-					break;;
+					break;
 				}
 				else {
 					std::cout << "\nPreacher: Terribly sorry, I do not understand. Perhaps you do have some brain damage.";
@@ -543,131 +553,211 @@ int main() {
 		_getch();
 
 		currentLocation = &preachersInterior;
-
+		
+		
 		do {
-			std::cout << std::endl << currentLocation->m_Name << "\n--------------------------\n";
-			std::cout << currentLocation->m_ShortDescription << std::endl;
-			do {
-				std::cout << "[1] Look";
-				std::cout << "[2] Interact";
-				std::cout << "[3] Talk";
-				std::cout << "[4] Move";
-				askNumber("> ", 4, 1);
-				std::cin >> playerChoice;
-				std::vector<std::string>::iterator iter;
-				iter = std::find(Objectives.begin(), Objectives.end(), Objectives);
-				switch (playerChoice) {
-				case 1:
-					std::cout << "\n" << currentLocation->m_LongDescription << "\n";
-					break;
-				case 2:
-					do {
-						currentLocation->DisplayInteractableItems();
-						std::cout << "[2] Back";
-						askNumber("Choose a number: ", 2, 0);
-						std::cout << "> ";
-						std::cin >> playerChoice;
-						switch (playerChoice) {
-						case 0:
-							std::cout << "\n\nYou rest.\n";
-							player.SetHP(player.GetMaxHP());
-							std::cout << player.GetHP();
-							std::cout << "You are fully healed\n\n";
-							break;
-						case 1:
-							itemIter = std::find(PlayerInventory.begin(), PlayerInventory.end(), chestKey);
-							if (itemIter == PlayerInventory.end()) {
-								std::cout << "\n\nYou try to open the chest. It's locked.";
-								std::cout << "\nPreacher: Oh I lost the key for that thing ages ago. If you find it, you can have whats inside.";
-							}
-							else {
-								std::cout << "\n\nYou place the chest key into the keyhole. The lock falls away!";
-								std::cout << "\nItems collected!";
-								PlayerInventory.push_back(longsword);
-								PlayerInventory.push_back(rapier);
-								PlayerInventory.push_back(buckler);
-								PlayerInventory.push_back(healingpotion);
-							}
-							break;
-						case 2:
-							break;
-						}
-					} while (playerChoice != 2);
-				case 3:
-					do {
-						std::cout << "\nPreacher: Yes?\n";
-						std::cout << "\n\n[0] Good-bye, Preacher.";
-						std::cout << "\n[1] Where am I?";
-						std::cout << "\n[2] Who are you?";
-						std::cout << "\n[3] What happened to me?";
-						std::cout << "\n[4] Where is my equipment?";
-						askNumber("Choose a number: ", 4, 0);
-						std::cin >> playerChoice;
-						switch (playerChoice) {
-						case 0:
-							std::cout << "Good-bye " << player.GetName() << ", until next time.";
-							std::cout << "If you ever need a rest, feel free to return here. My door is always open.";
-							break;
-						case 1:
-							std::cout << "\n\nPreacher: You are in a small town known as Misty Hollow.\n";
-							std::cout << "Preacher: It was a quiet place once, but we've had nothing but problems of late. Ever since... the incident.\n\n";
-							std::cout << "[0] Back\n";
-							std::cout << "[1] Incident?\n";
-							askNumber("> ", 1, 0);
-							std::cin >> playerChoice;
+			// preacher's Interior
+				do {
+					std::cout << std::endl << currentLocation->m_Name << "\n--------------------------\n";
+					std::cout << currentLocation->m_ShortDescription << std::endl;
+
+					std::cout << "\n\n[1] Look\n";
+					std::cout << "[2] Interact\n";
+					std::cout << "[3] Talk\n";
+					std::cout << "[4] Move\n";
+					playerChoice = askNumber("> ", 4, 1);
+
+					std::vector<std::string>::iterator iter;
+					switch (playerChoice) {
+					case 1:
+						std::cout << "\n" << currentLocation->m_LongDescription << "\n";
+						break;
+					case 2:
+						do {
+							currentLocation->DisplayInteractables();
+							playerChoice = askNumber("Choose a number: ", 2, 0);
+
 							switch (playerChoice) {
 							case 0:
 								break;
 							case 1:
+								std::cout << "\n\nYou rest.\n";
+								player.SetHP(player.GetMaxHP());
+								std::cout << "Hit Points reset: ";
+								std::cout << player.GetHP();
+								std::cout << "\nYou are fully healed\n\n";
+								break;
+							case 2:
+
+								//itemIter = std::find(PlayerInventory.begin(), PlayerInventory.end(), chestKey);
+								//if (itemIter == PlayerInventory.end()) {
+								//	std::cout << "\n\nYou try to open the chest. It's locked.";
+								//	std::cout << "\nPreacher: Oh I lost the key for that thing ages ago. If you find it, you can have whats inside.";
+								//}
+								//else {
+								//	std::cout << "\n\nYou place the chest key into the keyhole. The lock falls away!";
+								//	std::cout << "\nItems collected!";
+								//	PlayerInventory.push_back(longsword);
+								//	PlayerInventory.push_back(rapier);
+								//	PlayerInventory.push_back(buckler);
+								//	PlayerInventory.push_back(healingpotion);
+								//}
+								break;
+							}
+						} while (playerChoice != 0);
+						break;
+					case 3:
+						do {
+							std::cout << "\nPreacher: Yes?\n";
+							std::cout << "\n\n[0] Good-bye, Preacher.";
+							std::cout << "\n[1] Where am I?";
+							std::cout << "\n[2] Who are you?";
+							std::cout << "\n[3] What happened to me?";
+							std::cout << "\n[4] Where is my equipment?";
+							playerChoice = askNumber("Choose a number: ", 4, 0);
+							switch (playerChoice) {
+							case 0:
+								std::cout << "Good-bye " << player.GetName() << ", until next time.";
+								std::cout << "If you ever need a rest, feel free to return here. My door is always open.";
+								break;
+							case 1:
+								std::cout << "\n\nPreacher: You are in a small town known as Misty Hollow.\n";
+								std::cout << "Preacher: It was a quiet place once, but we've had nothing but problems of late. Ever since... the incident.\n\n";
 								std::cout << "\n\nYes. Something fell out of the sky over near Jerimiah's farm. A large glowing rock of some kind. Since then there has been strange going ons.\n";
-								std::cout << "\nThe folks in town will have more information. Why don't you head to The Boar's Head Inn if you're curious.\n\n";
+								_getch();
+								std::cout << "\nThe folks in town will have more information. Why don't you head to The Boar's Head Inn if you're curious.\n";
+								_getch();
+								std::cout << "Objectives Updated.\n";
 								Objectives.push_back("Head to The Boars Head Inn in Misty Hollow and speak with the villagers.");
 								Objectives.push_back("Investigate Jeremiah's farm");
 								DisplayObjectives(Objectives);
+								_getch();
 								break;
-							}
-						case 2:
-							std::cout << "\nI am Reverend Dorian. You can call me Preacher. I am a what this town has for a cleric.";
-							break;
-						case 3:
-							std::cout << "\nI'm not sure. I found you lying on the old Hunter path with a nasty head wound. We have had problems with goblin's recently.\n\n";
-							Objectives.push_back("Investigate the hunter's path");
-							Objectives.push_back("Deal with the goblins");
-							DisplayObjectives(Objectives);
-							break;
-						case 4:
-							std::cout << "\n\nIt is here.\n";
-							std::cout << "[0] Back.\n";
-							std::cout << "[1] Collect.\n";
-							askNumber("> ", 1, 0);
-							std::cin >> playerChoice;
-							switch (playerChoice) {
-							case 0:
+							case 2:
+								std::cout << "\nI am Reverend Dorian. You can call me Preacher. I am a what this town has for a cleric.";
+								_getch();
 								break;
-							case 1:
-								std::cout << "Items Collected!\n\n";
+							case 3:
+								std::cout << "\nI'm not sure. I found you lying on the old Hunter path with a nasty head wound. We have had problems with goblin's recently.\n\n";
+								_getch();
+								std::cout << "Objectives Updated";
+								Objectives.push_back("Investigate the hunter's path");
+								Objectives.push_back("Deal with the goblins");
+								DisplayObjectives(Objectives);
+								break;
+							case 4:
+								std::cout << "\n\nIt is here.\n";
+								std::cout << "Items Collected.\n";
 								DisplayInventory(PlayerInventory);
 								break;
 							}
+						} while (playerChoice != 0);
+						break;
+					case 4:
+						int moveChoice;
+						currentLocation->DisplayExits();
+						moveChoice = askNumber("\nWhere would you like to go?", 1, 0);
+						switch (moveChoice) {
+						case 0:
+							break;
+						case 1:
+							currentLocation = currentLocation->m_Exits[moveChoice - 1];
+							std::cout << std::endl << currentLocation->m_Name << "\n--------------------------\n";
+							std::cout << currentLocation->m_ShortDescription << std::endl;
+							break;
+						}
+						break;
+					}
+				} while (playerChoice != 4);
+			
+			// Preachers Exterior
+			do {
+				std::cout << std::endl << currentLocation->m_Name << "\n--------------------------\n";
+				std::cout << currentLocation->m_ShortDescription << std::endl;
+
+				std::cout << "\n\n[1] Look\n";
+				std::cout << "[2] Interact\n";
+				std::cout << "[3] Talk\n";
+				std::cout << "[4] Move\n";
+				playerChoice = askNumber("> ", 4, 1);
+
+				std::vector<std::string>::iterator iter;
+				
+				switch (playerChoice) {
+				case 1:
+					std::cout << "\n" << currentLocation->m_LongDescription << "\n";
+					std::cout << "There's an old wood shed beside the house.\n";
+					break;
+				case 2:
+					do {
+						currentLocation->DisplayInteractables();
+						playerChoice = askNumber("Choose a number: ", 1, 0);
+
+						switch (playerChoice) {
+						case 0:
+							break;
+						case 1:
+							std::cout << "The door to the old shed creaks loudly, sending a shower of dust off the roof.";
+							currentLocation->DisplayItems();
+							std::cout << "\n[0] Leave";
+							std::cout << "\n[1] Take";
+							playerChoice = askNumber("", 1, 0);
+							switch (playerChoice) {
+							case 0: 
+								break;
+							case 1:
+								std::cout << "Items Collected!";
+								PlayerInventory.push_back(shovel);
+								preachersExterior.m_Items.clear();
+							}
+							break;
+						case 2:
+
+							//itemIter = std::find(PlayerInventory.begin(), PlayerInventory.end(), chestKey);
+							//if (itemIter == PlayerInventory.end()) {
+							//	std::cout << "\n\nYou try to open the chest. It's locked.";
+							//	std::cout << "\nPreacher: Oh I lost the key for that thing ages ago. If you find it, you can have whats inside.";
+							//}
+							//else {
+							//	std::cout << "\n\nYou place the chest key into the keyhole. The lock falls away!";
+							//	std::cout << "\nItems collected!";
+							//	PlayerInventory.push_back(longsword);
+							//	PlayerInventory.push_back(rapier);
+							//	PlayerInventory.push_back(buckler);
+							//	PlayerInventory.push_back(healingpotion);
+							//}
 							break;
 						}
 					} while (playerChoice != 0);
+					break;
+				case 3:
+					std::cout << "\nThere's no one to talk to.\n";
+					break;
 				case 4:
+					int moveChoice;
 					currentLocation->DisplayExits();
-					std::cout << "[1] Back";
-					askNumber("Where would you like to go?", 0, 1);
-					std::cin >> playerChoice;
-					switch (playerChoice) {
+					moveChoice = askNumber("\nWhere would you like to go?", 2, 0);
+					
+					switch (moveChoice) {
 					case 0:
-						currentLocation = currentLocation->m_Exits[playerChoice];
 						break;
 					case 1:
+						currentLocation = currentLocation->m_Exits[moveChoice - 1];
+						std::cout << std::endl << currentLocation->m_Name << "\n--------------------------\n";
+						std::cout << currentLocation->m_ShortDescription << std::endl;
+						break;
+					case 2:
+						currentLocation = currentLocation->m_Exits[moveChoice - 1];
+						std::cout << std::endl << currentLocation->m_Name << "\n--------------------------\n";
+						std::cout << currentLocation->m_ShortDescription << std::endl;
 						break;
 					}
-				} 
 					break;
+				}
 			} while (playerChoice != 4);
-		}while (playerChoice != 4);
+		} while (true);
+	
+		
 	case 2:
 		return 0;
 	}
