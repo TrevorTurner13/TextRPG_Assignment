@@ -27,6 +27,11 @@ private:
 class Weapon: public Item {
 public:
 	Weapon(std::string name, std::string description, std::string rarity, double value, int toHitBonus, int damage);
+	void SetToHitBonus(int toHitBonus);
+	void SetDamage(int damage);
+
+	int GetToHitBonus() { return m_ToHitBonus; }
+	int GetDamage() { return m_AttackDamage; }
 private:
 	int m_ToHitBonus;
 	int m_AttackDamage;

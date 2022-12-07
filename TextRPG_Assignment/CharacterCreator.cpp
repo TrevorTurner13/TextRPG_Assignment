@@ -1,7 +1,7 @@
 #include "CharacterCreator.h"
 
-Character::Character(int str, int dex, int con, int iq, int wis, int cha, int hp, int ac, int gold) :
-	
+Character::Character(int str, int dex, int con, int iq, int wis, int cha, int hp, int ac, int gold, int exp, int level) :
+
 	m_Strength(str),
 	m_Dexterity(dex),
 	m_Constitution(con),
@@ -11,7 +11,9 @@ Character::Character(int str, int dex, int con, int iq, int wis, int cha, int hp
 	m_MaxHP(hp),
 	m_CurrentHP(hp),
 	m_ArmorClass(ac),
-	m_Gold(gold)
+	m_Gold(gold),
+	m_EXP(exp),
+	m_Level(level)
 {}
 
 void Character::SetPlayerName(std::string name) {
@@ -72,7 +74,12 @@ void Character::SetArmorClass(int ac) {
 void Character::SetCharacterGold(int gold) {
 	m_Gold = gold;
 }
-
+void Character::SetCharacterEXP(int exp) {
+	m_EXP = exp;
+}
+void Character::SetCharacterLevel(int level) {
+	m_Level = level;
+}
 
 
 
@@ -220,6 +227,63 @@ std::string Character::GetSpellAbility(characterWarrior warrior) {
 	return spellAbility;
 }
 
+int Character::GetCharacterLevel(int exp) {
+	if (exp == 0 && exp > 1000) {
+		SetCharacterLevel(1);
+	}
+	if (exp == 1000 && exp < 2000) {
+		SetCharacterLevel(2);
+		SetStrength(GetStrength() + 1);
+		SetDexterity(GetDexterity() + 1);
+		SetConstitution(GetConstitution() + 1);
+		SetIntelligence(GetIntelligence() + 1);
+		SetWisdom(GetWisdom() + 1);
+		SetCharisma(GetCharisma() + 1);
+		SetMaxHP(GetMaxHP() + 10 + GetModifier(GetConstitution()));
+	}
+	if (exp == 2000 && exp < 5000) {
+		SetCharacterLevel(3);
+		SetStrength(GetStrength() + 1);
+		SetDexterity(GetDexterity() + 1);
+		SetConstitution(GetConstitution() + 1);
+		SetIntelligence(GetIntelligence() + 1);
+		SetWisdom(GetWisdom() + 1);
+		SetCharisma(GetCharisma() + 1);
+		SetMaxHP(GetMaxHP() + 10 + GetModifier(GetConstitution()));
+	}
+	if (exp == 5000 && exp < 10000) {
+		SetCharacterLevel(4);
+		SetStrength(GetStrength() + 1);
+		SetDexterity(GetDexterity() + 1);
+		SetConstitution(GetConstitution() + 1);
+		SetIntelligence(GetIntelligence() + 1);
+		SetWisdom(GetWisdom() + 1);
+		SetCharisma(GetCharisma() + 1);
+		SetMaxHP(GetMaxHP() + 10 + GetModifier(GetConstitution()));
+	}
+	if (exp == 10000 && exp < 20000) {
+		SetCharacterLevel(5);
+		SetStrength(GetStrength() + 1);
+		SetDexterity(GetDexterity() + 1);
+		SetConstitution(GetConstitution() + 1);
+		SetIntelligence(GetIntelligence() + 1);
+		SetWisdom(GetWisdom() + 1);
+		SetCharisma(GetCharisma() + 1);
+		SetMaxHP(GetMaxHP() + 10 + GetModifier(GetConstitution()));
+	}
+	if (exp > 20000) {
+		SetCharacterLevel(6);
+		SetStrength(GetStrength() + 1);
+		SetDexterity(GetDexterity() + 1);
+		SetConstitution(GetConstitution() + 1);
+		SetIntelligence(GetIntelligence() + 1);
+		SetWisdom(GetWisdom() + 1);
+		SetCharisma(GetCharisma() + 1);
+		SetMaxHP(GetMaxHP() + 10 + GetModifier(GetConstitution()));
+	}
+	return m_Level;
+}
+
 int Character::RollDice(int numberOfDice, int numberOfSides) {
 	int result = 0;
 	for (int i = 0; i < numberOfDice; ++i) {
@@ -228,19 +292,36 @@ int Character::RollDice(int numberOfDice, int numberOfSides) {
 	return result;
 }
 
-void Character::Attack(Character& character) {
-
+void Character::Attack(Character& enemy) {
+	int toHitBonus = 0;
+	int attackDamage = 0;
+	// make attack roll
+	int attack = RollDice(1, 20);
+	std::cout << m_Name << " attacks " << enemy.GetName() << "!" << std::endl;
+	// add modifiers
+	attack += toHitBonus;
+	std::cout << "Roll (" << attack << ") + " << toHitBonus << std::endl;
+	// compare to ac
+	if (attack >= enemy.GetArmorClass()) {
+		std::cout << " hits!" << std::endl;
+		// roll damage
+		std::cout << enemy.m_Name << " takes " << attackDamage << " DAMAGE!!";
+	}
+	else {
+		std::cout << m_Name << " misses!" << std::endl;
+	}
+	
 }
 
 void Character::TakeDamage(int damage) {
-
+	m_CurrentHP -= damage;
 }
 
-void Character::Heal() {
-
+void Character::Heal(int heal) {
+	std::cout << m_Name << " uses their magic to heal themselves!";
+	m_CurrentHP += heal;
 }
 
-void Character::CastSpell(Character& character) {
+void Character::LevelUp(int exp) {
 
 }
-

@@ -13,18 +13,19 @@
 #include <sstream>
 
 int rollStat();
-void DisplayInventory(std::vector<Item> inventory);
+void DisplayInventory(std::vector<Item*> inventory);
 void DisplayObjectives(std::vector<std::string> objectives);
+void Combat(Character& character, Character& enemy);
 
 int main() {
 	srand((unsigned)time(NULL));
 	Location* currentLocation;
-	Character player(8, 8, 8, 8, 8, 8, 10, 10, 15);
-	std::vector<Item> PlayerInventory;
-	std::vector<Item> MerchantInventory;
-	std::vector<Item> GoblinInventory;
+	Character player(8, 8, 8, 8, 8, 8, 10, 10, 15, 0, 1);
+	std::vector<Item*> playerInventory;
+	std::vector<Item*> merchantInventory;
+	std::vector<Item*> goblinInventory;
 	std::vector<std::string> Objectives;
-	std::vector<Item>::iterator itemIter;
+	std::vector<Item*>::iterator itemIter;
 	std::string name;
 	std::string look = "(L)ook";
 	std::string interact = "(I)nteract";
@@ -35,6 +36,9 @@ int main() {
 	int playerChoice = 0;
 	int ancestryChoice = 0;
 	int warriorChoice = 0;
+	bool chestEmpty = false;
+	bool shedEmpty = false;
+	bool enemiesAlive = false;
 
 	// build Locations
 	Location preachersExterior("Preacher's: Exterior", "A small cottage belonging to the man known as Preacher.", "This small square home is nestled beyond the southern edge of Misty Hollow. It's seems like a safe location to rest.");
@@ -50,72 +54,14 @@ int main() {
 	Location farmRoad("The Farm Road", "A dirt road leading to a few farmsteads", "This dirt road seems to lead out of town passing a few farmsteads on the way. Crows surround the homes that seem abandoned. One farmhouse stands out a strange glow pulsing from the property.");
 	Location jeremiahsFarmFront("Jeremiah's Farm", "The farm of a man known as Jeremiah.", "A squat farmhouse sits nestled between rows of dessicated crops. You can see a strange pulsing blue light emanating from behind the farmhouse.");
 	Location jeremiahsFarmRear("", "", "");
-	Location strangeLight("", "", "");
+	Location destroyedBarn("", "", "");
 	Location jeremiahsHomesteadExteriorFront("Jeremiah's Homestead: Exterior Front", "A small home of a man known as Jeremiah.", "The front door of this farmhouse rests partially ajar, and you can hear a rustling within.");
-	Location jeremiahsHomesteadExteriorRear("", "", "");
 	Location jeremiahsHomesteadInterior("Jeremiah's Homestead: Interior", "", "");
 	Location hunterPath("Hunter's Path", "An old hunter's path that leads into the woods.", "This path is overgrown but traversing it shouldn't be too difficult.");
 	Location tradersHutExterior("Mysterious Hut", "A strange hut stands in a clearing beyond the edge of the forest.", "The rickety old house stands on what look like giant chicken legs. A rope ladder dangles from the porch to the ground.");
 	Location tradersHutInterior("", "", "");
 	Location tradersHutBackRoom("", "", "");
-	// built exits
 	
-
-	
-
-	oldRoad.m_Exits.push_back(&preachersExterior);
-	oldRoad.m_Exits.push_back(&mistyHollowSouth);
-	oldRoad.m_Exits.push_back(&hunterPath);
-
-	mistyHollowSouth.m_Exits.push_back(&oldRoad);
-	mistyHollowSouth.m_Exits.push_back(&boarsHeadExterior);
-	mistyHollowSouth.m_Exits.push_back(&mistyHollowWest);
-	mistyHollowSouth.m_Exits.push_back(&mistyHollowEast);
-
-	mistyHollowWest.m_Exits.push_back(&mistyHollowSouth);
-	mistyHollowWest.m_Exits.push_back(&mistyHollowNorth);
-	mistyHollowWest.m_Exits.push_back(&boarsHeadExterior);
-	mistyHollowWest.m_Exits.push_back(&hunterPath);
-
-	mistyHollowNorth.m_Exits.push_back(&boarsHeadExterior);
-	mistyHollowNorth.m_Exits.push_back(&mistyHollowEast);
-	mistyHollowNorth.m_Exits.push_back(&mistyHollowWest);
-	mistyHollowNorth.m_Exits.push_back(&farmRoad);
-
-	hunterPath.m_Exits.push_back(&oldRoad);
-	hunterPath.m_Exits.push_back(&tradersHutExterior);
-	hunterPath.m_Exits.push_back(&mistyHollowWest);
-
-	tradersHutExterior.m_Exits.push_back(&hunterPath);
-	tradersHutExterior.m_Exits.push_back(&tradersHutInterior);
-
-	tradersHutInterior.m_Exits.push_back(&tradersHutExterior);
-	tradersHutInterior.m_Exits.push_back(&tradersHutBackRoom);
-
-	boarsHeadExterior.m_Exits.push_back(&mistyHollowEast);
-	boarsHeadExterior.m_Exits.push_back(&mistyHollowNorth);
-	boarsHeadExterior.m_Exits.push_back(&mistyHollowSouth);
-	boarsHeadExterior.m_Exits.push_back(&mistyHollowWest);
-	boarsHeadExterior.m_Exits.push_back(&boarsHeadInterior);
-
-	boarsHeadInterior.m_Exits.push_back(&boarsHeadExterior);
-	boarsHeadInterior.m_Exits.push_back(&boarsHeadCellar);
-
-	jeremiahsFarmFront.m_Exits.push_back(&farmRoad);
-	jeremiahsFarmFront.m_Exits.push_back(&jeremiahsHomesteadExteriorFront);
-	jeremiahsFarmFront.m_Exits.push_back(&jeremiahsFarmRear);
-
-	jeremiahsFarmRear.m_Exits.push_back(&jeremiahsFarmFront);
-	jeremiahsFarmRear.m_Exits.push_back(&jeremiahsHomesteadExteriorRear);
-	jeremiahsFarmRear.m_Exits.push_back(&strangeLight);
-
-	jeremiahsHomesteadExteriorFront.m_Exits.push_back(&jeremiahsFarmFront);
-	jeremiahsHomesteadExteriorFront.m_Exits.push_back(&jeremiahsHomesteadInterior);
-	jeremiahsHomesteadExteriorFront.m_Exits.push_back(&jeremiahsFarmRear);
-
-	jeremiahsHomesteadExteriorRear.m_Exits.push_back(&jeremiahsFarmRear);
-	jeremiahsHomesteadExteriorRear.m_Exits.push_back(&jeremiahsHomesteadExteriorFront);
-	jeremiahsHomesteadExteriorRear.m_Exits.push_back(&jeremiahsHomesteadInterior);
 	// build Items
 	// Weapons
 		// junk
@@ -166,7 +112,6 @@ int main() {
 	Armor kiteShield("Kite Shield", "More shield. More protection.\nAC Bonus: +3\nSTR SCORE Requirement: 14+", "Rare", 300, 3, 2);
 	//Items
 	Item waterskin("Waterskin", "A waterskin filled with water.", "Common", .1);
-
 	Item goldPouch("Gold Pouch", "A pouch full of gold.", "Common", 100);
 
 	// healing Items
@@ -180,45 +125,112 @@ int main() {
 	UseableItems shovel("A Shovel", "An old shovel. Probably still work.", "Common", .2, "Use: To dig things up.");
 	UseableItems crowbar("A crowbar", "A crowbar. Great when you need some leverage.", "Common", 2, "Use: To pry things open.");
 	UseableItems oldKey("Old Key", "An old key found on Jeremiah's body.", "Uncommon", 1, "Use: Its a key. Find the keyhole it goes to.");
-	UseableItems chestKey("Chest Key", "A key to a chest.", "Common", 1, "Use: It's a key. Find the keyhole it goes to.");
-	
+	UseableItems chestKey("Chest Key", "A key to a chest.", "Common", 1, "Use: It's a key. Find the keyhole it goes to.");	
 	//build enemies
-	Enemy corruptedDog("Strange Dog", "A angry and mangy looking dog. There are bulbous protrusions sticking out of its flesh. Something seems to writhe beneath the skin.", 12, 14, 9, 2, 10, 4, 10, 13, 0);
-	Enemy huskOfJeremiah("Jeremiah", "What remains of the farmer Jeremiah. Three dark, slick tentacles protrude from where his head once was.", 15, 11, 13, 9, 12, 6, 27, 13, 50);
-	Enemy corruptedFarmhand("Corrupted Farmhand", "What appears to have once been a farmhand. Black tentacles have torn out of its body. It hold a bloody sickle in one hand.", 12, 9, 12, 7, 11, 6, 16, 13, 10);
-	Enemy corruptedPlowHorse("Corrupted Plow Horse", "A black plow horse whinnies angrily. Its skin seems to writhe beneath the fur.", 16, 12, 16, 2, 12, 5, 32, 12, 0);
-	Enemy goblin("Goblin Bandit", "A goblin bandit. It is brandishing a dagger.", 8, 16, 12, 8, 14, 10, 7, 15, 20);
-	Enemy goblinCaptain("Goblin Captain", "A larger goblin. He is wearing armor and brandishing a longsword.", 10, 18, 14, 8, 16, 10, 21, 16, 200);
-	// interactables
+	Enemy corruptedDog("Strange Dog", "A angry and mangy looking dog. There are bulbous protrusions sticking out of its flesh. Something seems to writhe beneath the skin.", 12, 14, 9, 2, 10, 4, 10, 13, 0, 100, 1);
+	Enemy huskOfJeremiah("Jeremiah", "What remains of the farmer Jeremiah. Three dark, slick tentacles protrude from where his head once was.", 15, 11, 13, 9, 12, 6, 40, 13, 50, 2000, 1);
+	Enemy corruptedFarmhand("Corrupted Farmhand", "What appears to have once been a farmhand. Black tentacles have torn out of its body. It hold a bloody sickle in one hand.", 12, 9, 12, 7, 11, 6, 25, 13, 10, 500, 1);
+	Enemy corruptedPlowHorse("Corrupted Plow Horse", "A black plow horse whinnies angrily. Its skin seems to writhe beneath the fur.", 16, 12, 16, 2, 12, 5, 32, 12, 0, 1000, 1);
+	Enemy thingFromTheStars("Thing from the Stars", "A grotesque amalgamation. You can see the flesh of a man fused with that of a cow and a pig.\nLarge and hairless, bones protruding from flesh that seems to pulsate and throb. It wails as if in pain, but its eyes seem hungry.", 19, 12, 14, 3, 12, 6, 80, 14, 0, 10000, 1);
+	Enemy goblin("Goblin Bandit", "A goblin bandit. It is brandishing a dagger.", 8, 16, 12, 8, 14, 10, 7, 15, 20, 200, 1);
+	Enemy goblinCaptain("Goblin Captain", "A larger goblin. He is wearing armor and brandishing a longsword.", 10, 18, 14, 8, 16, 10, 21, 16, 200, 1000, 1);
+	// build interactables
 	Interactables bed("Bed", "A small wooden bed with a hay mattress. Hey it's better than the ground.", "To sleep");
 	Interactables door("Door", "A wooden door", "Its a door");
 	Interactables chest("Chest", "A wooden chest. It seems to be locked.", "It holds things");
 	Interactables oldChest("Old Chest", "An old chest. Its wood is warped and it hinges rusty. You'll probably need a crowbar to open it", "You can hear something inside");
 	Interactables oldShed("Old Shed", "An old wood shed. It's barely standing.", "It holds things.");
 	
-	//Preachers interior
-//exits
+	// POPULATE EXITS
 	preachersInterior.m_Exits.push_back(&preachersExterior);
-	//Interacatables
-	preachersInterior.m_Interactables.push_back(&bed);
-	preachersInterior.m_Interactables.push_back(&chest);
-	// preachers Exterior
-			// exits
+
 	preachersExterior.m_Exits.push_back(&oldRoad);
 	preachersExterior.m_Exits.push_back(&preachersInterior);
-	// interactables
-	preachersExterior.m_Interactables.push_back(&oldShed);
-	// items
-	preachersExterior.m_Items.push_back(&shovel);
-	// enemies
-	//Old Road
-	oldRoad.m_Enemies.push_back(&corruptedDog);
-	oldRoad.m_Interactables.push_back(&oldChest);
 
+	oldRoad.m_Exits.push_back(&preachersExterior);
+	oldRoad.m_Exits.push_back(&mistyHollowSouth);
+	oldRoad.m_Exits.push_back(&hunterPath);
+
+	mistyHollowSouth.m_Exits.push_back(&oldRoad);
+	mistyHollowSouth.m_Exits.push_back(&boarsHeadExterior);
+	mistyHollowSouth.m_Exits.push_back(&mistyHollowWest);
+	mistyHollowSouth.m_Exits.push_back(&mistyHollowEast);
+
+	mistyHollowWest.m_Exits.push_back(&mistyHollowSouth);
+	mistyHollowWest.m_Exits.push_back(&mistyHollowNorth);
+	mistyHollowWest.m_Exits.push_back(&boarsHeadExterior);
+	mistyHollowWest.m_Exits.push_back(&hunterPath);
+
+	mistyHollowNorth.m_Exits.push_back(&boarsHeadExterior);
+	mistyHollowNorth.m_Exits.push_back(&mistyHollowEast);
+	mistyHollowNorth.m_Exits.push_back(&mistyHollowWest);
+	mistyHollowNorth.m_Exits.push_back(&farmRoad);
+
+	hunterPath.m_Exits.push_back(&oldRoad);
+	hunterPath.m_Exits.push_back(&tradersHutExterior);
+	hunterPath.m_Exits.push_back(&mistyHollowWest);
+
+	tradersHutExterior.m_Exits.push_back(&hunterPath);
+	tradersHutExterior.m_Exits.push_back(&tradersHutInterior);
+
+	tradersHutInterior.m_Exits.push_back(&tradersHutExterior);
+	tradersHutInterior.m_Exits.push_back(&tradersHutBackRoom);
+
+	boarsHeadExterior.m_Exits.push_back(&mistyHollowEast);
+	boarsHeadExterior.m_Exits.push_back(&mistyHollowNorth);
+	boarsHeadExterior.m_Exits.push_back(&mistyHollowSouth);
+	boarsHeadExterior.m_Exits.push_back(&mistyHollowWest);
+	boarsHeadExterior.m_Exits.push_back(&boarsHeadInterior);
+
+	boarsHeadInterior.m_Exits.push_back(&boarsHeadExterior);
+	boarsHeadInterior.m_Exits.push_back(&boarsHeadCellar);
+
+	jeremiahsFarmFront.m_Exits.push_back(&farmRoad);
+	jeremiahsFarmFront.m_Exits.push_back(&jeremiahsHomesteadExteriorFront);
+	jeremiahsFarmFront.m_Exits.push_back(&jeremiahsFarmRear);
+
+	jeremiahsFarmRear.m_Exits.push_back(&jeremiahsFarmFront);
+	jeremiahsFarmRear.m_Exits.push_back(&destroyedBarn);
+
+	jeremiahsHomesteadExteriorFront.m_Exits.push_back(&jeremiahsFarmFront);
+	jeremiahsHomesteadExteriorFront.m_Exits.push_back(&jeremiahsHomesteadInterior);
+	jeremiahsHomesteadExteriorFront.m_Exits.push_back(&jeremiahsFarmRear);
+
+	destroyedBarn.m_Exits.push_back(&jeremiahsFarmRear);
+
+	// POPULATE INTERACTABLES
+	preachersInterior.m_Interactables.push_back(&bed);
+	preachersInterior.m_Interactables.push_back(&chest);
+	
+	preachersExterior.m_Interactables.push_back(&oldShed);
+
+	hunterPath.m_Interactables.push_back(&oldChest);
+	
+	// POPULATE ITEMS
+	preachersExterior.m_Items.push_back(&shovel);
+	
+	// POPULATE ENEMIES
+	oldRoad.m_Enemies.push_back(&corruptedDog);
+	
 	hunterPath.m_Enemies.push_back(&goblin);
 	hunterPath.m_Enemies.push_back(&goblin);
 	hunterPath.m_Enemies.push_back(&goblin);
 	hunterPath.m_Enemies.push_back(&goblinCaptain);
+
+	boarsHeadCellar.m_Enemies.push_back(&huskOfJeremiah);
+
+	farmRoad.m_Enemies.push_back(&corruptedPlowHorse);
+
+	jeremiahsFarmFront.m_Enemies.push_back(&corruptedFarmhand);
+	jeremiahsFarmFront.m_Enemies.push_back(&corruptedDog);
+
+	jeremiahsFarmRear.m_Enemies.push_back(&corruptedFarmhand);
+	jeremiahsFarmRear.m_Enemies.push_back(&corruptedFarmhand);
+
+	jeremiahsHomesteadExteriorFront.m_Enemies.push_back(&corruptedDog);
+	jeremiahsHomesteadExteriorFront.m_Enemies.push_back(&corruptedFarmhand);
+
+	destroyedBarn.m_Enemies.push_back(&thingFromTheStars);
 
 	std::cout << std::right << std::setw(50) << "MISTY HOLLOW\n\n";
 	std::cout << std::right << std::setw(58) << "A game by Trevor Turner\n\n\n";
@@ -312,7 +324,7 @@ int main() {
 					player.SetMaxHP(10);
 					player.SetArmorClass(10);
 					player.SetCharacterGold(15);
-					PlayerInventory.clear();
+					playerInventory.clear();
 					std::cout << "\n" << player.GetName() << " is it?\n";
 					std::cout << "A fine name.\n";
 					_getch();
@@ -399,12 +411,12 @@ int main() {
 					player.SetSpellAbility(static_cast<characterWarrior>(warriorChoice));
 					player.SetSpellModifier(static_cast<characterWarrior>(warriorChoice));
 					player.SetArmorClass(player.GetArmorClass() + player.GetModifier(player.GetDexterity()));
-					PlayerInventory.push_back(rustyRapier);
-					PlayerInventory.push_back(brokenLute);
-					PlayerInventory.push_back(wornLeather);
-					PlayerInventory.push_back(waterskin);
-					PlayerInventory.push_back(rations);
-					PlayerInventory.push_back(rope);
+					playerInventory.push_back(&rustyRapier);
+					playerInventory.push_back(&brokenLute);
+					playerInventory.push_back(&wornLeather);
+					playerInventory.push_back(&waterskin);
+					playerInventory.push_back(&rations);
+					playerInventory.push_back(&rope);
 					break;
 				case FIGHTER:
 					std::cout << "\n\nThe strong and courageous Fighter! I'll be sure to stay on your good side!\n";
@@ -418,12 +430,12 @@ int main() {
 					player.SetSpellAbility(static_cast<characterWarrior>(warriorChoice));
 					player.SetSpellModifier(static_cast<characterWarrior>(warriorChoice));
 					player.SetArmorClass(player.GetArmorClass() + player.GetModifier(player.GetDexterity()));
-					PlayerInventory.push_back(rustyWarhammer);
-					PlayerInventory.push_back(dentedCuirass);
-					PlayerInventory.push_back(wornShield);
-					PlayerInventory.push_back(waterskin);
-					PlayerInventory.push_back(rations);
-					PlayerInventory.push_back(rope);
+					playerInventory.push_back(&rustyWarhammer);
+					playerInventory.push_back(&dentedCuirass);
+					playerInventory.push_back(&wornShield);
+					playerInventory.push_back(&waterskin);
+					playerInventory.push_back(&rations);
+					playerInventory.push_back(&rope);
 					break;
 				case MONK:
 					std::cout << "\n\nThe swift and enlightened Monk! You'll have to tell me the secret to inner peace!\n";
@@ -437,11 +449,11 @@ int main() {
 					player.SetSpellAbility(static_cast<characterWarrior>(warriorChoice));
 					player.SetSpellModifier(static_cast<characterWarrior>(warriorChoice));
 					player.SetArmorClass(player.GetArmorClass() + player.GetModifier(player.GetDexterity()));
-					PlayerInventory.push_back(bloodyKnuckles);
-					PlayerInventory.push_back(oldUniform);
-					PlayerInventory.push_back(waterskin);
-					PlayerInventory.push_back(rations);
-					PlayerInventory.push_back(rope);
+					playerInventory.push_back(&bloodyKnuckles);
+					playerInventory.push_back(&oldUniform);
+					playerInventory.push_back(&waterskin);
+					playerInventory.push_back(&rations);
+					playerInventory.push_back(&rope);
 					break;
 				case PALADIN:
 					std::cout << "\n\nThe noble and mighty Paladin! I feel safer already with you around!\n";
@@ -455,12 +467,12 @@ int main() {
 					player.SetSpellAbility(static_cast<characterWarrior>(warriorChoice));
 					player.SetSpellModifier(static_cast<characterWarrior>(warriorChoice));
 					player.SetArmorClass(player.GetArmorClass() + player.GetModifier(player.GetDexterity()));
-					PlayerInventory.push_back(rustyLongsword);
-					PlayerInventory.push_back(rustyChainmail);
-					PlayerInventory.push_back(wornShield);
-					PlayerInventory.push_back(waterskin);
-					PlayerInventory.push_back(rations);
-					PlayerInventory.push_back(rope);
+					playerInventory.push_back(&rustyLongsword);
+					playerInventory.push_back(&rustyChainmail);
+					playerInventory.push_back(&wornShield);
+					playerInventory.push_back(&waterskin);
+					playerInventory.push_back(&rations);
+					playerInventory.push_back(&rope);
 					break;
 				case ROGUE:
 					std::cout << "\n\nThe quickfooted and even quicker witted Rogue! I'll have keep an eye on my purse while you're around!\n";
@@ -474,12 +486,12 @@ int main() {
 					player.SetSpellAbility(static_cast<characterWarrior>(warriorChoice));
 					player.SetSpellModifier(static_cast<characterWarrior>(warriorChoice));
 					player.SetArmorClass(player.GetArmorClass() + player.GetModifier(player.GetDexterity()));
-					PlayerInventory.push_back(rustyRapier);
-					PlayerInventory.push_back(wornLeather);
-					PlayerInventory.push_back(rustyDagger);
-					PlayerInventory.push_back(waterskin);
-					PlayerInventory.push_back(rations);
-					PlayerInventory.push_back(rope);
+					playerInventory.push_back(&rustyRapier);
+					playerInventory.push_back(&wornLeather);
+					playerInventory.push_back(&rustyDagger);
+					playerInventory.push_back(&waterskin);
+					playerInventory.push_back(&rations);
+					playerInventory.push_back(&rope);
 					break;
 				case WIZARD:
 					std::cout << "\n\nThe mystical and mysterious Wizard! Perhaps you could show me a magic trick?\n";
@@ -493,12 +505,12 @@ int main() {
 					player.SetSpellAbility(static_cast<characterWarrior>(warriorChoice));
 					player.SetSpellModifier(static_cast<characterWarrior>(warriorChoice));
 					player.SetArmorClass(player.GetArmorClass() + player.GetModifier(player.GetDexterity()));
-					PlayerInventory.push_back(splinteredWand);
-					PlayerInventory.push_back(tornRobes);
-					PlayerInventory.push_back(rustyDagger);
-					PlayerInventory.push_back(waterskin);
-					PlayerInventory.push_back(rations);
-					PlayerInventory.push_back(rope);
+					playerInventory.push_back(&splinteredWand);
+					playerInventory.push_back(&tornRobes);
+					playerInventory.push_back(&rustyDagger);
+					playerInventory.push_back(&waterskin);
+					playerInventory.push_back(&rations);
+					playerInventory.push_back(&rope);
 					break;
 				case 7:
 					std::cout << "\nOh I must have misheard you.";
@@ -514,7 +526,9 @@ int main() {
 			_getch();
 			std::cout << "\nYour class is: " << player.GetCharacterWarrior(static_cast<characterWarrior>(warriorChoice));
 			_getch();
-			std::cout << "\n\nMax Hit Points: " << player.GetMaxHP();
+			std::cout << "\n\nLevel: " << player.GetCharacterLevel(player.GetCharacterEXP());
+			std::cout << "\nCurrent Experience Points: " << player.GetCharacterEXP();
+			std::cout << "\nMax Hit Points: " << player.GetMaxHP();
 			std::cout << "\nBase Armor Class (10 + Dex Modifier): " << player.GetArmorClass();
 			std::cout << "\nCurrent Gold: " << player.GetCharacterGold();
 			std::cout << "\n\nABILITY SCORES\n";
@@ -554,9 +568,9 @@ int main() {
 
 		currentLocation = &preachersInterior;
 		
-		
 		do {
 			// preacher's Interior
+			if (currentLocation = &preachersInterior) {
 				do {
 					std::cout << std::endl << currentLocation->m_Name << "\n--------------------------\n";
 					std::cout << currentLocation->m_ShortDescription << std::endl;
@@ -588,20 +602,25 @@ int main() {
 								std::cout << "\nYou are fully healed\n\n";
 								break;
 							case 2:
-
-								//itemIter = std::find(PlayerInventory.begin(), PlayerInventory.end(), chestKey);
-								//if (itemIter == PlayerInventory.end()) {
-								//	std::cout << "\n\nYou try to open the chest. It's locked.";
-								//	std::cout << "\nPreacher: Oh I lost the key for that thing ages ago. If you find it, you can have whats inside.";
-								//}
-								//else {
-								//	std::cout << "\n\nYou place the chest key into the keyhole. The lock falls away!";
-								//	std::cout << "\nItems collected!";
-								//	PlayerInventory.push_back(longsword);
-								//	PlayerInventory.push_back(rapier);
-								//	PlayerInventory.push_back(buckler);
-								//	PlayerInventory.push_back(healingpotion);
-								//}
+								if (!chestEmpty) {
+									itemIter = std::find(playerInventory.begin(), playerInventory.end(), static_cast<Item*>(&chestKey));
+									if (itemIter == playerInventory.end()) {
+										std::cout << "\n\nYou try to open the chest. It's locked.";
+										std::cout << "\nPreacher: Oh I lost the key for that thing ages ago. If you find it, you can have whats inside.";
+									}
+									else {
+										std::cout << "\n\nYou place the chest key into the keyhole. The lock falls away!";
+										std::cout << "\nItems collected!";
+										playerInventory.push_back(&longsword);
+										playerInventory.push_back(&rapier);
+										playerInventory.push_back(&buckler);
+										playerInventory.push_back(&healingpotion);
+										chestEmpty = true;
+									}
+								}
+								else {
+									std::cout << "The chest is empty.";
+								}
 								break;
 							}
 						} while (playerChoice != 0);
@@ -627,7 +646,7 @@ int main() {
 								_getch();
 								std::cout << "\nThe folks in town will have more information. Why don't you head to The Boar's Head Inn if you're curious.\n";
 								_getch();
-								std::cout << "Objectives Updated.\n";
+								std::cout << "\nObjectives Updated.\n";
 								Objectives.push_back("Head to The Boars Head Inn in Misty Hollow and speak with the villagers.");
 								Objectives.push_back("Investigate Jeremiah's farm");
 								DisplayObjectives(Objectives);
@@ -640,7 +659,7 @@ int main() {
 							case 3:
 								std::cout << "\nI'm not sure. I found you lying on the old Hunter path with a nasty head wound. We have had problems with goblin's recently.\n\n";
 								_getch();
-								std::cout << "Objectives Updated";
+								std::cout << "\nObjectives Updated";
 								Objectives.push_back("Investigate the hunter's path");
 								Objectives.push_back("Deal with the goblins");
 								DisplayObjectives(Objectives);
@@ -648,7 +667,7 @@ int main() {
 							case 4:
 								std::cout << "\n\nIt is here.\n";
 								std::cout << "Items Collected.\n";
-								DisplayInventory(PlayerInventory);
+								DisplayInventory(playerInventory);
 								break;
 							}
 						} while (playerChoice != 0);
@@ -669,95 +688,186 @@ int main() {
 						break;
 					}
 				} while (playerChoice != 4);
-			
+			}
 			// Preachers Exterior
-			do {
-				std::cout << std::endl << currentLocation->m_Name << "\n--------------------------\n";
-				std::cout << currentLocation->m_ShortDescription << std::endl;
+			if (currentLocation = &preachersExterior) {
+				do {
+					std::cout << std::endl << currentLocation->m_Name << "\n--------------------------\n";
+					std::cout << currentLocation->m_ShortDescription << std::endl;
 
-				std::cout << "\n\n[1] Look\n";
-				std::cout << "[2] Interact\n";
-				std::cout << "[3] Talk\n";
-				std::cout << "[4] Move\n";
-				playerChoice = askNumber("> ", 4, 1);
+					std::cout << "\n\n[1] Look\n";
+					std::cout << "[2] Interact\n";
+					std::cout << "[3] Talk\n";
+					std::cout << "[4] Move\n";
+					playerChoice = askNumber("> ", 4, 1);
 
-				std::vector<std::string>::iterator iter;
-				
-				switch (playerChoice) {
-				case 1:
-					std::cout << "\n" << currentLocation->m_LongDescription << "\n";
-					std::cout << "There's an old wood shed beside the house.\n";
-					break;
-				case 2:
-					do {
-						currentLocation->DisplayInteractables();
-						playerChoice = askNumber("Choose a number: ", 1, 0);
+					std::vector<std::string>::iterator iter;
 
-						switch (playerChoice) {
+					switch (playerChoice) {
+					case 1:
+						std::cout << "\n" << currentLocation->m_LongDescription;
+						std::cout << "\nThere's an old wood shed beside the house.\n";
+						break;
+					case 2:
+						do {
+							currentLocation->DisplayInteractables();
+							playerChoice = askNumber("Choose a number: ", 1, 0);
+
+							switch (playerChoice) {
+							case 0:
+								break;
+							case 1:
+								if (!shedEmpty) {
+									std::cout << "\nThe door to the old shed creaks loudly, sending a shower of dust off the roof.";
+									currentLocation->DisplayItems();
+									std::cout << "\n[0] Leave";
+									std::cout << "\n[1] Take";
+									playerChoice = askNumber("", 1, 0);
+									switch (playerChoice) {
+									case 0:
+										break;
+									case 1:
+										std::cout << "\nItems Collected!";
+										playerInventory.push_back(&shovel);
+										preachersExterior.m_Items.clear();
+										shedEmpty = true;
+									}
+								}
+								else {
+									std::cout << "\nThe shed appears to be empty.";
+								}
+								break;
+							}
+						} while (playerChoice != 0);
+						break;
+					case 3:
+						std::cout << "\nThere's no one to talk to.\n";
+						break;
+					case 4:
+						int moveChoice;
+						currentLocation->DisplayExits();
+						moveChoice = askNumber("\nWhere would you like to go?", 2, 0);
+
+						switch (moveChoice) {
 						case 0:
 							break;
 						case 1:
-							std::cout << "The door to the old shed creaks loudly, sending a shower of dust off the roof.";
-							currentLocation->DisplayItems();
-							std::cout << "\n[0] Leave";
-							std::cout << "\n[1] Take";
-							playerChoice = askNumber("", 1, 0);
-							switch (playerChoice) {
-							case 0: 
-								break;
-							case 1:
-								std::cout << "Items Collected!";
-								PlayerInventory.push_back(shovel);
-								preachersExterior.m_Items.clear();
-							}
+							currentLocation = currentLocation->m_Exits[moveChoice - 1];
+							std::cout << std::endl << currentLocation->m_Name << "\n--------------------------\n";
+							std::cout << currentLocation->m_ShortDescription << std::endl;
 							break;
 						case 2:
-
-							//itemIter = std::find(PlayerInventory.begin(), PlayerInventory.end(), chestKey);
-							//if (itemIter == PlayerInventory.end()) {
-							//	std::cout << "\n\nYou try to open the chest. It's locked.";
-							//	std::cout << "\nPreacher: Oh I lost the key for that thing ages ago. If you find it, you can have whats inside.";
-							//}
-							//else {
-							//	std::cout << "\n\nYou place the chest key into the keyhole. The lock falls away!";
-							//	std::cout << "\nItems collected!";
-							//	PlayerInventory.push_back(longsword);
-							//	PlayerInventory.push_back(rapier);
-							//	PlayerInventory.push_back(buckler);
-							//	PlayerInventory.push_back(healingpotion);
-							//}
+							currentLocation = currentLocation->m_Exits[moveChoice - 1];
+							std::cout << std::endl << currentLocation->m_Name << "\n--------------------------\n";
+							std::cout << currentLocation->m_ShortDescription << std::endl;
 							break;
 						}
-					} while (playerChoice != 0);
-					break;
-				case 3:
-					std::cout << "\nThere's no one to talk to.\n";
-					break;
-				case 4:
-					int moveChoice;
-					currentLocation->DisplayExits();
-					moveChoice = askNumber("\nWhere would you like to go?", 2, 0);
-					
-					switch (moveChoice) {
-					case 0:
 						break;
+
+					}
+				} while (playerChoice != 4);
+			}
+			// Old Road
+			if (currentLocation = &oldRoad) {
+				do {
+					std::cout << std::endl << currentLocation->m_Name << "\n--------------------------\n";
+					std::cout << currentLocation->m_ShortDescription << std::endl;
+
+					std::cout << "\n\n[1] Look\n";
+					std::cout << "[2] Interact\n";
+					std::cout << "[3] Talk\n";
+					std::cout << "[4] Move\n";
+					playerChoice = askNumber("> ", 4, 1);
+
+					std::vector<std::string>::iterator iter;
+
+					switch (playerChoice) {
 					case 1:
-						currentLocation = currentLocation->m_Exits[moveChoice - 1];
-						std::cout << std::endl << currentLocation->m_Name << "\n--------------------------\n";
-						std::cout << currentLocation->m_ShortDescription << std::endl;
+						std::cout << "\n" << currentLocation->m_LongDescription;
 						break;
 					case 2:
-						currentLocation = currentLocation->m_Exits[moveChoice - 1];
-						std::cout << std::endl << currentLocation->m_Name << "\n--------------------------\n";
-						std::cout << currentLocation->m_ShortDescription << std::endl;
+						do {
+							currentLocation->DisplayInteractables();
+							playerChoice = askNumber("Choose a number: ", 1, 0);
+
+							switch (playerChoice) {
+							case 0:
+								break;
+							case 1:
+								if (!shedEmpty) {
+									std::cout << "\nThe door to the old shed creaks loudly, sending a shower of dust off the roof.";
+									currentLocation->DisplayItems();
+									std::cout << "\n[0] Leave";
+									std::cout << "\n[1] Take";
+									playerChoice = askNumber("", 1, 0);
+									switch (playerChoice) {
+									case 0:
+										break;
+									case 1:
+										std::cout << "\nItems Collected!";
+										playerInventory.push_back(&shovel);
+										preachersExterior.m_Items.clear();
+										shedEmpty = true;
+									}
+								}
+								else {
+									std::cout << "\nThe shed appears to be empty.";
+								}
+								break;
+							}
+						} while (playerChoice != 0);
 						break;
+					case 3:
+						std::cout << "\nThere's no one to talk to.\n";
+						break;
+					case 4:
+						int moveChoice;
+						currentLocation->DisplayExits();
+						moveChoice = askNumber("\nWhere would you like to go?", 2, 0);
+
+						switch (moveChoice) {
+						case 0:
+							break;
+						case 1:
+						case 2:
+							currentLocation = currentLocation->m_Exits[moveChoice - 1];
+							std::cout << std::endl << currentLocation->m_Name << "\n--------------------------\n";
+							std::cout << currentLocation->m_ShortDescription << std::endl;
+							break;
+						}
+						break;
+
 					}
-					break;
-				}
-			} while (playerChoice != 4);
-		} while (true);
-	
-		
+				} while (playerChoice != 4);
+			}
+		} while (player.GetHP() != 0 || thingFromTheStars.GetHP() != 0);
+		if (player.GetHP() == 0) {
+			std::cout << "\n\nGAME OVER...";
+			std::cout << "\nPlay Again?";
+			std::cout << "[1] Yes";
+			std::cout << "[2] No";
+			playerChoice = askNumber("", 2, 1);
+			switch (playerChoice) {
+			case 1:
+				break;
+			case 2:
+				return 0;
+			}
+		}
+		else {
+			std::cout << "\n\nCongratulations!! You Win!";
+			std::cout << "\nPlay Again?";
+			std::cout << "\nPlay Again?";
+			std::cout << "[1] Yes";
+			std::cout << "[2] No";
+			playerChoice = askNumber("", 2, 1);
+			switch (playerChoice) {
+			case 1:
+				break;
+			case 2:
+				return 0;
+			}
+		}
 	case 2:
 		return 0;
 	}
@@ -773,15 +883,15 @@ int rollStat() {
 	return 8 + rand() % 11;
 }
 
-void DisplayInventory(std::vector<Item> inventory) {
+void DisplayInventory(std::vector<Item*> inventory) {
 	std::cout << std::endl << "Inventory" << std::endl;
 	std::cout << "-----------------------------------" << std::endl;
 	std::cout << std::left << std::setw(30) << "Item Name" << std::left << std::setw(12) << "Rarity"; 
 	std::cout << std::right << std::setw(12) << "Value\n\n";
-	std::vector<Item>::iterator iter;
+	std::vector<Item*>::iterator iter;
 	for (iter = inventory.begin(); iter < inventory.end(); ++iter ) {
-		std::cout << std::left << std::setw(30) << iter->GetItemName() << std::left << std::setw(12) << iter->GetItemRarity();
-		std::cout << std::right << std::setw(12) << iter->GetItemValue() << "\n\nDescription: " << iter->GetItemDescription() << std::endl << std::endl;
+		std::cout << std::left << std::setw(30) << (*iter)->GetItemName() << std::left << std::setw(12) << (*iter)->GetItemRarity();
+		std::cout << std::right << std::setw(12) << (*iter)->GetItemValue() << "\n\nDescription: " << (*iter)->GetItemDescription() << std::endl << std::endl;
 	}
 }
 
@@ -790,5 +900,61 @@ void DisplayObjectives(std::vector<std::string> objectives) {
 	std::cout << "-------------------------------------" << std::endl;
 	for (int i = 0; i < objectives.size(); ++i) {
 		std::cout << objectives[i] << std::endl;
+	}
+}
+
+void Combat(Character& player, Character& enemy) {
+	std::cout << "\n\nA round of combat is abou to begin!" << std::endl;
+	
+	bool playersTurn = false;
+	bool playerFlee = false;
+	int playersChoice;
+	// Roll Initiative
+	int playerInitiative = player.RollDice(1, 20) + player.GetModifier(player.GetDexterity());
+	int enemyInitiative = enemy.RollDice(1, 20) + enemy.GetModifier(enemy.GetDexterity());
+
+	std::cout << player.GetName() << " rolls initiative: " << playerInitiative << std::endl;
+	std::cout << enemy.GetName() << " rolls initiative: " << enemyInitiative << std::endl;
+	
+	if (playerInitiative >= enemyInitiative) {
+		playersTurn = true;
+	}
+	else {
+		playersTurn = false;
+	}
+	// Round of combat
+	do {
+		std::cout << "Top of Round";
+		std::cout << player.GetName() << " has " << player.GetHP() << " HP!";
+		std::cout << enemy.GetName() << " has " << enemy.GetHP() << " HP!";
+		if (playersTurn) {
+			std::cout << "\nWhat would you like to do?\n";
+			std::cout << "\n[1] Attack";
+			std::cout << "\n[2] Heal";
+			std::cout << "\n[3] Flee";
+			playersChoice = askNumber("", 4, 1);
+			switch (playersChoice) {
+			case 1:
+				player.Attack(enemy);
+				playersTurn = false;
+			case 2:
+				player.Heal(player.GetSpellModifier(player.m_Warrior));
+				playersTurn = false;
+			case 3:
+				std::cout << player.GetName() << " flees!";
+				playerFlee = true;
+			}
+		}
+		else {
+			enemy.Attack(player);
+			playersTurn = true;
+		}
+	} while (player.GetHP() > 0 && enemy.GetHP() > 0 && !playerFlee);
+
+	if (player.GetHP() <= 0) {
+		std::cout << player.GetName() << " crumples to the ground!";
+	}
+	else {
+		std::cout << enemy.GetName() << " crumples to the ground!";
 	}
 }

@@ -53,3 +53,13 @@ void Interactables::SetInteractableName(std::string name) {
 void Interactables::SetInteractableInteraction(std::string interaction) {
 	m_Interaction = interaction;
 }
+void Interactables::SetInteractableDescription(std::string description) {
+	m_Description = description;
+}
+void Weapon::SetToHitBonus(int toHitBonus) {
+	m_ToHitBonus = toHitBonus;
+}
+void Weapon::SetDamage(int damage) {
+	m_AttackDamage = damage;
+}
+

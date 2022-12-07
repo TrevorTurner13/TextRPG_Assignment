@@ -9,15 +9,15 @@ enum characterWarrior { BARD = 1, FIGHTER, MONK, PALADIN, ROGUE, WIZARD };
 
 class Character {
 public:
-	Character(int str, int dex, int con, int iq, int wis, int cha, int hp, int ac, int gold);
+	Character(int str, int dex, int con, int iq, int wis, int cha, int hp, int ac, int gold, int exp, int level);
 	characterAncestry m_Ancestry;
 	characterWarrior m_Warrior;
 	
 	void SetPlayerName(std::string name);
-	void Attack(Character& character);
+	void Attack(Character& enemy);
 	void TakeDamage(int damage);
-	void Heal();
-	void CastSpell(Character& character);
+	void Heal(int heal);
+	void LevelUp(int exp);
 
 	int RollDice(int numberOfDice, int numberOfSides);
 	int GetModifier(int stat);
@@ -36,6 +36,8 @@ public:
 	void SetSpellModifier(characterWarrior warrior);
 	void SetArmorClass(int dex);
 	void SetCharacterGold(int gold);
+	void SetCharacterLevel(int level);
+	void SetCharacterEXP(int exp);
 	
 	std::string GetName() { return m_Name; }
 	std::string GetSpellAbility(characterWarrior warrior);
@@ -52,6 +54,8 @@ public:
 	int GetSpellModifier(characterWarrior warrior);
 	int GetArmorClass() { return m_ArmorClass; }
 	int GetCharacterGold() { return m_Gold; }	
+	int GetCharacterEXP() { return m_EXP; }
+	int GetCharacterLevel(int exp);
 
 private:
 	std::vector<std::string> m_Objectives;
@@ -68,5 +72,7 @@ private:
 	int m_SpellModifier;
 	int m_ArmorClass;
 	int m_Gold;
+	int m_EXP;
+	int m_Level;
 	
 };
