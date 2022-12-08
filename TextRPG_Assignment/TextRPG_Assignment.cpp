@@ -24,7 +24,7 @@ int main() {
 	//std::vector<Item*> items;
 	//std::vector<Weapon*> weapons;
 	//std::vector<SpellWeapon*> spellWeapons;
-	player.SetInventory(player.GetInventory(player.GetItems(), player.GetWeapons(), player.GetSpellWeapons()));
+	
 	std::vector<Item*> merchantInventory;
 	std::vector<Item*> goblinInventory;
 	std::vector<Item*> goblinCaptainInventory;
@@ -418,12 +418,12 @@ int main() {
 					player.SetSpellAbility(static_cast<characterWarrior>(warriorChoice));
 					player.SetSpellModifier(static_cast<characterWarrior>(warriorChoice));
 					player.SetArmorClass(player.GetArmorClass() + player.GetModifier(player.GetDexterity()));
-					player.Weapons(rustyRapier);
-					player.SpellWeapons(brokenLute);
-					player.Armours(wornLeather);
-					player.Items(waterskin);
-					player.Items(rations);
-					player.Items(rope);
+					player.m_Weapons.push_back(&rustyRapier);
+					player.m_SpellWeapons.push_back(&brokenLute);
+					player.m_Armours.push_back(&wornLeather);
+					player.m_Items.push_back(&waterskin);
+					player.m_Items.push_back(&rations);
+					player.m_Items.push_back(&rope);
 					break;
 				case FIGHTER:
 					std::cout << "\n\nThe strong and courageous Fighter! I'll be sure to stay on your good side!\n";
@@ -437,12 +437,12 @@ int main() {
 					player.SetSpellAbility(static_cast<characterWarrior>(warriorChoice));
 					player.SetSpellModifier(static_cast<characterWarrior>(warriorChoice));
 					player.SetArmorClass(player.GetArmorClass() + player.GetModifier(player.GetDexterity()));
-					player.Weapons(rustyWarhammer);
-					player.Armours(dentedCuirass);
-					player.Armours(wornShield);
-					player.Items(waterskin);
-					player.Items(rations);
-					player.Items(rope);
+					player.m_Weapons.push_back(&rustyWarhammer);
+					player.m_Armours.push_back(&dentedCuirass);
+					player.m_Armours.push_back(&wornShield);
+					player.m_Items.push_back(&waterskin);
+					player.m_Items.push_back(&rations);
+					player.m_Items.push_back(&rope);
 					break;
 				case MONK:
 					std::cout << "\n\nThe swift and enlightened Monk! You'll have to tell me the secret to inner peace!\n";
@@ -456,11 +456,11 @@ int main() {
 					player.SetSpellAbility(static_cast<characterWarrior>(warriorChoice));
 					player.SetSpellModifier(static_cast<characterWarrior>(warriorChoice));
 					player.SetArmorClass(player.GetArmorClass() + player.GetModifier(player.GetDexterity()));
-					player.Weapons(bloodyKnuckles);
-					player.Armours(oldUniform);
-					player.Items(waterskin);
-					player.Items(rations);
-					player.Items(rope);
+					player.m_Weapons.push_back(&bloodyKnuckles);
+					player.m_Armours.push_back(&oldUniform);
+					player.m_Items.push_back(&waterskin);
+					player.m_Items.push_back(&rations);
+					player.m_Items.push_back(&rope);
 					break;
 				case PALADIN:
 					std::cout << "\n\nThe noble and mighty Paladin! I feel safer already with you around!\n";
@@ -474,12 +474,12 @@ int main() {
 					player.SetSpellAbility(static_cast<characterWarrior>(warriorChoice));
 					player.SetSpellModifier(static_cast<characterWarrior>(warriorChoice));
 					player.SetArmorClass(player.GetArmorClass() + player.GetModifier(player.GetDexterity()));
-					player.Weapons(rustyLongsword);
-					player.Armours(rustyChainmail);
-					player.Armours(wornShield);
-					player.Items(waterskin);
-					player.Items(rations);
-					player.Items(rope);
+					player.m_Weapons.push_back(&rustyLongsword);
+					player.m_Armours.push_back(&rustyChainmail);
+					player.m_Armours.push_back(&wornShield);
+					player.m_Items.push_back(&waterskin);
+					player.m_Items.push_back(&rations);
+					player.m_Items.push_back(&rope);
 					break;
 				case ROGUE:
 					std::cout << "\n\nThe quickfooted and even quicker witted Rogue! I'll have keep an eye on my purse while you're around!\n";
@@ -493,12 +493,12 @@ int main() {
 					player.SetSpellAbility(static_cast<characterWarrior>(warriorChoice));
 					player.SetSpellModifier(static_cast<characterWarrior>(warriorChoice));
 					player.SetArmorClass(player.GetArmorClass() + player.GetModifier(player.GetDexterity()));
-					player.Weapons(rustyRapier);
-					player.Armours(wornLeather);
-					player.Weapons(rustyDagger);
-					player.Items(waterskin);
-					player.Items(rations);
-					player.Items(rope);
+					player.m_Weapons.push_back(&rustyRapier);
+					player.m_Armours.push_back(&wornLeather);
+					player.m_Weapons.push_back(&rustyDagger);
+					player.m_Items.push_back(&waterskin);
+					player.m_Items.push_back(&rations);
+					player.m_Items.push_back(&rope);
 					break;
 				case WIZARD:
 					std::cout << "\n\nThe mystical and mysterious Wizard! Perhaps you could show me a magic trick?\n";
@@ -512,12 +512,12 @@ int main() {
 					player.SetSpellAbility(static_cast<characterWarrior>(warriorChoice));
 					player.SetSpellModifier(static_cast<characterWarrior>(warriorChoice));
 					player.SetArmorClass(player.GetArmorClass() + player.GetModifier(player.GetDexterity()));
-					player.SpellWeapons(splinteredWand);
-					player.Armours(tornRobes);
-					player.Weapons(rustyDagger);
-					player.Items(waterskin);
-					player.Items(rations);
-					player.Items(rope);
+					player.m_SpellWeapons.push_back(&splinteredWand);
+					player.m_Armours.push_back(&tornRobes);
+					player.m_Weapons.push_back(&rustyDagger);
+					player.m_Items.push_back(&waterskin);
+					player.m_Items.push_back(&rations);
+					player.m_Items.push_back(&rope);
 					break;
 				case 7:
 					std::cout << "\nOh I must have misheard you.";
@@ -549,6 +549,9 @@ int main() {
 			std::cout << "\n\nSpell Attack Ability: " << player.GetSpellAbility(static_cast<characterWarrior>(warriorChoice));
 			std::cout << "\nSpell Attack Modifier: " << player.GetSpellModifier(static_cast<characterWarrior>(warriorChoice));
 			_getch();
+
+			player.DisplayWeapons();
+			player.DisplayInventory();
 
 			std::cout << "\n\nDo I have everything right?";
 			do {
@@ -610,18 +613,18 @@ int main() {
 								break;
 							case 2:
 								if (!chestEmpty) {
-									itemIter = std::find(player.GetItems().begin(), player.GetItems().end(), static_cast<Item*>(&chestKey));
-									if (itemIter == player.GetItems().end()) {
+									itemIter = std::find(player.m_Items.begin(), player.m_Items.end(), static_cast<Item*>(&chestKey));
+									if (itemIter == player.m_Items.end()) {
 										std::cout << "\n\nYou try to open the chest. It's locked.";
 										std::cout << "\nPreacher: Oh I lost the key for that thing ages ago. If you find it, you can have whats inside.";
 									}
 									else {
 										std::cout << "\n\nYou place the chest key into the keyhole. The lock falls away!";
 										std::cout << "\nItems collected!";
-										player.Weapons(longsword);
-										player.Weapons(rapier);
-										player.Items(buckler);
-										player.Items(healingpotion);
+										player.m_Weapons.push_back(&longsword);
+										player.m_Weapons.push_back(&rapier);
+										player.m_Items.push_back(&buckler);
+										player.m_Items.push_back(&healingpotion);
 										chestEmpty = true;
 									}
 								}
@@ -674,7 +677,7 @@ int main() {
 							case 4:
 								std::cout << "\n\nIt is here.\n";
 								std::cout << "Items Collected.\n";
-								player.DisplayInventory(player.GetInventory(player.GetItems(), player.GetWeapons(), player.GetSpellWeapons()));
+								player.DisplayInventory();
 								break;
 							}
 						} while (playerChoice != 0);
@@ -733,7 +736,7 @@ int main() {
 										break;
 									case 1:
 										std::cout << "\nItems Collected!";
-										player.Items(shovel);
+										player.m_Items.push_back(&shovel);
 										preachersExterior.m_Items.clear();
 										shedEmpty = true;
 									}
@@ -830,7 +833,7 @@ int main() {
 										break;
 									case 1:
 										std::cout << "\nItems Collected!";
-										player.Items(shovel);
+										player.m_Items.push_back(&shovel);
 										preachersExterior.m_Items.clear();
 										shedEmpty = true;
 									}

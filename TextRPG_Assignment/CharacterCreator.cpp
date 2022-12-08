@@ -83,18 +83,18 @@ void Character::SetCharacterLevel(int level) {
 void Character::SetInventory(std::vector<Item*> inventory) {
 	m_Inventory = inventory;
 }
-void Character::SetItems(std::vector<Item*> items) {
-	m_Items = items;
-}
-void Character::SetWeapons(std::vector<Weapon*> weapons) {
-	m_Weapons = weapons;
-}
-void Character::SetArmours(std::vector<Armour*> armours) {
-	m_Armours = armours;
-}
-void Character::SetSpellWeapons(std::vector<SpellWeapon*> spellWeapons) {
-	m_SpellWeapons = spellWeapons;
-}
+//void Character::SetItems(std::vector<Item*> items) {
+//	m_Items = items;
+//}
+//void Character::SetWeapons(std::vector<Weapon*> weapons) {
+//	m_Weapons = weapons;
+//}
+//void Character::SetArmours(std::vector<Armour*> armours) {
+//	m_Armours = armours;
+//}
+//void Character::SetSpellWeapons(std::vector<SpellWeapon*> spellWeapons) {
+//	m_SpellWeapons = spellWeapons;
+//}
 
 
 
@@ -299,41 +299,55 @@ int Character::GetCharacterLevel(int exp) {
 	return m_Level;
 }
 
-void Character::Weapons(Weapon weapon) {
-	m_Weapons.push_back(&weapon);
-}
-void Character::Armours(Armour armour) {
-	m_Armours.push_back(&armour);
-}
-void Character::Items(Item item) {
-	m_Items.push_back(&item);
-}
+//void Character::Weapons(Weapon weapon) {
+//	m_Weapons.push_back(&weapon);
+//}
+//void Character::Armours(Armour armour) {
+//	m_Armours.push_back(&armour);
+//}
+//void Character::Items(Item item) {
+//	m_Items.push_back(&item);
+//}
+//void Character::SpellWeapons(SpellWeapon spellWeapon) {
+//	m_SpellWeapons.push_back(&spellWeapon);
+//}
 
-void Character::SpellWeapons(SpellWeapon spellWeapon) {
-	m_SpellWeapons.push_back(&spellWeapon);
-}
-
-std::vector<Item*> Character::GetInventory(std::vector<Item*> items, std::vector<Weapon*> weapons, std::vector<SpellWeapon*> spellWeapons) {
+std::vector<Item*> Character::GetInventory(std::vector<Item*> items, std::vector<Weapon*> weapons, std::vector<Armour*> armours, std::vector<SpellWeapon*> spellWeapons) {
 	return m_Inventory;
 }
 
-void Character::DisplayInventory(std::vector<Item*> inventory) {
+void Character::DisplayInventory() {
 	std::cout << std::endl << "Inventory" << std::endl;
 	std::cout << "-----------------------------------" << std::endl;
 	std::cout << std::left << std::setw(30) << "Item Name" << std::left << std::setw(12) << "Rarity";
 	std::cout << std::right << std::setw(12) << "Value\n\n";
-	std::vector<Item*>::iterator iter;
-	for (iter = inventory.begin(); iter < inventory.end(); ++iter) {
-		std::cout << std::left << std::setw(30) << (*iter)->GetItemName() << std::left << std::setw(12) << (*iter)->GetItemRarity();
-		std::cout << std::right << std::setw(12) << (*iter)->GetItemValue() << "\n\nDescription: " << (*iter)->GetItemDescription() << std::endl << std::endl;
+	std::vector<Item*>::iterator itemIter;
+	for (itemIter = m_Items.begin(); itemIter < m_Items.end(); ++itemIter) {
+		std::cout << std::left << std::setw(30) << (*itemIter)->GetItemName() << std::left << std::setw(12) << (*itemIter)->GetItemRarity();
+		std::cout << std::right << std::setw(12) << (*itemIter)->GetItemValue() << "\n\nDescription: " << (*itemIter)->GetItemDescription() << std::endl << std::endl;
+	}
+	std::vector<Weapon*>::iterator weaponIter;
+	for (weaponIter = m_Weapons.begin(); weaponIter < m_Weapons.end(); ++weaponIter) {
+		std::cout << std::left << std::setw(30) << (*weaponIter)->GetItemName() << std::left << std::setw(12) << (*weaponIter)->GetItemRarity();
+		std::cout << std::right << std::setw(12) << (*weaponIter)->GetItemValue() << "\n\nDescription: " << (*weaponIter)->GetItemDescription() << std::endl << std::endl;
+	}
+	std::vector<Armour*>::iterator armourIter;
+	for (armourIter = m_Armours.begin(); armourIter < m_Armours.end(); ++armourIter) {
+		std::cout << std::left << std::setw(30) << (*armourIter)->GetItemName() << std::left << std::setw(12) << (*armourIter)->GetItemRarity();
+		std::cout << std::right << std::setw(12) << (*armourIter)->GetItemValue() << "\n\nDescription: " << (*armourIter)->GetItemDescription() << std::endl << std::endl;
+	}
+	std::vector<SpellWeapon*> ::iterator spellIter;
+	for (spellIter = m_SpellWeapons.begin(); spellIter < m_SpellWeapons.end(); ++spellIter) {
+		std::cout << std::left << std::setw(30) << (*spellIter)->GetItemName() << std::left << std::setw(12) << (*spellIter)->GetItemRarity();
+		std::cout << std::right << std::setw(12) << (*spellIter)->GetItemValue() << "\n\nDescription: " << (*spellIter)->GetItemDescription() << std::endl << std::endl;
 	}
 }
 
-void Character::DisplayWeapons(std::vector<Weapon*> weapons) {
+void Character::DisplayWeapons() {
 	std::cout << "You have the following weapons: " << std::endl;
 	std::vector<Weapon*>::iterator iter;
-	for (iter = weapons.begin(); iter < weapons.end(); ++iter) {
-		std::cout << "[" << iter - weapons.begin() + 1 << "] " << (*iter)->GetItemName();
+	for (iter = m_Weapons.begin(); iter < m_Weapons.end(); ++iter) {
+		std::cout << "[" << iter - m_Weapons.begin() + 1 << "] " << (*iter)->GetItemName() << std::endl;
 	}
 }
 
