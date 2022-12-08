@@ -13,7 +13,11 @@ Weapon::Weapon(std::string name, std::string description, std::string rarity, do
 	m_AttackDamage(damage)
 {}
 
-Armor::Armor(std::string name, std::string description, std::string rarity, double value, int acBonus, int strRequirement) :
+SpellWeapon::SpellWeapon(std::string name, std::string description, std::string rarity, double value, int toHitBonus, int damage) :
+	Weapon(name, description, rarity, value, toHitBonus, damage)
+{}
+
+Armour::Armour(std::string name, std::string description, std::string rarity, double value, int acBonus, int strRequirement) :
 	Item(name, description, rarity, value),
 	m_AcBonus(acBonus),
 	m_StrengthRequirement(strRequirement)

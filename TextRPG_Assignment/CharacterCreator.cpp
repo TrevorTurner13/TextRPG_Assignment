@@ -1,7 +1,7 @@
 #include "CharacterCreator.h"
 
-Character::Character(int str, int dex, int con, int iq, int wis, int cha, int hp, int ac, int gold, int exp, int level) :
-
+Character::Character(std::string name, int str, int dex, int con, int iq, int wis, int cha, int hp, int ac, int gold, int exp, int level) :
+	m_Name(name),
 	m_Strength(str),
 	m_Dexterity(dex),
 	m_Constitution(con),
@@ -79,6 +79,21 @@ void Character::SetCharacterEXP(int exp) {
 }
 void Character::SetCharacterLevel(int level) {
 	m_Level = level;
+}
+void Character::SetInventory(std::vector<Item*> inventory) {
+	m_Inventory = inventory;
+}
+void Character::SetItems(std::vector<Item*> items) {
+	m_Items = items;
+}
+void Character::SetWeapons(std::vector<Weapon*> weapons) {
+	m_Weapons = weapons;
+}
+void Character::SetArmours(std::vector<Armour*> armours) {
+	m_Armours = armours;
+}
+void Character::SetSpellWeapons(std::vector<SpellWeapon*> spellWeapons) {
+	m_SpellWeapons = spellWeapons;
 }
 
 
@@ -284,6 +299,48 @@ int Character::GetCharacterLevel(int exp) {
 	return m_Level;
 }
 
+void Character::Weapons(Weapon weapon) {
+	m_Weapons.push_back(&weapon);
+}
+void Character::Armours(Armour armour) {
+	m_Armours.push_back(&armour);
+}
+void Character::Items(Item item) {
+	m_Items.push_back(&item);
+}
+
+void Character::SpellWeapons(SpellWeapon spellWeapon) {
+	m_SpellWeapons.push_back(&spellWeapon);
+}
+
+std::vector<Item*> Character::GetInventory(std::vector<Item*> items, std::vector<Weapon*> weapons, std::vector<SpellWeapon*> spellWeapons) {
+	return m_Inventory;
+}
+
+void Character::DisplayInventory(std::vector<Item*> inventory) {
+	std::cout << std::endl << "Inventory" << std::endl;
+	std::cout << "-----------------------------------" << std::endl;
+	std::cout << std::left << std::setw(30) << "Item Name" << std::left << std::setw(12) << "Rarity";
+	std::cout << std::right << std::setw(12) << "Value\n\n";
+	std::vector<Item*>::iterator iter;
+	for (iter = inventory.begin(); iter < inventory.end(); ++iter) {
+		std::cout << std::left << std::setw(30) << (*iter)->GetItemName() << std::left << std::setw(12) << (*iter)->GetItemRarity();
+		std::cout << std::right << std::setw(12) << (*iter)->GetItemValue() << "\n\nDescription: " << (*iter)->GetItemDescription() << std::endl << std::endl;
+	}
+}
+
+void Character::DisplayWeapons(std::vector<Weapon*> weapons) {
+	std::cout << "You have the following weapons: " << std::endl;
+	std::vector<Weapon*>::iterator iter;
+	for (iter = weapons.begin(); iter < weapons.end(); ++iter) {
+		std::cout << "[" << iter - weapons.begin() + 1 << "] " << (*iter)->GetItemName();
+	}
+}
+
+void Character::EquipItems() {
+
+}
+
 int Character::RollDice(int numberOfDice, int numberOfSides) {
 	int result = 0;
 	for (int i = 0; i < numberOfDice; ++i) {
@@ -292,20 +349,18 @@ int Character::RollDice(int numberOfDice, int numberOfSides) {
 	return result;
 }
 
-void Character::Attack(Character& enemy) {
-	int toHitBonus = 0;
-	int attackDamage = 0;
+void Character::Attack(Character& enemy, Weapon& weapon) {
 	// make attack roll
 	int attack = RollDice(1, 20);
 	std::cout << m_Name << " attacks " << enemy.GetName() << "!" << std::endl;
 	// add modifiers
-	attack += toHitBonus;
-	std::cout << "Roll (" << attack << ") + " << toHitBonus << std::endl;
+	attack += weapon.GetToHitBonus();
+	std::cout << "Roll (" << attack << ") + " << weapon.GetToHitBonus() << std::endl;
 	// compare to ac
 	if (attack >= enemy.GetArmorClass()) {
 		std::cout << " hits!" << std::endl;
 		// roll damage
-		std::cout << enemy.m_Name << " takes " << attackDamage << " DAMAGE!!";
+		std::cout << enemy.m_Name << " takes " << weapon.GetDamage() << " DAMAGE!!";
 	}
 	else {
 		std::cout << m_Name << " misses!" << std::endl;

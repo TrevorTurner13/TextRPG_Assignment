@@ -37,9 +37,14 @@ private:
 	int m_AttackDamage;
 };
 
-class Armor : public Item {
+class SpellWeapon : public Weapon {
 public:
-	Armor(std::string name, std::string description, std::string rarity, double value, int acBonus, int strRequirement);
+	SpellWeapon(std::string name, std::string description, std::string rarity, double value, int toHitBonus, int damage);
+};
+
+class Armour : public Item {
+public:
+	Armour(std::string name, std::string description, std::string rarity, double value, int acBonus, int strRequirement);
 private:
 	int m_AcBonus;
 	int m_StrengthRequirement;

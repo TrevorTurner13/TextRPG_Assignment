@@ -5,8 +5,12 @@
 class Enemy: public Character {
 public:
 	Enemy(std::string name, std::string desc, int str, int dex, int con, int iq, int wis, int cha, int hp, int ac, int gold, int exp, int level);
+	
+	void SetEnemyDescription(std::string desc);
+
+	std::string GetEnemyDescription() { return m_Description; }
+	
 private:
 	std::string m_Description;
-	std::string m_Name;
 };
 
