@@ -23,7 +23,13 @@ Armour::Armour(std::string name, std::string description, std::string rarity, do
 	m_StrengthRequirement(strRequirement)
 {}
 
-HealingPotion::HealingPotion(std::string name, std::string description, std::string rarity, double value, int heal) :
+Shield::Shield(std::string name, std::string description, std::string rarity, double value, int acBonus, int strRequirement) :
+	Item(name, description, rarity, value),
+	m_AcBonus(acBonus),
+	m_StrengthRequirement(strRequirement)
+{}
+
+Healing::Healing(std::string name, std::string description, std::string rarity, double value, int heal) :
 	Item(name, description, rarity, value),
 	m_HpHealAmount(heal)
 {}
@@ -33,10 +39,11 @@ UseableItems::UseableItems(std::string name, std::string description, std::strin
 	m_Use(use)
 {}
 
-Interactables::Interactables(std::string name, std::string description, std::string interaction) :
+Interactables::Interactables(std::string name, std::string description, std::string interaction, bool empty) :
 	m_Name(name),
 	m_Description(description),
-	m_Interaction(interaction)
+	m_Interaction(interaction),
+	m_Empty(empty)
 {}
 
 void Item::SetItemName(std::string name) {
@@ -60,10 +67,28 @@ void Interactables::SetInteractableInteraction(std::string interaction) {
 void Interactables::SetInteractableDescription(std::string description) {
 	m_Description = description;
 }
+void Interactables::SetContainerEmpty(bool empty) {
+	m_Empty = empty;
+}
 void Weapon::SetToHitBonus(int toHitBonus) {
 	m_ToHitBonus = toHitBonus;
 }
 void Weapon::SetDamage(int damage) {
 	m_AttackDamage = damage;
+}
+void Armour::SetACBonus(int acBonus) {
+	m_AcBonus = acBonus;
+}
+void Armour::SetStrenghtRequirement(int strRequirement) {
+	m_StrengthRequirement = strRequirement;
+}
+void Shield::SetACBonus(int acBonus) {
+	m_AcBonus = acBonus;
+}
+void Shield::SetStrenghtRequirement(int strRequirement) {
+	m_StrengthRequirement = strRequirement;
+}
+void Healing::SetHpHealAmout(int heal) {
+	m_HpHealAmount = heal;
 }
 

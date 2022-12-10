@@ -45,14 +45,34 @@ public:
 class Armour : public Item {
 public:
 	Armour(std::string name, std::string description, std::string rarity, double value, int acBonus, int strRequirement);
+	void SetACBonus(int acBonus);
+	void SetStrenghtRequirement(int strRequirement);
+
+	int GetACBonus() { return m_AcBonus; }
+	int GetStrengthRequirement() { return m_StrengthRequirement; }
+private:
+	int m_AcBonus;
+	int m_StrengthRequirement;
+};
+class Shield : public Item {
+public:
+	Shield(std::string name, std::string description, std::string rarity, double value, int acBonus, int strRequirement);
+	void SetACBonus(int acBonus);
+	void SetStrenghtRequirement(int strRequirement);
+
+	int GetACBonus() { return m_AcBonus; }
+	int GetStrengthRequirement() { return m_StrengthRequirement; }
 private:
 	int m_AcBonus;
 	int m_StrengthRequirement;
 };
 
-class HealingPotion : public Item {
+class Healing : public Item {
 public:
-	HealingPotion(std::string name, std::string description, std::string rarity, double value, int heal);
+	Healing(std::string name, std::string description, std::string rarity, double value, int heal);
+	void SetHpHealAmout(int heal);
+
+	int GetHpHealAmount() { return m_HpHealAmount; }
 private:
 	int m_HpHealAmount;
 };
@@ -66,11 +86,13 @@ private:
 
 class Interactables {
 public:
-	Interactables(std::string name, std::string description, std::string interaction);
+	Interactables(std::string name, std::string description, std::string interaction, bool empty);
 	void SetInteractableName(std::string name);
 	void SetInteractableDescription(std::string description);
 	void SetInteractableInteraction(std::string interaction);
+	void SetContainerEmpty(bool empty);
 
+	bool GetContainerEmpty() { return m_Empty; }
 	std::string GetInteractableName() { return m_Name; }
 	std::string GetInteractableDescription() { return m_Description; }
 	std::string GetInteractableInteraction() { return m_Interaction; }
@@ -78,4 +100,5 @@ private:
 	std::string m_Name;
 	std::string m_Description;
 	std::string m_Interaction;
+	bool m_Empty;
 };
