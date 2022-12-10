@@ -301,6 +301,7 @@ int Character::GetCharacterLevel(int exp) {
 	return m_Level;
 }
 
+
 std::vector<Item*> Character::GetInventory(std::vector<Item*> items, std::vector<Weapon*> weapons, std::vector<Armour*> armours, std::vector<SpellWeapon*> spellWeapons) {
 	return m_Inventory;
 }
@@ -446,6 +447,7 @@ void Character::Attack(Character& enemy, Weapon* weapon) {
 		std::cout << " hits!" << std::endl;
 		// roll damage
 		std::cout << enemy.m_Name << " takes " << weapon->GetDamage() << " DAMAGE!!";
+		enemy.TakeDamage(weapon->GetDamage());
 	}
 	else {
 		std::cout << m_Name << " misses!" << std::endl;

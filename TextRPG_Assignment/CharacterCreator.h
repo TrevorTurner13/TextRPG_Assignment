@@ -11,8 +11,8 @@ class Character {
 public:
 	Character(std::string name, int str, int dex, int con, int iq, int wis, int cha, int hp, int ac, int gold, int exp, int level);
 	
-	characterAncestry m_Ancestry;
-	characterWarrior m_Warrior;
+	characterAncestry m_Ancestry{};
+	characterWarrior m_Warrior{};
 	void SetPlayerName(std::string name);
 	void Attack(Character& enemy, Weapon* weapon);
 	void TakeDamage(int damage);
@@ -88,10 +88,10 @@ public:
 	
 private:
 	
-	Weapon* m_EquippedWeapon = NULL;
-	Armour* m_EquippedArmour = NULL;
-	SpellWeapon* m_EquippedSpellWeapon = NULL;
-	Shield* m_EquippedShield = NULL;
+	Weapon* m_EquippedWeapon;
+	Armour* m_EquippedArmour;
+	SpellWeapon* m_EquippedSpellWeapon;
+	Shield* m_EquippedShield;
 	std::string m_Name;
 	std::string m_SpellAbility;
 	int m_Strength;

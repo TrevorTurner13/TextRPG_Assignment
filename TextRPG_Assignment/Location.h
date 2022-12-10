@@ -29,6 +29,8 @@ public:
 	std::vector<Item*> m_Items;
 	// list of monsters/enemies
 	std::vector<Enemy*> m_Enemies;
+	std::vector<EnemyStrong*> m_StrongEnemies;
+	std::vector<Boss*> m_Boss;
 	// list of npcs
 
 };
