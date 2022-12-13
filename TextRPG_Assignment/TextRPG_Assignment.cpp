@@ -45,10 +45,7 @@ int main() {
 	Location preachersExterior("Preacher's: Exterior", "A small cottage belonging to the man known as Preacher.", "This small square home is nestled beyond the southern edge of Misty Hollow. It's seems like a safe location to rest.");
 	Location preachersInterior("Preacher's: Interior", "The interior of Preacher's Cottage", "You are in a small square room dimly lit by candle light. A table lies in the middle of the room and Preacher sits reading a book in a comfortable chair. A small bedroom lies off to one side through a small doorway.");
 	Location oldRoad("The Old Road", "A narrow road leading from Preacher's cottage to Misty Hollow.", "This old road is overgrown with weeds and brush. The forest around you seems to loom around. Its stifling.");
-	Location mistyHollowSouth("Misty Hollow: South", "The southern edge of Misty Hollow.", "The town is shrouded in a dense fog. You can just make out a few flickering torches through the squat, packed buildings.");
-	Location mistyHollowEast("Misty Hollow: East", "The eastern edge of Misty Hollow.", "The buildings here seem all but abandoned. And there is a strange glow pulsing down an alley.");
-	Location mistyHollowWest("Misty Hollow: West", "The western edge of Misty Hollow.", "The squat buildings of the town thin out here as the forest encroaches the boundry.  A toppled guard tower lies in ruin next to the outer wall. A small opening in the wall leads to an old hunter's trail that leads off into the woods.");
-	Location mistyHollowNorth("Misty Hollow: North", "The northern edge of Misty Hollow.", "A town gate sits here abandoned by any sort of guards. The rotted boards of the gate hanging limp on rusted hinges. A dirt road leads out of town towards a few farmsteads. You can see a strange glow pulsing in the distance.");
+	Location mistyHollow("Misty Hollow", "The town of Misty Hollow.", "Town gates at the northern and southern ends of town sit abandoned by any sort of guards.\n A old road cuts into the woods at the south.\nAn old hunters path leads off into the woods in the west.\nA dirt road to the north leads out of town towards a few farmsteads.\nThe eastern side of town dead ends at a wall surrouned by old homes.\n");
 	Location boarsHeadExterior("The Boar's Head Inn: Exterior", "A large dilapidated building in the center of Misty Hollow.", "The roof seems to lean heavily to one side of this two story stone and wood building. Light flickers from behind the windows and you can hear raucus noises coming from within.");
 	Location boarsHeadInterior("The Boar's Head Inn: Interior", "The interior of The Boar's Head Inn", "Smells of old food and ale permeate the air within the well lit room. Gruff people crowd the interior talking loudly about current events.");
 	Location boarsHeadCellar("The Boar's Head Inn: Cellar", "The cellar of the Boar's Head Inn", "The Cellar door is locked but you can hear a clatter of noises coming from beyond.");
@@ -187,41 +184,23 @@ int main() {
 	preachersExterior.m_Exits.push_back(&preachersInterior);
 
 	oldRoad.m_Exits.push_back(&preachersExterior);
-	oldRoad.m_Exits.push_back(&mistyHollowSouth);
+	oldRoad.m_Exits.push_back(&mistyHollow);
 	oldRoad.m_Exits.push_back(&hunterPath);
 
-	mistyHollowSouth.m_Exits.push_back(&oldRoad);
-	mistyHollowSouth.m_Exits.push_back(&boarsHeadExterior);
-	mistyHollowSouth.m_Exits.push_back(&mistyHollowWest);
-	mistyHollowSouth.m_Exits.push_back(&mistyHollowEast);
+	mistyHollow.m_Exits.push_back(&oldRoad);
+	mistyHollow.m_Exits.push_back(&boarsHeadExterior);
+	mistyHollow.m_Exits.push_back(&hunterPath);
+	mistyHollow.m_Exits.push_back(&farmRoad);
 
-	mistyHollowWest.m_Exits.push_back(&mistyHollowSouth);
-	mistyHollowWest.m_Exits.push_back(&mistyHollowNorth);
-	mistyHollowWest.m_Exits.push_back(&boarsHeadExterior);
-	mistyHollowWest.m_Exits.push_back(&hunterPath);
-
-	mistyHollowNorth.m_Exits.push_back(&boarsHeadExterior);
-	mistyHollowNorth.m_Exits.push_back(&mistyHollowEast);
-	mistyHollowNorth.m_Exits.push_back(&mistyHollowWest);
-	mistyHollowNorth.m_Exits.push_back(&farmRoad);
-
-	mistyHollowEast.m_Exits.push_back(&mistyHollowNorth);
-	mistyHollowEast.m_Exits.push_back(&mistyHollowSouth);
-	mistyHollowEast.m_Exits.push_back(&boarsHeadExterior);
-
-	hunterPath.m_Exits.push_back(&oldRoad);
 	hunterPath.m_Exits.push_back(&tradersHutExterior);
-	hunterPath.m_Exits.push_back(&mistyHollowWest);
+	hunterPath.m_Exits.push_back(&mistyHollow);
 
 	tradersHutExterior.m_Exits.push_back(&hunterPath);
 	tradersHutExterior.m_Exits.push_back(&tradersHutInterior);
 
 	tradersHutInterior.m_Exits.push_back(&tradersHutExterior);
 
-	boarsHeadExterior.m_Exits.push_back(&mistyHollowEast);
-	boarsHeadExterior.m_Exits.push_back(&mistyHollowNorth);
-	boarsHeadExterior.m_Exits.push_back(&mistyHollowSouth);
-	boarsHeadExterior.m_Exits.push_back(&mistyHollowWest);
+	boarsHeadExterior.m_Exits.push_back(&mistyHollow);
 	boarsHeadExterior.m_Exits.push_back(&boarsHeadInterior);
 
 	boarsHeadInterior.m_Exits.push_back(&boarsHeadExterior);
@@ -229,7 +208,7 @@ int main() {
 
 	boarsHeadCellar.m_Exits.push_back(&boarsHeadInterior);
 
-	farmRoad.m_Exits.push_back(&mistyHollowNorth);
+	farmRoad.m_Exits.push_back(&mistyHollow);
 	farmRoad.m_Exits.push_back(&jeremiahsFarmFront);
 
 	jeremiahsFarmFront.m_Exits.push_back(&farmRoad);
@@ -264,7 +243,9 @@ int main() {
 
 	tradersHutInterior.m_Interactables.push_back(&largeChest);
 
-	mistyHollowEast.m_Interactables.push_back(&abandonedCrate1);
+	mistyHollow.m_Interactables.push_back(&abandonedCrate1);
+	mistyHollow.m_Interactables.push_back(&abandonedCrate2);
+	mistyHollow.m_Interactables.push_back(&abandonedCrate3);
 
 	farmRoad.m_Interactables.push_back(&looseDirt3);
 	
@@ -274,36 +255,32 @@ int main() {
 
 	jeremiahsFarmRear.m_Interactables.push_back(&lockedChain);
 	// POPULATE ENEMIES
-	oldRoad.m_Enemies.push_back(&corruptedDog1);
+	oldRoad.m_Enemies.push_back(&corruptedDog1); // old road to misty hollow
 	
-	hunterPath.m_Enemies.push_back(&goblin1);
+	hunterPath.m_Enemies.push_back(&goblin1); // hunter path to traders exterior
 	
-	tradersHutExterior.m_StrongEnemies.push_back(&goblinCaptain);
+	tradersHutExterior.m_StrongEnemies.push_back(&goblinCaptain); // traders exterior to traders interior/the interactables
 
-	mistyHollowWest.m_Enemies.push_back(&goblin2);
-	
-	mistyHollowEast.m_Enemies.push_back(&goblin3);
-	mistyHollowEast.m_Enemies.push_back(&goblin4);
+	mistyHollow.m_Enemies.push_back(&goblin2);//hunters path
+	mistyHollow.m_Enemies.push_back(&goblin3);// boars head exterior
+	mistyHollow.m_Enemies.push_back(&goblin4);// abandoned crate 1
+	mistyHollow.m_Enemies.push_back(&goblin5);// abandoned crate 2
+	mistyHollow.m_Enemies.push_back(&goblin6);// abandoned crate 3
+	mistyHollow.m_Enemies.push_back(&corruptedDog2);//farm road
 
-	mistyHollowSouth.m_Enemies.push_back(&goblin5);
+	boarsHeadCellar.m_Boss.push_back(&huskOfJeremiah); // in the cellar
 
-	mistyHollowNorth.m_Enemies.push_back(&corruptedDog2);
+	farmRoad.m_StrongEnemies.push_back(&corruptedPlowHorse1); // farm road to jeremiahs farm front
 
-	boarsHeadCellar.m_Boss.push_back(&huskOfJeremiah);
+	jeremiahsFarmFront.m_StrongEnemies.push_back(&corruptedFarmhand1); // jeremiahs farm front to homestead exterior
+	jeremiahsFarmFront.m_Enemies.push_back(&corruptedDog3); // jeremiash farm front to farm rear
 
-	farmRoad.m_StrongEnemies.push_back(&corruptedPlowHorse1);
+	jeremiahsFarmRear.m_StrongEnemies.push_back(&corruptedPlowHorse2); // farm rear to destroyed barn
 
-	jeremiahsFarmFront.m_StrongEnemies.push_back(&corruptedFarmhand1);
-	jeremiahsFarmFront.m_Enemies.push_back(&corruptedDog3);
+	jeremiahsHomesteadExteriorFront.m_Enemies.push_back(&corruptedDog4); // homestead exterior to old shed2 interactable
+	jeremiahsHomesteadExteriorFront.m_StrongEnemies.push_back(&corruptedFarmhand3); // homestead exterior to homestead interior
 
-	jeremiahsFarmRear.m_StrongEnemies.push_back(&corruptedFarmhand2);
-	jeremiahsFarmRear.m_StrongEnemies.push_back(&corruptedPlowHorse2);
-
-	jeremiahsHomesteadExteriorFront.m_Enemies.push_back(&corruptedDog4);
-	jeremiahsHomesteadExteriorFront.m_StrongEnemies.push_back(&corruptedFarmhand3);
-
-	jeremiahsHomesteadInterior.m_StrongEnemies.push_back(&corruptedFarmhand4);
-	jeremiahsHomesteadInterior.m_StrongEnemies.push_back(&corruptedFarmhand5);
+	jeremiahsHomesteadInterior.m_StrongEnemies.push_back(&corruptedFarmhand4); // inaterior to broken cupboard interactable
 
 	destroyedBarn.m_Boss.push_back(&thingFromTheStars);
 
@@ -1666,7 +1643,7 @@ int main() {
 				} while (playerChoice != 4 && player.GetHP() != 0);
 			}
 			// MISTY HOLLOW SOUTH
-			if (currentLocation == &mistyHollowSouth && player.GetHP() != 0) {
+			if (currentLocation == &mistyHollow && player.GetHP() != 0) {
 				
 				do {
 					std::cout << std::endl << currentLocation->m_Name << "\n--------------------------\n";
@@ -1966,15 +1943,6 @@ int main() {
 						break;
 					}
 				} while (playerChoice != 4 && player.GetHP() != 0);
-			}
-			if (currentLocation == &mistyHollowWest && player.GetHP() != 0) {
-
-			}
-			if (currentLocation == &mistyHollowNorth && player.GetHP() != 0) {
-
-			}
-			if (currentLocation == &mistyHollowEast && player.GetHP() != 0) {
-
 			}
 			if (currentLocation == &boarsHeadExterior && player.GetHP() != 0) {
 
