@@ -244,63 +244,6 @@ std::string Character::GetSpellAbility(characterWarrior warrior) {
 	return spellAbility;
 }
 
-int Character::GetCharacterLevel(int exp) {
-	if (exp == 0 && exp > 1000) {
-		SetCharacterLevel(1);
-	}
-	if (exp == 1000 && exp < 2000) {
-		SetCharacterLevel(2);
-		SetStrength(GetStrength() + 1);
-		SetDexterity(GetDexterity() + 1);
-		SetConstitution(GetConstitution() + 1);
-		SetIntelligence(GetIntelligence() + 1);
-		SetWisdom(GetWisdom() + 1);
-		SetCharisma(GetCharisma() + 1);
-		SetMaxHP(GetMaxHP() + 10 + GetModifier(GetConstitution()));
-	}
-	if (exp == 2000 && exp < 5000) {
-		SetCharacterLevel(3);
-		SetStrength(GetStrength() + 1);
-		SetDexterity(GetDexterity() + 1);
-		SetConstitution(GetConstitution() + 1);
-		SetIntelligence(GetIntelligence() + 1);
-		SetWisdom(GetWisdom() + 1);
-		SetCharisma(GetCharisma() + 1);
-		SetMaxHP(GetMaxHP() + 10 + GetModifier(GetConstitution()));
-	}
-	if (exp == 5000 && exp < 10000) {
-		SetCharacterLevel(4);
-		SetStrength(GetStrength() + 1);
-		SetDexterity(GetDexterity() + 1);
-		SetConstitution(GetConstitution() + 1);
-		SetIntelligence(GetIntelligence() + 1);
-		SetWisdom(GetWisdom() + 1);
-		SetCharisma(GetCharisma() + 1);
-		SetMaxHP(GetMaxHP() + 10 + GetModifier(GetConstitution()));
-	}
-	if (exp == 10000 && exp < 20000) {
-		SetCharacterLevel(5);
-		SetStrength(GetStrength() + 1);
-		SetDexterity(GetDexterity() + 1);
-		SetConstitution(GetConstitution() + 1);
-		SetIntelligence(GetIntelligence() + 1);
-		SetWisdom(GetWisdom() + 1);
-		SetCharisma(GetCharisma() + 1);
-		SetMaxHP(GetMaxHP() + 10 + GetModifier(GetConstitution()));
-	}
-	if (exp > 20000) {
-		SetCharacterLevel(6);
-		SetStrength(GetStrength() + 1);
-		SetDexterity(GetDexterity() + 1);
-		SetConstitution(GetConstitution() + 1);
-		SetIntelligence(GetIntelligence() + 1);
-		SetWisdom(GetWisdom() + 1);
-		SetCharisma(GetCharisma() + 1);
-		SetMaxHP(GetMaxHP() + 10 + GetModifier(GetConstitution()));
-	}
-	return m_Level;
-}
-
 
 std::vector<Item*> Character::GetInventory(std::vector<Item*> items, std::vector<Weapon*> weapons, std::vector<Armour*> armours, std::vector<SpellWeapon*> spellWeapons) {
 	return m_Inventory;
@@ -331,6 +274,11 @@ void Character::DisplayInventory() {
 	for (spellIter = m_SpellWeapons.begin(); spellIter < m_SpellWeapons.end(); ++spellIter) {
 		std::cout << std::left << std::setw(30) << (*spellIter)->GetItemName() << std::left << std::setw(12) << (*spellIter)->GetItemRarity();
 		std::cout << std::right << std::setw(12) << (*spellIter)->GetItemValue() << std::endl << std::endl;
+	}
+	std::vector<Healing*>::iterator healingIter;
+	for (healingIter = m_Healing.begin(); healingIter < m_Healing.end(); ++healingIter) {
+		std::cout << std::left << std::setw(30) << (*healingIter)->GetItemName() << std::left << std::setw(12) << (*healingIter)->GetItemRarity();
+		std::cout << std::right << std::setw(12) << (*healingIter)->GetItemValue() << std::endl << std::endl;
 	}
 	std::vector<Item*>::iterator itemIter;
 	for (itemIter = m_Items.begin(); itemIter < m_Items.end(); ++itemIter) {
@@ -464,6 +412,18 @@ void Character::Heal(int heal) {
 	m_CurrentHP += heal;
 }
 
-void Character::LevelUp(int exp) {
-
+void Character::LevelUp() {
+	static const int requiredEXP[] = {
+		0, 500, 1500, 3000, 5000, 7500, 10500, 14000, 18000, 23000
+	};
+	while (m_EXP >= requiredEXP[m_Level]) {
+		++m_Level;
+		m_MaxHP = m_MaxHP + 10 + GetModifier(m_Constitution);
+		++m_Strength;
+		++m_Dexterity;
+		++m_Constitution;
+		++m_Intelligence;
+		++m_Wisdom;
+		++m_Charisma;
+	}
 }

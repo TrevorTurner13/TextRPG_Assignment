@@ -17,7 +17,7 @@ public:
 	void Attack(Character& enemy, Weapon* weapon);
 	void TakeDamage(int damage);
 	void Heal(int heal);
-	void LevelUp(int exp);
+	void LevelUp();
 	std::vector<Item*> m_Inventory;
 	std::vector<Item*> m_Items;
 	std::vector<Weapon*> m_Weapons;
@@ -79,7 +79,7 @@ public:
 	int GetArmorClass() { return m_ArmorClass; }
 	int GetCharacterGold() { return m_Gold; }	
 	int GetCharacterEXP() { return m_EXP; }
-	int GetCharacterLevel(int exp);
+	int GetCharacterLevel() { return m_Level; }
 	std::vector<Item*> GetInventory(std::vector<Item*> items, std::vector<Weapon*> weapons, std::vector<Armour*> armours, std::vector<SpellWeapon*> spellWeapons);
 	Weapon* GetEquippedWeapon() { return m_EquippedWeapon; }
 	Armour* GetEquippedArmour() { return m_EquippedArmour; }

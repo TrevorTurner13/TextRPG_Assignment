@@ -1,10 +1,11 @@
 #include "Enemy.h"
 
-Enemy::Enemy(std::string name, std::string desc, int str, int dex, int con, int iq, int wis, int cha, int hp, int ac, int gold, int exp, int level, int toHitBonus, int damage) :
+Enemy::Enemy(std::string name, std::string desc, int str, int dex, int con, int iq, int wis, int cha, int hp, int ac, int gold, int exp, int level, int toHitBonus, int damage, bool enemyDead) :
 	Character(name, str, dex, con, iq, wis, cha, hp, ac, gold, exp, level),
 	m_Description(desc),
 	m_ToHitBonus(toHitBonus),
-	m_Damage(damage)
+	m_Damage(damage),
+	m_EnemyDead(enemyDead)
 {}
 
 void Enemy::SetEnemyDescription(std::string desc) {
@@ -18,13 +19,17 @@ void Enemy::SetEnemyToHitBonus(int toHitBonus) {
 void Enemy::SetEnemyDamage(int damage) {
 	m_Damage = damage;
 }
+void Enemy::SetEnemyDead(bool enemyDead) {
+	m_EnemyDead = enemyDead;
+}
 
-EnemyStrong::EnemyStrong(std::string name, std::string desc, int str, int dex, int con, int iq, int wis, int cha, int hp, int ac, int gold, int exp, int level, int toHitBonus, int damage1, int damage2) :
+EnemyStrong::EnemyStrong(std::string name, std::string desc, int str, int dex, int con, int iq, int wis, int cha, int hp, int ac, int gold, int exp, int level, int toHitBonus, int damage1, int damage2, bool enemyDead) :
 	Character(name, str, dex, con, iq, wis, cha, hp, ac, gold, exp, level),
 	m_Description(desc),
 	m_ToHitBonus(toHitBonus),
 	m_Damage1(damage1),
-	m_Damage2(damage2)
+	m_Damage2(damage2),
+	m_EnemyDead(enemyDead)
 {}
 
 void EnemyStrong::SetEnemyDescription(std::string desc) {
@@ -41,14 +46,18 @@ void EnemyStrong::SetEnemyDamage1(int damage1) {
 void EnemyStrong::SetEnemyDamage2(int damage2) {
 	m_Damage2 = damage2;
 }
+void EnemyStrong::SetEnemyDead(bool enemyDead) {
+	m_EnemyDead = enemyDead;
+}
 
-Boss::Boss(std::string name, std::string desc, int str, int dex, int con, int iq, int wis, int cha, int hp, int ac, int gold, int exp, int level, int toHitBonus, int damage1, int damage2, int damage3) :
+Boss::Boss(std::string name, std::string desc, int str, int dex, int con, int iq, int wis, int cha, int hp, int ac, int gold, int exp, int level, int toHitBonus, int damage1, int damage2, int damage3, bool enemyDead) :
 	Character(name, str, dex, con, iq, wis, cha, hp, ac, gold, exp, level),
 	m_Description(desc),
 	m_ToHitBonus(toHitBonus),
 	m_Damage1(damage1),
 	m_Damage2(damage2),
-	m_Damage3(damage3)
+	m_Damage3(damage3),
+	m_EnemyDead(enemyDead)
 {}
 
 void Boss::SetBossDescription(std::string desc) {
@@ -67,6 +76,9 @@ void Boss::SetBossDamage2(int damage2) {
 }
 void Boss::SetBossDamage3(int damage3) {
 	m_Damage3 = damage3;
+}
+void Boss::SetEnemyDead(bool enemyDead) {
+	m_EnemyDead = enemyDead;
 }
 
 void Enemy::Attack(Character& player, Enemy& enemy) {
