@@ -19,6 +19,7 @@ void DisplayStats(Character& player);
 void CombatEnemy(Character& player, Enemy& enemy);
 void CombatStrongEnemy(Character& player, EnemyStrong& enemy);
 void CombatBoss(Character& player, Boss& enemy);
+void EquipItems(Character& player);
 void Merchant(Character& player, Character& merchant);
 
 int main() {
@@ -109,35 +110,35 @@ int main() {
 	Weapon spikedKnuckles("Spiked Knuckles\n\nTo Hit: +9\nDamage: 2d6 + 5", "A pair of spiked knuckles. \nThey do one thing, and, boy, do they do it well.", "Rare", 400, 9, player.RollDice(2, 6) + 5);
 	// Spell Weapons
 	// junk
-	SpellWeapon noSpellWeapon("No Spell Weapon", "", "", 0, 0, 0);
-	SpellWeapon splinteredWand("Splintered Wand\n\nTo Hit: +5\nDamage: 1d6 + 3", "A splintered Wand. \nIt might look like just a stick... But you have to admit, it's a very nice stick. Careful not to get a sliver.", "Junk", .5, 5, player.RollDice(1, 6) + 3);
-	SpellWeapon brokenLute("Broken Lute\n\nTo Hit: +5\nDamage: 1d4 + 3", "A cracked lute that is missing a few strings. \nLook, if you can't cast spells through is at least you can use it to bludgeon your enemies to death.", "Junk", 1, 5, player.RollDice(1, 4) + 3);
+	SpellWeapon noSpellWeapon("No Spell Weapon", "", "", 0, 0, 0, 0);
+	SpellWeapon splinteredWand("Splintered Wand\n\nTo Hit: +5\nDamage: 1d6 + 3", "A splintered Wand. \nIt might look like just a stick... But you have to admit, it's a very nice stick. Careful not to get a sliver.", "Junk", .5, 6, player.RollDice(1, 6) + 4, 2);
+	SpellWeapon brokenLute("Broken Lute\n\nTo Hit: +5\nDamage: 1d4 + 3", "A cracked lute that is missing a few strings. \nLook, if you can't cast spells through is at least you can use it to bludgeon your enemies to death.", "Junk", 1, 5, player.RollDice(1, 4) + 3, 2);
 	// common
-	SpellWeapon wand("Wand\n\nTo Hit: +7\nDamage: 1d10 + 4", "A wand. \nSmooth polished wood. Clean lines. Now your fireballs will be extra spicy.", "Common", 25, 7, player.RollDice(1, 10) + 4);
-	SpellWeapon lute("Lute\n\nTo Hit: +7\nDamage: 1d8 + 4", "A lute. \nIt's tuned, the wood is polished, and it has all its strings. You can finally hear the music.", "Common", 50, 7, player.RollDice(1, 8) + 4);
+	SpellWeapon wand("Wand\n\nTo Hit: +7\nDamage: 1d10 + 4", "A wand. \nSmooth polished wood. Clean lines. Now your fireballs will be extra spicy.", "Common", 25, 8, player.RollDice(1, 10) + 5, 3);
+	SpellWeapon lute("Lute\n\nTo Hit: +7\nDamage: 1d8 + 4", "A lute. \nIt's tuned, the wood is polished, and it has all its strings. You can finally hear the music.", "Common", 50, 7, player.RollDice(1, 8) + 4, 3);
 	// rare
-	SpellWeapon wizardsWand("Wizard's Wand\n\nTo Hit: +9\nDamage: 1d10 + 1d6 + 4", "A wizard's wand. \nHow did they get the wood to look like that? I don't know, probably magic. Pretty though.", "Rare", 400, 9, player.RollDice(1, 10) + player.RollDice(1, 6) + 5);
-	SpellWeapon gibsonLute("Gibson Lute\n\nTo Hit: +9\nDamage: 1d8 + 1d4 + 4", "A Gibson lute. \nIf you know, you know.", "Rare", 750, 9, player.RollDice(1, 8) + player.RollDice(1, 4) + 5);
+	SpellWeapon wizardsWand("Wizard's Wand\n\nTo Hit: +9\nDamage: 1d10 + 1d6 + 4", "A wizard's wand. \nHow did they get the wood to look like that? I don't know, probably magic. Pretty though.", "Rare", 400, 10, player.RollDice(1, 10) + player.RollDice(1, 6) + 6, 4);
+	SpellWeapon gibsonLute("Gibson Lute\n\nTo Hit: +9\nDamage: 1d8 + 1d4 + 4", "A Gibson lute. \nIf you know, you know.", "Rare", 750, 9, player.RollDice(1, 8) + player.RollDice(1, 4) + 5, 4);
 	// Armour
 	// junk
 	Armour noArmour("No Armour", "", "", 0, 0, 0);
-	Armour wornLeather("Worn Leather", "Some worn leather armour. \nAt least it covers your body. Mostly. There are some holes. A lot of holes.\nAC Bonus: +1\nSTR Score Requirement: 8+", "Junk", 1, 1, -1);
-	Armour dentedCuirass("Dented Cuirass", "A dented Cuirass. \nSure the chest is caved in, it still counts as armour.\nAC Bonus: +3\nSTR SCORE Requirement: 14+", "Junk", 1, 3, 2);
-	Armour tornRobes("Torn Robes", "A torn robe. \nHonestly a towel would probably offer more protection. But, look on the bright side, at least you will look like you can cast spells in it.\nAC Bonus: 0\nSTR SCORE Requirement: NO", "Junk", 1, 0, -5);
-	Armour rustyChainmail("Rusty Chainmail", "Some rusted chainmail. \nSo, most of the chain links are broken, the padding is worn, and the helmet is missing. If you were expecting a 'but' there isn't one.\nAC Bonus: +4\nSTR SCORE Requirement: 16+", "Junk", 2, 4, 3);
-	Armour oldUniform("Old uniform", "An old martial arts uniform. \nIt smells like its never been washed and there is stains on it you are pretty sure aren't yours.\nAC Bonus: +1\nSTR SCORE Requirement: 8+", "Junk", .5, 1, -1);
+	Armour wornLeather("Worn Leather\nAC Bonus: +1\nSTR Score Requirement: 8+", "Some worn leather armour. \nAt least it covers your body. Mostly. There are some holes. A lot of holes.", "Junk", 1, 1, -1);
+	Armour dentedCuirass("Dented Cuirass\nAC Bonus: +3\nSTR SCORE Requirement: 14+", "A dented Cuirass. \nSure the chest is caved in, it still counts as armour.", "Junk", 1, 3, 2);
+	Armour tornRobes("Torn Robes\nAC Bonus: 0\nSTR SCORE Requirement: NO\nINT Bonus: +1", "A torn robe. \nHonestly a towel would probably offer more protection. But, look on the bright side, at least you will look like you can cast spells in it.", "Junk", 1, 0, -5);
+	Armour rustyChainmail("Rusty Chainmail\nAC Bonus: +4\nSTR SCORE Requirement: 16+", "Some rusted chainmail. \nSo, most of the chain links are broken, the padding is worn, and the helmet is missing. If you were expecting a 'but' there isn't one.", "Junk", 2, 4, 3);
+	Armour oldUniform("Old uniform\nAC Bonus: +1\nSTR SCORE Requirement: 8+", "An old martial arts uniform. \nIt smells like its never been washed and there is stains on it you are pretty sure aren't yours.", "Junk", .5, 1, -1);
 	// common
-	Armour studdedLeather("Studded Leather", "Some studded leather armour. \nSmells like new leather and the studs are shiny. This is awesome.\nAC Bonus: +2\nSTR SCORE Requirement: 8+", "Common", 50, 2, -1);
-	Armour breastplate("Breastplate", "A breastplate. \nIts so shiny you can see your face in it.\nAC Bonus: +4\nSTR SCORE Requirement: 14+", "Common", 100, 4, 2);
-	Armour wizardsRobes("Wizard's Robes", "A set of wizard robes. \nThe cloth is soft and is that embroidery? Amazing\nAC Bonus: +1\nSTR SCORE Requirement: NO", "Common", 30, 1, -5);
-	Armour scaleMail("Scale Mail", "Some Scalemail. \nThe scales shimmer in the light and best of all, there isn't any holes in it that aren't functional.\nAC Bonus: +5\nSTR SCORE Requirement: 16+", "Common", 200, 5, 3);
-	Armour martialArtistsUniform("Martial Artist's Uniform", "The clothes of a matial artist. \nThey're clean. They're pressed. And you think there is even some padding in there.\nAC Bonus: +2\nSTR SCORE Requirement: 8+", "Common", 50, 2, -1);
+	Armour studdedLeather("Studded Leather\nAC Bonus: +2\nSTR SCORE Requirement: 8+", "Some studded leather armour. \nSmells like new leather and the studs are shiny. This is awesome.", "Common", 50, 2, -1);
+	Armour breastplate("Breastplate\nAC Bonus: +4\nSTR SCORE Requirement: 14+", "A breastplate. \nIts so shiny you can see your face in it.", "Common", 100, 4, 2);
+	Armour wizardsRobes("Wizard's Robes\nAC Bonus: +1\nSTR SCORE Requirement: NO\nINT Bonus +2", "A set of wizard robes. \nThe cloth is soft and is that embroidery? Amazing", "Common", 30, 1, -5);
+	Armour scaleMail("Scale Mail\nAC Bonus: +5\nSTR SCORE Requirement: 16+", "Some Scalemail. \nThe scales shimmer in the light and best of all, there isn't any holes in it that aren't functional.", "Common", 200, 5, 3);
+	Armour martialArtistsUniform("Martial Artist's Uniform\nAC Bonus: +2\nSTR SCORE Requirement: 8+", "The clothes of a matial artist. \nThey're clean. They're pressed. And you think there is even some padding in there.", "Common", 50, 2, -1);
 	// Rare
-	Armour elvenLeather("Elven Leather", "Elven leather armour. \nIf armour could be considered art, you're looking at it. And did it just change colour?\nAC Bonus: +3\nSTR SCORE Requirement: 8+", "Rare", 800, 3, -1);
-	Armour draconicBreastplate("Draconic Breastplate", "Draconic breastplate. \nIt looks like a dragon. It. Looks. Like. A. DRAGON.\nAC Bonus: +4\nSTR SCORE Requirement: 14+", "Rare", 1000, 5, 2);
-	Armour robeOfTheArchmage("Robe of the Archmage", "Archmage Robes. \nUNLIMITED POWER!!!!\nAC Bonus: +2\nSTR SCORE Requirement: NO", "Rare", 800, 2, -5);
-	Armour dwarvenPlate("Dwarven Plate", "Dwarven Plate Armour. \nDid you ever want to be Iron Man? Well this armour is for you.\nAC Bonus: +6\nSTR SCORE Requirement: 16+", "Rare", 1500, 6, 3);
-	Armour mastersRobe("Master's Robes", "The clothes of a Master. \nSo this is what inner peace feels like.\nAC Bonus: +3\nSTR SCORE Requirement: 8+", "Rare", 800, 3, -1);
+	Armour elvenLeather("Elven Leather\nAC Bonus: +3\nSTR SCORE Requirement: 8+", "Elven leather armour. \nIf armour could be considered art, you're looking at it. And did it just change colour?", "Rare", 800, 3, -1);
+	Armour draconicBreastplate("Draconic Breastplate\nAC Bonus: +4\nSTR SCORE Requirement: 14+", "Draconic breastplate. \nIt looks like a dragon. It. Looks. Like. A. DRAGON.", "Rare", 1000, 5, 2);
+	Armour robeOfTheArchmage("Robe of the Archmage\nAC Bonus: +2\nSTR SCORE Requirement: NO\nINT Bonus +3", "Archmage Robes. \nUNLIMITED POWER!!!!", "Rare", 800, 2, -5);
+	Armour dwarvenPlate("Dwarven Plate\nAC Bonus: +6\nSTR SCORE Requirement: 16+", "Dwarven Plate Armour. \nDid you ever want to be Iron Man? Well this armour is for you.", "Rare", 1500, 6, 3);
+	Armour mastersRobe("Master's Robes\nAC Bonus: +3\nSTR SCORE Requirement: 8+", "The clothes of a Master. \nSo this is what inner peace feels like.", "Rare", 800, 3, -1);
 	//shields
 	Shield noShield("No Shield", "", "", 0, 0, 0);
 	Shield wornShield("Worn Shield", "A worn and dented shield. \nIt's probably better than nothing.\nAC Bonus: +1\nSTR SCORE Requirement: 14+", "Junk", 1, 1, 2);
@@ -497,7 +498,7 @@ int main() {
 						continue;
 					}
 				} while (ancestryChoice == 8);
-
+				player.SetCharacterAncestry(static_cast<characterAncestry> (ancestryChoice));
 				_getch();
 
 				std::cout << "\nPreacher: You seem like a warrior of some kind. Could you tell me what sort of warrior you are?\n\n";
@@ -633,33 +634,12 @@ int main() {
 					continue;
 				} break;
 			} while (warriorChoice == 7);
+			player.SetCharacterWarrior(static_cast<characterWarrior>(warriorChoice));
 			player.SetHP(player.GetMaxHP());
 			_getch();
 			std::cout << "\n\nSo here is what I've gathered so far.\n\n";
 			_getch();
 			DisplayStats(player);
-			/*std::cout << "Your name is: " << player.GetName() << "\n";
-			_getch();
-			std::cout << "Your ancestry is: " << player.GetCharacterAncestry(static_cast<characterAncestry>(ancestryChoice));
-			_getch();
-			std::cout << "\nYour class is: " << player.GetCharacterWarrior(static_cast<characterWarrior>(warriorChoice));
-			_getch();
-			std::cout << "\n\nLevel: " << player.GetCharacterLevel();
-			std::cout << "\nCurrent Experience Points: " << player.GetCharacterEXP();
-			std::cout << "\nHit Points: " << player.GetHP() << "/" << player.GetMaxHP();
-			std::cout << "\nBase Armor Class (10 + Dex Modifier): " << player.GetArmorClass();
-			std::cout << "\nCurrent Gold: " << player.GetCharacterGold();
-			std::cout << "\n\nABILITY SCORES\n";
-			std::cout << "------------------------------";
-			std::cout << "\nSTR: " << player.GetStrength() << "\t\tModifier = " << player.GetModifier(player.GetStrength());
-			std::cout << "\nDEX: " << player.GetDexterity() << "\t\tModifier = " << player.GetModifier(player.GetDexterity());
-			std::cout << "\nCON: " << player.GetConstitution() << "\t\tModifier = " << player.GetModifier(player.GetConstitution());
-			std::cout << "\nINT: " << player.GetIntelligence() << "\t\tModifier = " << player.GetModifier(player.GetIntelligence());
-			std::cout << "\nWIS: " << player.GetWisdom() << "\t\tModifier = " << player.GetModifier(player.GetWisdom());
-			std::cout << "\nCHA: " << player.GetCharisma() << "\t\tModifier = " << player.GetModifier(player.GetCharisma());
-			std::cout << "\n\nSpell Attack Ability: " << player.GetSpellAbility(static_cast<characterWarrior>(warriorChoice));
-			std::cout << "\nSpell Attack Modifier: " << player.GetSpellModifier(static_cast<characterWarrior>(warriorChoice));*/
-			
 			player.SetEquippedArmour(&noArmour);
 			player.SetEquippedShield(&noShield);
 			player.SetEquippedWeapon(&noWeapon);
@@ -866,96 +846,20 @@ int main() {
 						break;
 					// Equip items
 					case 8:
-						player.DisplayEquippedWeapon();
-						player.DisplayEquippedArmour();
-						player.DisplayEquippedShield();
-						player.DisplayEquippedSpellWeapon();
-						playerChoice = askNumber("\n[0] Back\n[1] Change Equipment\n", 1, 0);
-						switch (playerChoice) {
-						case 0:
-							break;
-						case 1:
-							do {
-								std::cout << "\n\nWhat would you like to equip?";
-								std::cout << "\n[0] Back";
-								std::cout << "\n[1] Weapon";
-								std::cout << "\n[2] Armour";
-								std::cout << "\n[3] Shield";
-								std::cout << "\n[4] Spell Weapon";
-								playerChoice = askNumber("", 4, 0);
-
-								switch (playerChoice) {
-								case 0:
-									break;
-								case 1:
-									player.DisplayEquippedWeapon();
-									player.DisplayWeapons();
-									weaponChoice = askNumber("\n\nWhat would you like to equip?\n", player.m_Weapons.size(), 0);
-									player.SetEquippedWeapon(player.m_Weapons[weaponChoice - 1]);
-									player.m_Weapons[weaponChoice - 1]->SetToHitBonus(player.m_Weapons[weaponChoice - 1]->GetToHitBonus());
-									player.m_Weapons[weaponChoice - 1]->SetDamage(player.m_Weapons[weaponChoice - 1]->GetDamage());
-									player.DisplayEquippedWeapon();
-									continue;
-								case 2:
-									player.DisplayEquippedArmour();
-									player.DisplayArmour();
-									armourChoice = askNumber("\n\nWhat would you like to equip?", player.m_Armours.size(), 0);
-									if (player.GetModifier(player.GetStrength()) < player.m_Armours[armourChoice - 1]->GetStrengthRequirement()) {
-										std::cout << "\nYou do not have the strength to wear this armour.\n" << std::endl;
-										continue;
-									}
-									else {
-										player.SetEquippedArmour(player.m_Armours[armourChoice - 1]);
-										player.SetArmorClass(10 + player.GetEquippedArmour()->GetACBonus() + player.GetEquippedShield()->GetACBonus() + player.GetModifier(player.GetDexterity()));
-										player.DisplayEquippedArmour();
-										continue;
-									}
-								case 3:
-									player.DisplayEquippedShield();
-									player.DisplayShields();
-									shieldChoice = askNumber("\n\nWhat would you like to equip?", player.m_Shields.size(), 0);
-									if (player.GetModifier(player.GetStrength()) < player.m_Shields[shieldChoice - 1]->GetStrengthRequirement()) {
-										std::cout << "\nYou do not have the strength to use this shield.\n" << std::endl;
-										continue;
-									}
-									else {
-										player.SetEquippedShield(player.m_Shields[shieldChoice - 1]);
-										player.SetArmorClass(10 + player.GetEquippedArmour()->GetACBonus() + player.GetEquippedShield()->GetACBonus() + player.GetModifier(player.GetDexterity()));
-										player.DisplayEquippedShield();
-										continue;
-									}
-								case 4:
-									player.DisplayEquippedSpellWeapon();
-									player.DisplaySpellWeapons();
-									spellWeaponChoice = askNumber("\n\nWhat would you like to equip?", player.m_SpellWeapons.size(), 1);
-									player.SetEquippedSpellWeapon(player.m_SpellWeapons[spellWeaponChoice - 1]);
-									player.m_SpellWeapons[spellWeaponChoice - 1]->SetToHitBonus(player.m_SpellWeapons[spellWeaponChoice - 1]->GetToHitBonus());
-									player.m_SpellWeapons[spellWeaponChoice - 1]->SetDamage(player.m_SpellWeapons[spellWeaponChoice - 1]->GetDamage());
-									player.DisplayEquippedSpellWeapon();
-									continue;
-								}
-							} while (playerChoice != 0);
+						EquipItems(player);
+						if (player.GetEquippedArmour() == &tornRobes) {
+							player.SetIntelligence(player.GetIntelligence() + 1);
 						}
+						if (player.GetEquippedArmour() == &wizardsRobes) {
+							player.SetIntelligence(player.GetIntelligence() + 2);
+						}
+						if (player.GetEquippedArmour() == &robeOfTheArchmage) {
+							player.SetIntelligence(player.GetIntelligence() + 3);
+						}
+						
 						break;
 					case 9:
-						std::cout << "\nName: " << player.GetName();
-						std::cout << "\nAncestry: " << player.GetCharacterAncestry(static_cast<characterAncestry>(ancestryChoice));
-						std::cout << "\nClass: " << player.GetCharacterWarrior(static_cast<characterWarrior>(warriorChoice));
-						std::cout << "\n\nLevel: " << player.GetCharacterLevel();
-						std::cout << "\nCurrent Experience Points: " << player.GetCharacterEXP();
-						std::cout << "\nHit Points: " << player.GetHP() << "/" << player.GetMaxHP();
-						std::cout << "\nArmour Class: " << player.GetArmorClass();
-						std::cout << "\nGold: " << player.GetCharacterGold();
-						std::cout << "\n\nABILITY SCORES\n";
-						std::cout << "------------------------------";
-						std::cout << "\nSTR: " << player.GetStrength() << "\t\tModifier = " << player.GetModifier(player.GetStrength());
-						std::cout << "\nDEX: " << player.GetDexterity() << "\t\tModifier = " << player.GetModifier(player.GetDexterity());
-						std::cout << "\nCON: " << player.GetConstitution() << "\t\tModifier = " << player.GetModifier(player.GetConstitution());
-						std::cout << "\nINT: " << player.GetIntelligence() << "\t\tModifier = " << player.GetModifier(player.GetIntelligence());
-						std::cout << "\nWIS: " << player.GetWisdom() << "\t\tModifier = " << player.GetModifier(player.GetWisdom());
-						std::cout << "\nCHA: " << player.GetCharisma() << "\t\tModifier = " << player.GetModifier(player.GetCharisma());
-						std::cout << "\n\nSpell Attack Ability: " << player.GetSpellAbility(static_cast<characterWarrior>(warriorChoice));
-						std::cout << "\nSpell Attack Modifier: " << player.GetSpellModifier(static_cast<characterWarrior>(warriorChoice));
+						DisplayStats(player);
 						break;
 					}
 				} while (playerChoice != 4 && player.GetHP() != 0);
@@ -1057,96 +961,20 @@ int main() {
 						player.DisplayInventory();
 						break;
 					case 8:
-						player.DisplayEquippedWeapon();
-						player.DisplayEquippedArmour();
-						player.DisplayEquippedShield();
-						player.DisplayEquippedSpellWeapon();
-						playerChoice = askNumber("\n[0] Back\n[1] Change Equipment\n", 1, 0);
-						switch (playerChoice) {
-						case 0:
-							break;
-						case 1:
-							do {
-							std::cout << "\n\nWhat would you like to equip?";
-							std::cout << "\n[0] Back";
-							std::cout << "\n[1] Weapon";
-							std::cout << "\n[2] Armour";
-							std::cout << "\n[3] Shield";
-							std::cout << "\n[4] Spell Weapon";
-							playerChoice = askNumber("", 4, 0);
-
-							switch (playerChoice) {
-							case 0:
-								break;
-							case 1:
-									player.DisplayEquippedWeapon();
-									player.DisplayWeapons();
-									weaponChoice = askNumber("\n\nWhat would you like to equip?\n", player.m_Weapons.size(), 1);
-									player.SetEquippedWeapon(player.m_Weapons[weaponChoice - 1]);
-									player.m_Weapons[weaponChoice - 1]->SetToHitBonus(player.m_Weapons[weaponChoice - 1]->GetToHitBonus());
-									player.m_Weapons[weaponChoice - 1]->SetDamage(player.m_Weapons[weaponChoice - 1]->GetDamage());
-									player.DisplayEquippedWeapon();
-									continue;
-							case 2:
-								player.DisplayEquippedArmour();
-								player.DisplayArmour();
-								armourChoice = askNumber("\n\nWhat would you like to equip?", player.m_Armours.size(), 1);
-								if (player.GetModifier(player.GetStrength()) < player.m_Armours[armourChoice - 1]->GetStrengthRequirement()) {
-									std::cout << "\nYou do not have the strength to wear this armour.\n" << std::endl;
-									continue;
-								}
-								else {
-									player.SetEquippedArmour(player.m_Armours[armourChoice - 1]);
-									player.SetArmorClass(10 + player.GetEquippedArmour()->GetACBonus() + player.GetEquippedShield()->GetACBonus() + player.GetModifier(player.GetDexterity()));
-									player.DisplayEquippedArmour();
-									continue;
-								}
-							case 3:
-								player.DisplayEquippedShield();
-								player.DisplayShields();
-								shieldChoice = askNumber("\n\nWhat would you like to equip?", player.m_Shields.size(), 1);
-								if (player.GetModifier(player.GetStrength()) < player.m_Shields[shieldChoice - 1]->GetStrengthRequirement()) {
-									std::cout << "\nYou do not have the strength to use this shield.\n" << std::endl;
-									continue;
-								}
-								else {
-									player.SetEquippedShield(player.m_Shields[shieldChoice - 1]);
-									player.SetArmorClass(10 + player.GetEquippedArmour()->GetACBonus() + player.GetEquippedShield()->GetACBonus() + player.GetModifier(player.GetDexterity()));
-									player.DisplayEquippedShield();
-									continue;
-								}
-							case 4:
-								player.DisplayEquippedSpellWeapon();
-								player.DisplaySpellWeapons();
-								spellWeaponChoice = askNumber("\n\nWhat would you like to equip?", player.m_SpellWeapons.size(), 1);
-								player.SetEquippedSpellWeapon(player.m_SpellWeapons[spellWeaponChoice - 1]);
-								player.m_SpellWeapons[spellWeaponChoice - 1]->SetToHitBonus(player.m_SpellWeapons[spellWeaponChoice - 1]->GetToHitBonus());
-								player.m_SpellWeapons[spellWeaponChoice - 1]->SetDamage(player.m_SpellWeapons[spellWeaponChoice - 1]->GetDamage());
-								player.DisplayEquippedSpellWeapon();
-								continue;
-								}
-							} while (playerChoice != 0);
+						EquipItems(player);
+						if (player.GetEquippedArmour() == &tornRobes) {
+							player.SetIntelligence(player.GetIntelligence() + 1);
 						}
+						if (player.GetEquippedArmour() == &wizardsRobes) {
+							player.SetIntelligence(player.GetIntelligence() + 2);
+						}
+						if (player.GetEquippedArmour() == &robeOfTheArchmage) {
+							player.SetIntelligence(player.GetIntelligence() + 3);
+						}
+
 						break;
 					case 9:
-						std::cout << "\nName: " << player.GetName();
-						std::cout << "\nAncestry: " << player.GetCharacterAncestry(static_cast<characterAncestry>(ancestryChoice));
-						std::cout << "\nClass: " << player.GetCharacterWarrior(static_cast<characterWarrior>(warriorChoice));
-						std::cout << "\n\nLevel: " << player.GetCharacterLevel();
-						std::cout << "\nCurrent Experience Points: " << player.GetCharacterEXP();
-						std::cout << "\nHit Points: " << player.GetHP() << "/" << player.GetMaxHP();
-						std::cout << "\nArmour Class: " << player.GetArmorClass();
-						std::cout << "\nGold: " << player.GetCharacterGold();
-						std::cout << "\n\nABILITY SCORES\n";
-						std::cout << "------------------------------";
-						std::cout << "\nSTR: " << player.GetStrength() << "\t\tModifier = " << player.GetModifier(player.GetStrength());
-						std::cout << "\nDEX: " << player.GetDexterity() << "\t\tModifier = " << player.GetModifier(player.GetDexterity());
-						std::cout << "\nCON: " << player.GetConstitution() << "\t\tModifier = " << player.GetModifier(player.GetConstitution());
-						std::cout << "\nINT: " << player.GetIntelligence() << "\t\tModifier = " << player.GetModifier(player.GetIntelligence());
-						std::cout << "\nWIS: " << player.GetWisdom() << "\t\tModifier = " << player.GetModifier(player.GetWisdom());
-						std::cout << "\nCHA: " << player.GetCharisma() << "\t\tModifier = " << player.GetModifier(player.GetCharisma());
-						std::cout << "\n\nSpell Attack Ability: " << player.GetSpellAbility(static_cast<characterWarrior>(warriorChoice));
-						std::cout << "\nSpell Attack Modifier: " << player.GetSpellModifier(static_cast<characterWarrior>(warriorChoice));
+						DisplayStats(player);
 						break;
 					}
 				} while (playerChoice != 4 && player.GetHP() != 0);
@@ -1316,96 +1144,20 @@ int main() {
 						player.DisplayInventory();
 						break;
 					case 8:
-						player.DisplayEquippedWeapon();
-						player.DisplayEquippedArmour();
-						player.DisplayEquippedShield();
-						player.DisplayEquippedSpellWeapon();
-						playerChoice = askNumber("\n[0] Back\n[1] Change Equipment\n", 1, 0);
-						switch (playerChoice) {
-						case 0:
-							break;
-						case 1:
-							do {
-								std::cout << "\n\nWhat would you like to equip?";
-								std::cout << "\n[0] Back";
-								std::cout << "\n[1] Weapon";
-								std::cout << "\n[2] Armour";
-								std::cout << "\n[3] Shield";
-								std::cout << "\n[4] Spell Weapon";
-								playerChoice = askNumber("", 4, 0);
-
-								switch (playerChoice) {
-								case 0:
-									break;
-								case 1:
-									player.DisplayEquippedWeapon();
-									player.DisplayWeapons();
-									weaponChoice = askNumber("\n\nWhat would you like to equip?\n", player.m_Weapons.size(), 1);
-									player.SetEquippedWeapon(player.m_Weapons[weaponChoice - 1]);
-									player.m_Weapons[weaponChoice - 1]->SetToHitBonus(player.m_Weapons[weaponChoice - 1]->GetToHitBonus());
-									player.m_Weapons[weaponChoice - 1]->SetDamage(player.m_Weapons[weaponChoice - 1]->GetDamage());
-									player.DisplayEquippedWeapon();
-									continue;
-								case 2:
-									player.DisplayEquippedArmour();
-									player.DisplayArmour();
-									armourChoice = askNumber("\n\nWhat would you like to equip?", player.m_Armours.size(), 1);
-									if (player.GetModifier(player.GetStrength()) < player.m_Armours[armourChoice - 1]->GetStrengthRequirement()) {
-										std::cout << "\nYou do not have the strength to wear this armour.\n" << std::endl;
-										continue;
-									}
-									else {
-										player.SetEquippedArmour(player.m_Armours[armourChoice - 1]);
-										player.SetArmorClass(10 + player.GetEquippedArmour()->GetACBonus() + player.GetEquippedShield()->GetACBonus() + player.GetModifier(player.GetDexterity()));
-										player.DisplayEquippedArmour();
-										continue;
-									}
-								case 3:
-									player.DisplayEquippedShield();
-									player.DisplayShields();
-									shieldChoice = askNumber("\n\nWhat would you like to equip?", player.m_Shields.size(), 1);
-									if (player.GetModifier(player.GetStrength()) < player.m_Shields[shieldChoice - 1]->GetStrengthRequirement()) {
-										std::cout << "\nYou do not have the strength to use this shield.\n" << std::endl;
-										continue;
-									}
-									else {
-										player.SetEquippedShield(player.m_Shields[shieldChoice - 1]);
-										player.SetArmorClass(10 + player.GetEquippedArmour()->GetACBonus() + player.GetEquippedShield()->GetACBonus() + player.GetModifier(player.GetDexterity()));
-										player.DisplayEquippedShield();
-										continue;
-									}
-								case 4:
-									player.DisplayEquippedSpellWeapon();
-									player.DisplaySpellWeapons();
-									spellWeaponChoice = askNumber("\n\nWhat would you like to equip?", player.m_SpellWeapons.size(), 1);
-									player.SetEquippedSpellWeapon(player.m_SpellWeapons[spellWeaponChoice - 1]);
-									player.m_SpellWeapons[spellWeaponChoice - 1]->SetToHitBonus(player.m_SpellWeapons[spellWeaponChoice - 1]->GetToHitBonus());
-									player.m_SpellWeapons[spellWeaponChoice - 1]->SetDamage(player.m_SpellWeapons[spellWeaponChoice - 1]->GetDamage());
-									player.DisplayEquippedSpellWeapon();
-									continue;
-								}
-							} while (playerChoice != 0);
+						EquipItems(player);
+						if (player.GetEquippedArmour() == &tornRobes) {
+							player.SetIntelligence(player.GetIntelligence() + 1);
 						}
+						if (player.GetEquippedArmour() == &wizardsRobes) {
+							player.SetIntelligence(player.GetIntelligence() + 2);
+						}
+						if (player.GetEquippedArmour() == &robeOfTheArchmage) {
+							player.SetIntelligence(player.GetIntelligence() + 3);
+						}
+
 						break;
 					case 9:
-						std::cout << "\nName: " << player.GetName();
-						std::cout << "\nAncestry: " << player.GetCharacterAncestry(static_cast<characterAncestry>(ancestryChoice));
-						std::cout << "\nClass: " << player.GetCharacterWarrior(static_cast<characterWarrior>(warriorChoice));
-						std::cout << "\n\nLevel: " << player.GetCharacterLevel();
-						std::cout << "\nCurrent Experience Points: " << player.GetCharacterEXP();
-						std::cout << "\nHit Points: " << player.GetHP() << "/" << player.GetMaxHP();
-						std::cout << "\nArmour Class: " << player.GetArmorClass();
-						std::cout << "\nGold: " << player.GetCharacterGold();
-						std::cout << "\n\nABILITY SCORES\n";
-						std::cout << "------------------------------";
-						std::cout << "\nSTR: " << player.GetStrength() << "\t\tModifier = " << player.GetModifier(player.GetStrength());
-						std::cout << "\nDEX: " << player.GetDexterity() << "\t\tModifier = " << player.GetModifier(player.GetDexterity());
-						std::cout << "\nCON: " << player.GetConstitution() << "\t\tModifier = " << player.GetModifier(player.GetConstitution());
-						std::cout << "\nINT: " << player.GetIntelligence() << "\t\tModifier = " << player.GetModifier(player.GetIntelligence());
-						std::cout << "\nWIS: " << player.GetWisdom() << "\t\tModifier = " << player.GetModifier(player.GetWisdom());
-						std::cout << "\nCHA: " << player.GetCharisma() << "\t\tModifier = " << player.GetModifier(player.GetCharisma());
-						std::cout << "\n\nSpell Attack Ability: " << player.GetSpellAbility(static_cast<characterWarrior>(warriorChoice));
-						std::cout << "\nSpell Attack Modifier: " << player.GetSpellModifier(static_cast<characterWarrior>(warriorChoice));
+						DisplayStats(player);
 						break;
 					}
 				} while (playerChoice != 4 && player.GetHP() != 0);
@@ -1621,96 +1373,20 @@ int main() {
 						player.DisplayInventory();
 						break;
 					case 8:
-						player.DisplayEquippedWeapon();
-						player.DisplayEquippedArmour();
-						player.DisplayEquippedShield();
-						player.DisplayEquippedSpellWeapon();
-						playerChoice = askNumber("\n[0] Back\n[1] Change Equipment\n", 1, 0);
-						switch (playerChoice) {
-						case 0:
-							break;
-						case 1:
-							do {
-								std::cout << "\n\nWhat would you like to equip?";
-								std::cout << "\n[0] Back";
-								std::cout << "\n[1] Weapon";
-								std::cout << "\n[2] Armour";
-								std::cout << "\n[3] Shield";
-								std::cout << "\n[4] Spell Weapon";
-								playerChoice = askNumber("", 4, 0);
-
-								switch (playerChoice) {
-								case 0:
-									break;
-								case 1:
-									player.DisplayEquippedWeapon();
-									player.DisplayWeapons();
-									weaponChoice = askNumber("\n\nWhat would you like to equip?\n", player.m_Weapons.size(), 1);
-									player.SetEquippedWeapon(player.m_Weapons[weaponChoice - 1]);
-									player.m_Weapons[weaponChoice - 1]->SetToHitBonus(player.m_Weapons[weaponChoice - 1]->GetToHitBonus());
-									player.m_Weapons[weaponChoice - 1]->SetDamage(player.m_Weapons[weaponChoice - 1]->GetDamage());
-									player.DisplayEquippedWeapon();
-									continue;
-								case 2:
-									player.DisplayEquippedArmour();
-									player.DisplayArmour();
-									armourChoice = askNumber("\n\nWhat would you like to equip?", player.m_Armours.size(), 1);
-									if (player.GetModifier(player.GetStrength()) < player.m_Armours[armourChoice - 1]->GetStrengthRequirement()) {
-										std::cout << "\nYou do not have the strength to wear this armour.\n" << std::endl;
-										continue;
-									}
-									else {
-										player.SetEquippedArmour(player.m_Armours[armourChoice - 1]);
-										player.SetArmorClass(10 + player.GetEquippedArmour()->GetACBonus() + player.GetEquippedShield()->GetACBonus() + player.GetModifier(player.GetDexterity()));
-										player.DisplayEquippedArmour();
-										continue;
-									}
-								case 3:
-									player.DisplayEquippedShield();
-									player.DisplayShields();
-									shieldChoice = askNumber("\n\nWhat would you like to equip?", player.m_Shields.size(), 1);
-									if (player.GetModifier(player.GetStrength()) < player.m_Shields[shieldChoice - 1]->GetStrengthRequirement()) {
-										std::cout << "\nYou do not have the strength to use this shield.\n" << std::endl;
-										continue;
-									}
-									else {
-										player.SetEquippedShield(player.m_Shields[shieldChoice - 1]);
-										player.SetArmorClass(10 + player.GetEquippedArmour()->GetACBonus() + player.GetEquippedShield()->GetACBonus() + player.GetModifier(player.GetDexterity()));
-										player.DisplayEquippedShield();
-										continue;
-									}
-								case 4:
-									player.DisplayEquippedSpellWeapon();
-									player.DisplaySpellWeapons();
-									spellWeaponChoice = askNumber("\n\nWhat would you like to equip?", player.m_SpellWeapons.size(), 1);
-									player.SetEquippedSpellWeapon(player.m_SpellWeapons[spellWeaponChoice - 1]);
-									player.m_SpellWeapons[spellWeaponChoice - 1]->SetToHitBonus(player.m_SpellWeapons[spellWeaponChoice - 1]->GetToHitBonus());
-									player.m_SpellWeapons[spellWeaponChoice - 1]->SetDamage(player.m_SpellWeapons[spellWeaponChoice - 1]->GetDamage());
-									player.DisplayEquippedSpellWeapon();
-									continue;
-								}
-							} while (playerChoice != 0);
+						EquipItems(player);
+						if (player.GetEquippedArmour() == &tornRobes) {
+							player.SetIntelligence(player.GetIntelligence() + 1);
 						}
+						if (player.GetEquippedArmour() == &wizardsRobes) {
+							player.SetIntelligence(player.GetIntelligence() + 2);
+						}
+						if (player.GetEquippedArmour() == &robeOfTheArchmage) {
+							player.SetIntelligence(player.GetIntelligence() + 3);
+						}
+
 						break;
 					case 9:
-						std::cout << "\nName: " << player.GetName();
-						std::cout << "\nAncestry: " << player.GetCharacterAncestry(static_cast<characterAncestry>(ancestryChoice));
-						std::cout << "\nClass: " << player.GetCharacterWarrior(static_cast<characterWarrior>(warriorChoice));
-						std::cout << "\n\nLevel: " << player.GetCharacterLevel();
-						std::cout << "\nCurrent Experience Points: " << player.GetCharacterEXP();
-						std::cout << "\nHit Points: " << player.GetHP() << "/" << player.GetMaxHP();
-						std::cout << "\nArmour Class: " << player.GetArmorClass();
-						std::cout << "\nGold: " << player.GetCharacterGold();
-						std::cout << "\n\nABILITY SCORES\n";
-						std::cout << "------------------------------";
-						std::cout << "\nSTR: " << player.GetStrength() << "\t\tModifier = " << player.GetModifier(player.GetStrength());
-						std::cout << "\nDEX: " << player.GetDexterity() << "\t\tModifier = " << player.GetModifier(player.GetDexterity());
-						std::cout << "\nCON: " << player.GetConstitution() << "\t\tModifier = " << player.GetModifier(player.GetConstitution());
-						std::cout << "\nINT: " << player.GetIntelligence() << "\t\tModifier = " << player.GetModifier(player.GetIntelligence());
-						std::cout << "\nWIS: " << player.GetWisdom() << "\t\tModifier = " << player.GetModifier(player.GetWisdom());
-						std::cout << "\nCHA: " << player.GetCharisma() << "\t\tModifier = " << player.GetModifier(player.GetCharisma());
-						std::cout << "\n\nSpell Attack Ability: " << player.GetSpellAbility(static_cast<characterWarrior>(warriorChoice));
-						std::cout << "\nSpell Attack Modifier: " << player.GetSpellModifier(static_cast<characterWarrior>(warriorChoice));
+						DisplayStats(player);
 						break;
 					}
 				} while (playerChoice != 4 && player.GetHP() != 0);
@@ -2086,97 +1762,20 @@ int main() {
 						break;
 					// EQUIP
 					case 8:
-						player.DisplayEquippedWeapon();
-						player.DisplayEquippedArmour();
-						player.DisplayEquippedShield();
-						player.DisplayEquippedSpellWeapon();
-						playerChoice = askNumber("\n[0] Back\n[1] Change Equipment\n", 1, 0);
-						switch (playerChoice) {
-						case 0:
-							break;
-						case 1:
-							do {
-								std::cout << "\n\nWhat would you like to equip?";
-								std::cout << "\n[0] Back";
-								std::cout << "\n[1] Weapon";
-								std::cout << "\n[2] Armour";
-								std::cout << "\n[3] Shield";
-								std::cout << "\n[4] Spell Weapon";
-								playerChoice = askNumber("", 4, 0);
-
-								switch (playerChoice) {
-								case 0:
-									break;
-								case 1:
-									player.DisplayEquippedWeapon();
-									player.DisplayWeapons();
-									weaponChoice = askNumber("\n\nWhat would you like to equip?\n", player.m_Weapons.size(), 1);
-									player.SetEquippedWeapon(player.m_Weapons[weaponChoice - 1]);
-									player.m_Weapons[weaponChoice - 1]->SetToHitBonus(player.m_Weapons[weaponChoice - 1]->GetToHitBonus());
-									player.m_Weapons[weaponChoice - 1]->SetDamage(player.m_Weapons[weaponChoice - 1]->GetDamage());
-									player.DisplayEquippedWeapon();
-									continue;
-								case 2:
-									player.DisplayEquippedArmour();
-									player.DisplayArmour();
-									armourChoice = askNumber("\n\nWhat would you like to equip?", player.m_Armours.size(), 1);
-									if (player.GetModifier(player.GetStrength()) < player.m_Armours[armourChoice - 1]->GetStrengthRequirement()) {
-										std::cout << "\nYou do not have the strength to wear this armour.\n" << std::endl;
-										continue;
-									}
-									else {
-										player.SetEquippedArmour(player.m_Armours[armourChoice - 1]);
-										player.SetArmorClass(10 + player.GetEquippedArmour()->GetACBonus() + player.GetEquippedShield()->GetACBonus() + player.GetModifier(player.GetDexterity()));
-										player.DisplayEquippedArmour();
-										continue;
-									}
-								case 3:
-									player.DisplayEquippedShield();
-									player.DisplayShields();
-									shieldChoice = askNumber("\n\nWhat would you like to equip?", player.m_Shields.size(), 1);
-									if (player.GetModifier(player.GetStrength()) < player.m_Shields[shieldChoice - 1]->GetStrengthRequirement()) {
-										std::cout << "\nYou do not have the strength to use this shield.\n" << std::endl;
-										continue;
-									}
-									else {
-										player.SetEquippedShield(player.m_Shields[shieldChoice - 1]);
-										player.SetArmorClass(10 + player.GetEquippedArmour()->GetACBonus() + player.GetEquippedShield()->GetACBonus() + player.GetModifier(player.GetDexterity()));
-										player.DisplayEquippedShield();
-										continue;
-									}
-								case 4:
-									player.DisplayEquippedSpellWeapon();
-									player.DisplaySpellWeapons();
-									spellWeaponChoice = askNumber("\n\nWhat would you like to equip?", player.m_SpellWeapons.size(), 1);
-									player.SetEquippedSpellWeapon(player.m_SpellWeapons[spellWeaponChoice - 1]);
-									player.m_SpellWeapons[spellWeaponChoice - 1]->SetToHitBonus(player.m_SpellWeapons[spellWeaponChoice - 1]->GetToHitBonus());
-									player.m_SpellWeapons[spellWeaponChoice - 1]->SetDamage(player.m_SpellWeapons[spellWeaponChoice - 1]->GetDamage());
-									player.DisplayEquippedSpellWeapon();
-									continue;
-								}
-							} while (playerChoice != 0);
+						EquipItems(player);
+						if (player.GetEquippedArmour() == &tornRobes) {
+							player.SetIntelligence(player.GetIntelligence() + 1);
 						}
+						if (player.GetEquippedArmour() == &wizardsRobes) {
+							player.SetIntelligence(player.GetIntelligence() + 2);
+						}
+						if (player.GetEquippedArmour() == &robeOfTheArchmage) {
+							player.SetIntelligence(player.GetIntelligence() + 3);
+						}
+
 						break;
-					// DISPLAY STATS
 					case 9:
-						std::cout << "\nName: " << player.GetName();
-						std::cout << "\nAncestry: " << player.GetCharacterAncestry(static_cast<characterAncestry>(ancestryChoice));
-						std::cout << "\nClass: " << player.GetCharacterWarrior(static_cast<characterWarrior>(warriorChoice));
-						std::cout << "\n\nLevel: " << player.GetCharacterLevel();
-						std::cout << "\nCurrent Experience Points: " << player.GetCharacterEXP();
-						std::cout << "\nHit Points: " << player.GetHP() << "/" << player.GetMaxHP();
-						std::cout << "\nArmour Class: " << player.GetArmorClass();
-						std::cout << "\nGold: " << player.GetCharacterGold();
-						std::cout << "\n\nABILITY SCORES\n";
-						std::cout << "------------------------------";
-						std::cout << "\nSTR: " << player.GetStrength() << "\t\tModifier = " << player.GetModifier(player.GetStrength());
-						std::cout << "\nDEX: " << player.GetDexterity() << "\t\tModifier = " << player.GetModifier(player.GetDexterity());
-						std::cout << "\nCON: " << player.GetConstitution() << "\t\tModifier = " << player.GetModifier(player.GetConstitution());
-						std::cout << "\nINT: " << player.GetIntelligence() << "\t\tModifier = " << player.GetModifier(player.GetIntelligence());
-						std::cout << "\nWIS: " << player.GetWisdom() << "\t\tModifier = " << player.GetModifier(player.GetWisdom());
-						std::cout << "\nCHA: " << player.GetCharisma() << "\t\tModifier = " << player.GetModifier(player.GetCharisma());
-						std::cout << "\n\nSpell Attack Ability: " << player.GetSpellAbility(static_cast<characterWarrior>(warriorChoice));
-						std::cout << "\nSpell Attack Modifier: " << player.GetSpellModifier(static_cast<characterWarrior>(warriorChoice));
+						DisplayStats(player);
 						break;
 					}
 				} while (playerChoice != 4 && player.GetHP() != 0);
@@ -2257,97 +1856,20 @@ int main() {
 						break;
 					// EQUIP
 					case 8:
-						player.DisplayEquippedWeapon();
-						player.DisplayEquippedArmour();
-						player.DisplayEquippedShield();
-						player.DisplayEquippedSpellWeapon();
-						playerChoice = askNumber("\n[0] Back\n[1] Change Equipment\n", 1, 0);
-						switch (playerChoice) {
-						case 0:
-							break;
-						case 1:
-							do {
-								std::cout << "\n\nWhat would you like to equip?";
-								std::cout << "\n[0] Back";
-								std::cout << "\n[1] Weapon";
-								std::cout << "\n[2] Armour";
-								std::cout << "\n[3] Shield";
-								std::cout << "\n[4] Spell Weapon";
-								playerChoice = askNumber("", 4, 0);
-
-								switch (playerChoice) {
-								case 0:
-									break;
-								case 1:
-									player.DisplayEquippedWeapon();
-									player.DisplayWeapons();
-									weaponChoice = askNumber("\n\nWhat would you like to equip?\n", player.m_Weapons.size(), 1);
-									player.SetEquippedWeapon(player.m_Weapons[weaponChoice - 1]);
-									player.m_Weapons[weaponChoice - 1]->SetToHitBonus(player.m_Weapons[weaponChoice - 1]->GetToHitBonus());
-									player.m_Weapons[weaponChoice - 1]->SetDamage(player.m_Weapons[weaponChoice - 1]->GetDamage());
-									player.DisplayEquippedWeapon();
-									continue;
-								case 2:
-									player.DisplayEquippedArmour();
-									player.DisplayArmour();
-									armourChoice = askNumber("\n\nWhat would you like to equip?", player.m_Armours.size(), 1);
-									if (player.GetModifier(player.GetStrength()) < player.m_Armours[armourChoice - 1]->GetStrengthRequirement()) {
-										std::cout << "\nYou do not have the strength to wear this armour.\n" << std::endl;
-										continue;
-									}
-									else {
-										player.SetEquippedArmour(player.m_Armours[armourChoice - 1]);
-										player.SetArmorClass(10 + player.GetEquippedArmour()->GetACBonus() + player.GetEquippedShield()->GetACBonus() + player.GetModifier(player.GetDexterity()));
-										player.DisplayEquippedArmour();
-										continue;
-									}
-								case 3:
-									player.DisplayEquippedShield();
-									player.DisplayShields();
-									shieldChoice = askNumber("\n\nWhat would you like to equip?", player.m_Shields.size(), 1);
-									if (player.GetModifier(player.GetStrength()) < player.m_Shields[shieldChoice - 1]->GetStrengthRequirement()) {
-										std::cout << "\nYou do not have the strength to use this shield.\n" << std::endl;
-										continue;
-									}
-									else {
-										player.SetEquippedShield(player.m_Shields[shieldChoice - 1]);
-										player.SetArmorClass(10 + player.GetEquippedArmour()->GetACBonus() + player.GetEquippedShield()->GetACBonus() + player.GetModifier(player.GetDexterity()));
-										player.DisplayEquippedShield();
-										continue;
-									}
-								case 4:
-									player.DisplayEquippedSpellWeapon();
-									player.DisplaySpellWeapons();
-									spellWeaponChoice = askNumber("\n\nWhat would you like to equip?", player.m_SpellWeapons.size(), 1);
-									player.SetEquippedSpellWeapon(player.m_SpellWeapons[spellWeaponChoice - 1]);
-									player.m_SpellWeapons[spellWeaponChoice - 1]->SetToHitBonus(player.m_SpellWeapons[spellWeaponChoice - 1]->GetToHitBonus());
-									player.m_SpellWeapons[spellWeaponChoice - 1]->SetDamage(player.m_SpellWeapons[spellWeaponChoice - 1]->GetDamage());
-									player.DisplayEquippedSpellWeapon();
-									continue;
-								}
-							} while (playerChoice != 0);
+						EquipItems(player);
+						if (player.GetEquippedArmour() == &tornRobes) {
+							player.SetIntelligence(player.GetIntelligence() + 1);
 						}
+						if (player.GetEquippedArmour() == &wizardsRobes) {
+							player.SetIntelligence(player.GetIntelligence() + 2);
+						}
+						if (player.GetEquippedArmour() == &robeOfTheArchmage) {
+							player.SetIntelligence(player.GetIntelligence() + 3);
+						}
+
 						break;
-					// DISPLAY STATS
 					case 9:
-						std::cout << "\nName: " << player.GetName();
-						std::cout << "\nAncestry: " << player.GetCharacterAncestry(static_cast<characterAncestry>(ancestryChoice));
-						std::cout << "\nClass: " << player.GetCharacterWarrior(static_cast<characterWarrior>(warriorChoice));
-						std::cout << "\n\nLevel: " << player.GetCharacterLevel();
-						std::cout << "\nCurrent Experience Points: " << player.GetCharacterEXP();
-						std::cout << "\nHit Points: " << player.GetHP() << "/" << player.GetMaxHP();
-						std::cout << "\nArmour Class: " << player.GetArmorClass();
-						std::cout << "\nGold: " << player.GetCharacterGold();
-						std::cout << "\n\nABILITY SCORES\n";
-						std::cout << "------------------------------";
-						std::cout << "\nSTR: " << player.GetStrength() << "\t\tModifier = " << player.GetModifier(player.GetStrength());
-						std::cout << "\nDEX: " << player.GetDexterity() << "\t\tModifier = " << player.GetModifier(player.GetDexterity());
-						std::cout << "\nCON: " << player.GetConstitution() << "\t\tModifier = " << player.GetModifier(player.GetConstitution());
-						std::cout << "\nINT: " << player.GetIntelligence() << "\t\tModifier = " << player.GetModifier(player.GetIntelligence());
-						std::cout << "\nWIS: " << player.GetWisdom() << "\t\tModifier = " << player.GetModifier(player.GetWisdom());
-						std::cout << "\nCHA: " << player.GetCharisma() << "\t\tModifier = " << player.GetModifier(player.GetCharisma());
-						std::cout << "\n\nSpell Attack Ability: " << player.GetSpellAbility(static_cast<characterWarrior>(warriorChoice));
-						std::cout << "\nSpell Attack Modifier: " << player.GetSpellModifier(static_cast<characterWarrior>(warriorChoice));
+						DisplayStats(player);
 						break;
 					}
 				} while (playerChoice != 4 && player.GetHP() != 0);
@@ -2511,97 +2033,20 @@ int main() {
 						break;
 						// EQUIP
 					case 8:
-						player.DisplayEquippedWeapon();
-						player.DisplayEquippedArmour();
-						player.DisplayEquippedShield();
-						player.DisplayEquippedSpellWeapon();
-						playerChoice = askNumber("\n[0] Back\n[1] Change Equipment\n", 1, 0);
-						switch (playerChoice) {
-						case 0:
-							break;
-						case 1:
-							do {
-								std::cout << "\n\nWhat would you like to equip?";
-								std::cout << "\n[0] Back";
-								std::cout << "\n[1] Weapon";
-								std::cout << "\n[2] Armour";
-								std::cout << "\n[3] Shield";
-								std::cout << "\n[4] Spell Weapon";
-								playerChoice = askNumber("", 4, 0);
-
-								switch (playerChoice) {
-								case 0:
-									break;
-								case 1:
-									player.DisplayEquippedWeapon();
-									player.DisplayWeapons();
-									weaponChoice = askNumber("\n\nWhat would you like to equip?\n", player.m_Weapons.size(), 1);
-									player.SetEquippedWeapon(player.m_Weapons[weaponChoice - 1]);
-									player.m_Weapons[weaponChoice - 1]->SetToHitBonus(player.m_Weapons[weaponChoice - 1]->GetToHitBonus());
-									player.m_Weapons[weaponChoice - 1]->SetDamage(player.m_Weapons[weaponChoice - 1]->GetDamage());
-									player.DisplayEquippedWeapon();
-									continue;
-								case 2:
-									player.DisplayEquippedArmour();
-									player.DisplayArmour();
-									armourChoice = askNumber("\n\nWhat would you like to equip?", player.m_Armours.size(), 1);
-									if (player.GetModifier(player.GetStrength()) < player.m_Armours[armourChoice - 1]->GetStrengthRequirement()) {
-										std::cout << "\nYou do not have the strength to wear this armour.\n" << std::endl;
-										continue;
-									}
-									else {
-										player.SetEquippedArmour(player.m_Armours[armourChoice - 1]);
-										player.SetArmorClass(10 + player.GetEquippedArmour()->GetACBonus() + player.GetEquippedShield()->GetACBonus() + player.GetModifier(player.GetDexterity()));
-										player.DisplayEquippedArmour();
-										continue;
-									}
-								case 3:
-									player.DisplayEquippedShield();
-									player.DisplayShields();
-									shieldChoice = askNumber("\n\nWhat would you like to equip?", player.m_Shields.size(), 1);
-									if (player.GetModifier(player.GetStrength()) < player.m_Shields[shieldChoice - 1]->GetStrengthRequirement()) {
-										std::cout << "\nYou do not have the strength to use this shield.\n" << std::endl;
-										continue;
-									}
-									else {
-										player.SetEquippedShield(player.m_Shields[shieldChoice - 1]);
-										player.SetArmorClass(10 + player.GetEquippedArmour()->GetACBonus() + player.GetEquippedShield()->GetACBonus() + player.GetModifier(player.GetDexterity()));
-										player.DisplayEquippedShield();
-										continue;
-									}
-								case 4:
-									player.DisplayEquippedSpellWeapon();
-									player.DisplaySpellWeapons();
-									spellWeaponChoice = askNumber("\n\nWhat would you like to equip?", player.m_SpellWeapons.size(), 1);
-									player.SetEquippedSpellWeapon(player.m_SpellWeapons[spellWeaponChoice - 1]);
-									player.m_SpellWeapons[spellWeaponChoice - 1]->SetToHitBonus(player.m_SpellWeapons[spellWeaponChoice - 1]->GetToHitBonus());
-									player.m_SpellWeapons[spellWeaponChoice - 1]->SetDamage(player.m_SpellWeapons[spellWeaponChoice - 1]->GetDamage());
-									player.DisplayEquippedSpellWeapon();
-									continue;
-								}
-							} while (playerChoice != 0);
+						EquipItems(player);
+						if (player.GetEquippedArmour() == &tornRobes) {
+							player.SetIntelligence(player.GetIntelligence() + 1);
 						}
+						if (player.GetEquippedArmour() == &wizardsRobes) {
+							player.SetIntelligence(player.GetIntelligence() + 2);
+						}
+						if (player.GetEquippedArmour() == &robeOfTheArchmage) {
+							player.SetIntelligence(player.GetIntelligence() + 3);
+						}
+
 						break;
-						// DISPLAY STATS
 					case 9:
-						std::cout << "\nName: " << player.GetName();
-						std::cout << "\nAncestry: " << player.GetCharacterAncestry(static_cast<characterAncestry>(ancestryChoice));
-						std::cout << "\nClass: " << player.GetCharacterWarrior(static_cast<characterWarrior>(warriorChoice));
-						std::cout << "\n\nLevel: " << player.GetCharacterLevel();
-						std::cout << "\nCurrent Experience Points: " << player.GetCharacterEXP();
-						std::cout << "\nHit Points: " << player.GetHP() << "/" << player.GetMaxHP();
-						std::cout << "\nArmour Class: " << player.GetArmorClass();
-						std::cout << "\nGold: " << player.GetCharacterGold();
-						std::cout << "\n\nABILITY SCORES\n";
-						std::cout << "------------------------------";
-						std::cout << "\nSTR: " << player.GetStrength() << "\t\tModifier = " << player.GetModifier(player.GetStrength());
-						std::cout << "\nDEX: " << player.GetDexterity() << "\t\tModifier = " << player.GetModifier(player.GetDexterity());
-						std::cout << "\nCON: " << player.GetConstitution() << "\t\tModifier = " << player.GetModifier(player.GetConstitution());
-						std::cout << "\nINT: " << player.GetIntelligence() << "\t\tModifier = " << player.GetModifier(player.GetIntelligence());
-						std::cout << "\nWIS: " << player.GetWisdom() << "\t\tModifier = " << player.GetModifier(player.GetWisdom());
-						std::cout << "\nCHA: " << player.GetCharisma() << "\t\tModifier = " << player.GetModifier(player.GetCharisma());
-						std::cout << "\n\nSpell Attack Ability: " << player.GetSpellAbility(static_cast<characterWarrior>(warriorChoice));
-						std::cout << "\nSpell Attack Modifier: " << player.GetSpellModifier(static_cast<characterWarrior>(warriorChoice));
+						DisplayStats(player);
 						break;
 					}
 				} while (playerChoice != 4 && player.GetHP() != 0);
@@ -2745,97 +2190,20 @@ int main() {
 						break;
 						// EQUIP
 					case 8:
-						player.DisplayEquippedWeapon();
-						player.DisplayEquippedArmour();
-						player.DisplayEquippedShield();
-						player.DisplayEquippedSpellWeapon();
-						playerChoice = askNumber("\n[0] Back\n[1] Change Equipment\n", 1, 0);
-						switch (playerChoice) {
-						case 0:
-							break;
-						case 1:
-							do {
-								std::cout << "\n\nWhat would you like to equip?";
-								std::cout << "\n[0] Back";
-								std::cout << "\n[1] Weapon";
-								std::cout << "\n[2] Armour";
-								std::cout << "\n[3] Shield";
-								std::cout << "\n[4] Spell Weapon";
-								playerChoice = askNumber("", 4, 0);
-
-								switch (playerChoice) {
-								case 0:
-									break;
-								case 1:
-									player.DisplayEquippedWeapon();
-									player.DisplayWeapons();
-									weaponChoice = askNumber("\n\nWhat would you like to equip?\n", player.m_Weapons.size(), 1);
-									player.SetEquippedWeapon(player.m_Weapons[weaponChoice - 1]);
-									player.m_Weapons[weaponChoice - 1]->SetToHitBonus(player.m_Weapons[weaponChoice - 1]->GetToHitBonus());
-									player.m_Weapons[weaponChoice - 1]->SetDamage(player.m_Weapons[weaponChoice - 1]->GetDamage());
-									player.DisplayEquippedWeapon();
-									continue;
-								case 2:
-									player.DisplayEquippedArmour();
-									player.DisplayArmour();
-									armourChoice = askNumber("\n\nWhat would you like to equip?", player.m_Armours.size(), 1);
-									if (player.GetModifier(player.GetStrength()) < player.m_Armours[armourChoice - 1]->GetStrengthRequirement()) {
-										std::cout << "\nYou do not have the strength to wear this armour.\n" << std::endl;
-										continue;
-									}
-									else {
-										player.SetEquippedArmour(player.m_Armours[armourChoice - 1]);
-										player.SetArmorClass(10 + player.GetEquippedArmour()->GetACBonus() + player.GetEquippedShield()->GetACBonus() + player.GetModifier(player.GetDexterity()));
-										player.DisplayEquippedArmour();
-										continue;
-									}
-								case 3:
-									player.DisplayEquippedShield();
-									player.DisplayShields();
-									shieldChoice = askNumber("\n\nWhat would you like to equip?", player.m_Shields.size(), 1);
-									if (player.GetModifier(player.GetStrength()) < player.m_Shields[shieldChoice - 1]->GetStrengthRequirement()) {
-										std::cout << "\nYou do not have the strength to use this shield.\n" << std::endl;
-										continue;
-									}
-									else {
-										player.SetEquippedShield(player.m_Shields[shieldChoice - 1]);
-										player.SetArmorClass(10 + player.GetEquippedArmour()->GetACBonus() + player.GetEquippedShield()->GetACBonus() + player.GetModifier(player.GetDexterity()));
-										player.DisplayEquippedShield();
-										continue;
-									}
-								case 4:
-									player.DisplayEquippedSpellWeapon();
-									player.DisplaySpellWeapons();
-									spellWeaponChoice = askNumber("\n\nWhat would you like to equip?", player.m_SpellWeapons.size(), 1);
-									player.SetEquippedSpellWeapon(player.m_SpellWeapons[spellWeaponChoice - 1]);
-									player.m_SpellWeapons[spellWeaponChoice - 1]->SetToHitBonus(player.m_SpellWeapons[spellWeaponChoice - 1]->GetToHitBonus());
-									player.m_SpellWeapons[spellWeaponChoice - 1]->SetDamage(player.m_SpellWeapons[spellWeaponChoice - 1]->GetDamage());
-									player.DisplayEquippedSpellWeapon();
-									continue;
-								}
-							} while (playerChoice != 0);
+						EquipItems(player);
+						if (player.GetEquippedArmour() == &tornRobes) {
+							player.SetIntelligence(player.GetIntelligence() + 1);
 						}
+						if (player.GetEquippedArmour() == &wizardsRobes) {
+							player.SetIntelligence(player.GetIntelligence() + 2);
+						}
+						if (player.GetEquippedArmour() == &robeOfTheArchmage) {
+							player.SetIntelligence(player.GetIntelligence() + 3);
+						}
+
 						break;
-						// DISPLAY STATS
 					case 9:
-						std::cout << "\nName: " << player.GetName();
-						std::cout << "\nAncestry: " << player.GetCharacterAncestry(static_cast<characterAncestry>(ancestryChoice));
-						std::cout << "\nClass: " << player.GetCharacterWarrior(static_cast<characterWarrior>(warriorChoice));
-						std::cout << "\n\nLevel: " << player.GetCharacterLevel();
-						std::cout << "\nCurrent Experience Points: " << player.GetCharacterEXP();
-						std::cout << "\nHit Points: " << player.GetHP() << "/" << player.GetMaxHP();
-						std::cout << "\nArmour Class: " << player.GetArmorClass();
-						std::cout << "\nGold: " << player.GetCharacterGold();
-						std::cout << "\n\nABILITY SCORES\n";
-						std::cout << "------------------------------";
-						std::cout << "\nSTR: " << player.GetStrength() << "\t\tModifier = " << player.GetModifier(player.GetStrength());
-						std::cout << "\nDEX: " << player.GetDexterity() << "\t\tModifier = " << player.GetModifier(player.GetDexterity());
-						std::cout << "\nCON: " << player.GetConstitution() << "\t\tModifier = " << player.GetModifier(player.GetConstitution());
-						std::cout << "\nINT: " << player.GetIntelligence() << "\t\tModifier = " << player.GetModifier(player.GetIntelligence());
-						std::cout << "\nWIS: " << player.GetWisdom() << "\t\tModifier = " << player.GetModifier(player.GetWisdom());
-						std::cout << "\nCHA: " << player.GetCharisma() << "\t\tModifier = " << player.GetModifier(player.GetCharisma());
-						std::cout << "\n\nSpell Attack Ability: " << player.GetSpellAbility(static_cast<characterWarrior>(warriorChoice));
-						std::cout << "\nSpell Attack Modifier: " << player.GetSpellModifier(static_cast<characterWarrior>(warriorChoice));
+						DisplayStats(player);
 						break;
 					}
 				} while (playerChoice != 4 && player.GetHP() != 0);
@@ -3173,7 +2541,85 @@ void CombatBoss(Character& player, Boss& enemy) {
 		player.SetCharacterGold(player.GetCharacterGold() + enemy.GetCharacterGold());
 		std::cout << "\nYou gain " << enemy.GetCharacterGold() << " gold!";
 		player.LevelUp();
-		std::cout << "Your current level is: " << player.GetCharacterLevel();
+		std::cout << "\nYour current level is: " << player.GetCharacterLevel();
+	}
+}
+
+void EquipItems(Character& player) {
+	int playerChoice = 0;
+	int weaponChoice = 0;
+	int armourChoice = 0;
+	int shieldChoice = 0;
+	int spellWeaponChoice = 0;
+	player.DisplayEquippedWeapon();
+	player.DisplayEquippedArmour();
+	player.DisplayEquippedShield();
+	player.DisplayEquippedSpellWeapon();
+	playerChoice = askNumber("\n[0] Back\n[1] Change Equipment\n", 1, 0);
+	switch (playerChoice) {
+	case 0:
+		break;
+	case 1:
+		do {
+			std::cout << "\n\nWhat would you like to equip?";
+			std::cout << "\n[0] Back";
+			std::cout << "\n[1] Weapon";
+			std::cout << "\n[2] Armour";
+			std::cout << "\n[3] Shield";
+			std::cout << "\n[4] Spell Weapon";
+			playerChoice = askNumber("", 4, 0);
+
+			switch (playerChoice) {
+			case 0:
+				break;
+			case 1:
+				player.DisplayEquippedWeapon();
+				player.DisplayWeapons();
+				weaponChoice = askNumber("\n\nWhat would you like to equip?\n", player.m_Weapons.size(), 0);
+				player.SetEquippedWeapon(player.m_Weapons[weaponChoice - 1]);
+				player.m_Weapons[weaponChoice - 1]->SetToHitBonus(player.m_Weapons[weaponChoice - 1]->GetToHitBonus());
+				player.m_Weapons[weaponChoice - 1]->SetDamage(player.m_Weapons[weaponChoice - 1]->GetDamage());
+				player.DisplayEquippedWeapon();
+				continue;
+			case 2:
+				player.DisplayEquippedArmour();
+				player.DisplayArmour();
+				armourChoice = askNumber("\n\nWhat would you like to equip?", player.m_Armours.size(), 0);
+				if (player.GetModifier(player.GetStrength()) < player.m_Armours[armourChoice - 1]->GetStrengthRequirement()) {
+					std::cout << "\nYou do not have the strength to wear this armour.\n" << std::endl;
+					continue;
+				}
+				else {
+					player.SetEquippedArmour(player.m_Armours[armourChoice - 1]);
+					player.SetArmorClass(10 + player.GetEquippedArmour()->GetACBonus() + player.GetEquippedShield()->GetACBonus() + player.GetModifier(player.GetDexterity()));
+					player.DisplayEquippedArmour();
+					continue;
+				}
+			case 3:
+				player.DisplayEquippedShield();
+				player.DisplayShields();
+				shieldChoice = askNumber("\n\nWhat would you like to equip?", player.m_Shields.size(), 0);
+				if (player.GetModifier(player.GetStrength()) < player.m_Shields[shieldChoice - 1]->GetStrengthRequirement()) {
+					std::cout << "\nYou do not have the strength to use this shield.\n" << std::endl;
+					continue;
+				}
+				else {
+					player.SetEquippedShield(player.m_Shields[shieldChoice - 1]);
+					player.SetArmorClass(10 + player.GetEquippedArmour()->GetACBonus() + player.GetEquippedShield()->GetACBonus() + player.GetModifier(player.GetDexterity()));
+					player.DisplayEquippedShield();
+					continue;
+				}
+			case 4:
+				player.DisplayEquippedSpellWeapon();
+				player.DisplaySpellWeapons();
+				spellWeaponChoice = askNumber("\n\nWhat would you like to equip?", player.m_SpellWeapons.size(), 1);
+				player.SetEquippedSpellWeapon(player.m_SpellWeapons[spellWeaponChoice - 1]);
+				player.m_SpellWeapons[spellWeaponChoice - 1]->SetToHitBonus(player.m_SpellWeapons[spellWeaponChoice - 1]->GetToHitBonus());
+				player.m_SpellWeapons[spellWeaponChoice - 1]->SetDamage(player.m_SpellWeapons[spellWeaponChoice - 1]->GetDamage());
+				player.DisplayEquippedSpellWeapon();
+				continue;
+			}
+		} while (playerChoice != 0);
 	}
 }
 

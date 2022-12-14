@@ -39,7 +39,12 @@ private:
 
 class SpellWeapon : public Weapon {
 public:
-	SpellWeapon(std::string name, std::string description, std::string rarity, double value, int toHitBonus, int damage);
+	SpellWeapon(std::string name, std::string description, std::string rarity, double value, int toHitBonus, int damage, int castingRequirement);
+	void SetCastingRequirement(int castingRequirement);
+
+	int GetCastingRequirement() { return m_CastingRequirement; }
+private:
+	int m_CastingRequirement;
 };
 
 class Armour : public Item {
@@ -54,17 +59,17 @@ private:
 	int m_AcBonus;
 	int m_StrengthRequirement;
 };
-class Shield : public Item {
+class Shield : public Armour {
 public:
 	Shield(std::string name, std::string description, std::string rarity, double value, int acBonus, int strRequirement);
-	void SetACBonus(int acBonus);
+	/*void SetACBonus(int acBonus);
 	void SetStrenghtRequirement(int strRequirement);
 
 	int GetACBonus() { return m_AcBonus; }
 	int GetStrengthRequirement() { return m_StrengthRequirement; }
 private:
 	int m_AcBonus;
-	int m_StrengthRequirement;
+	int m_StrengthRequirement;*/
 };
 
 class Healing : public Item {

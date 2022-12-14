@@ -13,8 +13,9 @@ Weapon::Weapon(std::string name, std::string description, std::string rarity, do
 	m_AttackDamage(damage)
 {}
 
-SpellWeapon::SpellWeapon(std::string name, std::string description, std::string rarity, double value, int toHitBonus, int damage) :
-	Weapon(name, description, rarity, value, toHitBonus, damage)
+SpellWeapon::SpellWeapon(std::string name, std::string description, std::string rarity, double value, int toHitBonus, int damage, int castingRequirement) :
+	Weapon(name, description, rarity, value, toHitBonus, damage),
+	m_CastingRequirement(castingRequirement)
 {}
 
 Armour::Armour(std::string name, std::string description, std::string rarity, double value, int acBonus, int strRequirement) :
@@ -24,9 +25,9 @@ Armour::Armour(std::string name, std::string description, std::string rarity, do
 {}
 
 Shield::Shield(std::string name, std::string description, std::string rarity, double value, int acBonus, int strRequirement) :
-	Item(name, description, rarity, value),
-	m_AcBonus(acBonus),
-	m_StrengthRequirement(strRequirement)
+	Armour(name, description, rarity, value, acBonus, strRequirement)
+	//m_AcBonus(acBonus),
+	//m_StrengthRequirement(strRequirement)
 {}
 
 Healing::Healing(std::string name, std::string description, std::string rarity, double value, int heal) :
@@ -82,13 +83,16 @@ void Armour::SetACBonus(int acBonus) {
 void Armour::SetStrenghtRequirement(int strRequirement) {
 	m_StrengthRequirement = strRequirement;
 }
-void Shield::SetACBonus(int acBonus) {
-	m_AcBonus = acBonus;
-}
-void Shield::SetStrenghtRequirement(int strRequirement) {
-	m_StrengthRequirement = strRequirement;
-}
+//void Shield::SetACBonus(int acBonus) {
+//	m_AcBonus = acBonus;
+//}
+//void Shield::SetStrenghtRequirement(int strRequirement) {
+//	m_StrengthRequirement = strRequirement;
+//}
 void Healing::SetHpHealAmout(int heal) {
 	m_HpHealAmount = heal;
+}
+void SpellWeapon::SetCastingRequirement(int castingRequirement) {
+	m_CastingRequirement = castingRequirement;
 }
 

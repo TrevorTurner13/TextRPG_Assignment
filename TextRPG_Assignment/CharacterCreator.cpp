@@ -283,7 +283,7 @@ void Character::DisplayInventory() {
 	std::vector<Item*>::iterator itemIter;
 	for (itemIter = m_Items.begin(); itemIter < m_Items.end(); ++itemIter) {
 		std::cout << std::left << std::setw(30) << (*itemIter)->GetItemName() << std::left << std::setw(12) << (*itemIter)->GetItemRarity();
-		std::cout << std::right << std::setw(12) << (*itemIter)->GetItemValue() << "\n\nDescription: " << (*itemIter)->GetItemDescription() << std::endl << std::endl;
+		std::cout << std::right << std::setw(12) << (*itemIter)->GetItemValue() << std::endl << std::endl;
 	}
 }
 
@@ -306,15 +306,9 @@ void Character::DisplayWeapons() {
 	}
 }
 void Character::DisplayEquippedWeapon() {
-	if (GetEquippedWeapon() == NULL) {
-		std::cout << "\nYou currently have no weapon equipped." << std::endl << std::endl;
-	}
-	else {
 		std::cout << "\nYou have the following weapon equipped: " << std::endl;
 		std::cout << GetEquippedWeapon()->GetItemName() << std::endl << std::endl;
 		std::cout << GetEquippedWeapon()->GetItemDescription() << std::endl;
-
-	}
 }
 
 void Character::DisplayArmour() {
@@ -326,14 +320,9 @@ void Character::DisplayArmour() {
 	}
 }
 void Character::DisplayEquippedArmour() {
-	if (GetEquippedArmour() == NULL) {
-		std::cout << "\nYou currently have no armour equipped." << std::endl << std::endl;
-	}
-	else {
 		std::cout << "\nYou have the following armour equipped: " << std::endl;
 		std::cout << GetEquippedArmour()->GetItemName() << std::endl << std::endl;
 		std::cout << GetEquippedArmour()->GetItemDescription() << std::endl;
-	}
 }
 
 void Character::DisplayShields() {
@@ -345,14 +334,9 @@ void Character::DisplayShields() {
 	}
 }
 void Character::DisplayEquippedShield() {
-	if (GetEquippedShield() == NULL) {
-		std::cout << "\nYou currently have no shield equipped." << std::endl << std::endl;
-	}
-	else {
 		std::cout << "\nYou have the following shield equipped: " << std::endl;
 		std::cout << GetEquippedShield()->GetItemName() << std::endl << std::endl;
 		std::cout << GetEquippedShield()->GetItemDescription() << std::endl;
-	}
 }
 
 void Character::DisplaySpellWeapons() {
@@ -364,15 +348,9 @@ void Character::DisplaySpellWeapons() {
 	}
 }
 void Character::DisplayEquippedSpellWeapon() {
-	if (GetEquippedSpellWeapon() == NULL) {
-		std::cout << "\nYou currently have no spell weapon equipped." << std::endl << std::endl;
-	}
-	else {
 		std::cout << "\nYou have the following spell weapon equipped: " << std::endl;
 		std::cout << GetEquippedSpellWeapon()->GetItemName() << std::endl << std::endl;
 		std::cout << GetEquippedSpellWeapon()->GetItemDescription() << std::endl;
-
-	}
 }
 
 int Character::RollDice(int numberOfDice, int numberOfSides) {
