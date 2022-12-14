@@ -15,14 +15,18 @@
 
 int RollDice(int numberOfDice, int numberOfSides);
 void DisplayObjectives(std::vector<std::string> objectives);
+void DisplayStats(Character& player);
 void CombatEnemy(Character& player, Enemy& enemy);
 void CombatStrongEnemy(Character& player, EnemyStrong& enemy);
 void CombatBoss(Character& player, Boss& enemy);
+void Merchant(Character& player, Character& merchant);
 
 int main() {
 	srand((unsigned)time(NULL));
 	Location* currentLocation;
 	Character player("", 8, 8, 8, 8, 8, 8, 10, 10, 15, 0, 1);
+	Character boarsHeadBarkeep("Boar's Head Barkeep", 10, 10, 10, 10, 10, 10, 10, 10, 50000, 0, 1);
+	Character strangeTrader("Strange Trader", 10, 10, 10, 10, 10, 10, 10, 10, 50000, 0, 1);
 	std::vector<std::string> Objectives;
 	std::vector<Item*>::iterator itemIter;
 	std::string name;
@@ -48,7 +52,7 @@ int main() {
 	Location mistyHollow("Misty Hollow", "The town of Misty Hollow.", "Town gates at the northern and southern ends of town sit abandoned by any sort of guards.\n A old road cuts into the woods at the south.\nAn old hunters path leads off into the woods in the west.\nA dirt road to the north leads out of town towards a few farmsteads.\nThe eastern side of town dead ends at a wall surrouned by old homes.\n");
 	Location boarsHeadExterior("The Boar's Head Inn: Exterior", "A large dilapidated building in the center of Misty Hollow.", "The roof seems to lean heavily to one side of this two story stone and wood building. Light flickers from behind the windows and you can hear raucus noises coming from within.");
 	Location boarsHeadInterior("The Boar's Head Inn: Interior", "The interior of The Boar's Head Inn", "Smells of old food and ale permeate the air within the well lit room. Gruff people crowd the interior talking loudly about current events.");
-	Location boarsHeadCellar("The Boar's Head Inn: Cellar", "The cellar of the Boar's Head Inn", "The Cellar door is locked but you can hear a clatter of noises coming from beyond.");
+	Location boarsHeadCellar("The Boar's Head Inn: Cellar", "The cellar of the Boar's Head Inn", "It's dark and damp and smells faintly of ale and earth.");
 	Location farmRoad("The Farm Road", "A dirt road leading to a few farmsteads", "This dirt road seems to lead out of town passing a few farmsteads on the way. Crows surround the homes that seem abandoned. One farmhouse stands out a strange glow pulsing from the property.");
 	Location jeremiahsFarmFront("Jeremiah's Farm", "The farm of a man known as Jeremiah.", "A squat farmhouse sits nestled between rows of dessicated crops. You can see a strange pulsing blue light emanating from behind the farmhouse.");
 	Location jeremiahsFarmRear("", "", "");
@@ -169,14 +173,68 @@ int main() {
 	Interactables doorMat("Door Mat", "A moldy looking door mat.", "Its a door mat.", false);
 	Interactables brokenCupboard("Broken Cupboard.", "Its hinges are busted and the door is hanging awkwardly", "Something is inside", false);
 	Interactables cupboard("Cupboard.", "It's a cupboard.", "There's food inside.", false);
-	Interactables largeChest("Large Chest", "A large chest. It's in pristine condition and the lock looks complicated.", "You know there has to be someting amazing inside.", false);
-	Interactables abandonedCrate1("Abandoned Crate", "A crate thats been abandoned.", "If you had a crowbar you could probably open this.", false);
-	Interactables abandonedCrate2("Abandoned Crate", "A crate thats been abandoned.", "If you had a crowbar you could probably open this.", false);
-	Interactables abandonedCrate3("Abandoned Crate", "A crate thats been abandoned.", "If you had a crowbar you could probably open this.", false);
+	Interactables largeChest("Large Chest", "A large chest. It's in pristine condition and the lock looks complicated.", "You know there has to be someting amazing inside. If only you could find the key.", false);
+	Interactables abandonedCrate1("Small Abandoned Crate", "A crate thats been abandoned.", "If you had a crowbar you could probably open this.", false);
+	Interactables abandonedCrate2("Medium Abandoned Crate", "A crate thats been abandoned.", "If you had a crowbar you could probably open this.", false);
+	Interactables abandonedCrate3("Large Abandoned Crate", "A crate thats been abandoned.", "If you had a crowbar you could probably open this.", false);
 	Interactables looseDirt1("Loose Dirt", "An area of loose dirt. Something might be buried here.", "If you had a shovel you could try digging here.", false);
 	Interactables looseDirt2("Loose Dirt", "An area of loose dirt. Something might be buried here.", "If you had a shovel you could try digging here.", false);
 	Interactables looseDirt3("Loose Dirt", "An area of loose dirt. Something might be buried here.", "If you had a shovel you could try digging here.", false);
 	Interactables lockedChain("Locked Chain", "A large, heavy chain, with a large heavy lock.", "There should be a key somewhere.", false);
+
+	boarsHeadBarkeep.m_Healing.push_back(&bread);
+	boarsHeadBarkeep.m_Healing.push_back(&bread);
+	boarsHeadBarkeep.m_Healing.push_back(&bread);
+	boarsHeadBarkeep.m_Healing.push_back(&bread);
+	boarsHeadBarkeep.m_Healing.push_back(&cheese);
+	boarsHeadBarkeep.m_Healing.push_back(&cheese);
+	boarsHeadBarkeep.m_Healing.push_back(&cheese);
+	boarsHeadBarkeep.m_Healing.push_back(&cheese);
+	boarsHeadBarkeep.m_Healing.push_back(&ale);
+	boarsHeadBarkeep.m_Healing.push_back(&ale);
+	boarsHeadBarkeep.m_Healing.push_back(&ale);
+	boarsHeadBarkeep.m_Healing.push_back(&ale);
+	boarsHeadBarkeep.m_Healing.push_back(&rations);
+	boarsHeadBarkeep.m_Healing.push_back(&rations);
+	boarsHeadBarkeep.m_Healing.push_back(&rations);
+	boarsHeadBarkeep.m_Healing.push_back(&rations);
+
+	strangeTrader.m_Weapons.push_back(&rapier);
+	strangeTrader.m_Weapons.push_back(&longsword);
+	strangeTrader.m_Weapons.push_back(&warhammer);
+	strangeTrader.m_Weapons.push_back(&dagger);
+	strangeTrader.m_Weapons.push_back(&brassKnuckles);
+	strangeTrader.m_Weapons.push_back(&elvenRapier);
+	strangeTrader.m_Weapons.push_back(&dwarvenWarhammer);
+	strangeTrader.m_Weapons.push_back(&commandersLongsword);
+	strangeTrader.m_Weapons.push_back(&spikedKnuckles);
+	strangeTrader.m_Weapons.push_back(&cutthroatDagger);
+
+	strangeTrader.m_Armours.push_back(&studdedLeather);
+	strangeTrader.m_Armours.push_back(&breastplate);
+	strangeTrader.m_Armours.push_back(&wizardsRobes);
+	strangeTrader.m_Armours.push_back(&scaleMail);
+	strangeTrader.m_Armours.push_back(&martialArtistsUniform);
+	strangeTrader.m_Armours.push_back(&elvenLeather);
+	strangeTrader.m_Armours.push_back(&dwarvenPlate);
+	strangeTrader.m_Armours.push_back(&draconicBreastplate);
+	strangeTrader.m_Armours.push_back(&robeOfTheArchmage);
+	strangeTrader.m_Armours.push_back(&mastersRobe);
+
+	strangeTrader.m_Shields.push_back(&buckler);
+	strangeTrader.m_Shields.push_back(&kiteShield);
+
+	strangeTrader.m_SpellWeapons.push_back(&lute);
+	strangeTrader.m_SpellWeapons.push_back(&wand);
+	strangeTrader.m_SpellWeapons.push_back(&gibsonLute);
+	strangeTrader.m_SpellWeapons.push_back(&wizardsWand);
+
+	strangeTrader.m_Healing.push_back(&healingPotion);
+	strangeTrader.m_Healing.push_back(&healingPotion);
+	strangeTrader.m_Healing.push_back(&healingPotion);
+	strangeTrader.m_Healing.push_back(&healingPotion);
+	strangeTrader.m_Healing.push_back(&healingPotion);
+	
 	// POPULATE EXITS
 	preachersInterior.m_Exits.push_back(&preachersExterior);
 
@@ -237,6 +295,8 @@ int main() {
 
 	hunterPath.m_Interactables.push_back(&oldChest);
 	hunterPath.m_Interactables.push_back(&looseDirt2);
+
+	boarsHeadInterior.m_Interactables.push_back(&bed);
 
 	tradersHutExterior.m_Interactables.push_back(&doorMat);
 	tradersHutExterior.m_Interactables.push_back(&lockedDoor);
@@ -577,7 +637,8 @@ int main() {
 			_getch();
 			std::cout << "\n\nSo here is what I've gathered so far.\n\n";
 			_getch();
-			std::cout << "Your name is: " << player.GetName() << "\n";
+			DisplayStats(player);
+			/*std::cout << "Your name is: " << player.GetName() << "\n";
 			_getch();
 			std::cout << "Your ancestry is: " << player.GetCharacterAncestry(static_cast<characterAncestry>(ancestryChoice));
 			_getch();
@@ -597,7 +658,7 @@ int main() {
 			std::cout << "\nWIS: " << player.GetWisdom() << "\t\tModifier = " << player.GetModifier(player.GetWisdom());
 			std::cout << "\nCHA: " << player.GetCharisma() << "\t\tModifier = " << player.GetModifier(player.GetCharisma());
 			std::cout << "\n\nSpell Attack Ability: " << player.GetSpellAbility(static_cast<characterWarrior>(warriorChoice));
-			std::cout << "\nSpell Attack Modifier: " << player.GetSpellModifier(static_cast<characterWarrior>(warriorChoice));
+			std::cout << "\nSpell Attack Modifier: " << player.GetSpellModifier(static_cast<characterWarrior>(warriorChoice));*/
 			
 			player.SetEquippedArmour(&noArmour);
 			player.SetEquippedShield(&noShield);
@@ -983,6 +1044,10 @@ int main() {
 							player.SetHP(player.GetHP() + player.m_Healing[playerChoice - 1]->GetHpHealAmount());
 							std::cout << "You heal " << player.m_Healing[playerChoice - 1]->GetHpHealAmount() << " hp" << std::endl;
 							std::cout << player.GetHP() << "/" << player.GetMaxHP() << std::endl;
+							std::vector<Healing*>::iterator healingIter = std::find(player.m_Healing.begin(), player.m_Healing.end(), player.m_Healing[playerChoice - 1]);
+							if (healingIter != player.m_Healing.end()) {
+								player.m_Healing.erase(healingIter);
+							}
 							break;
 						}
 					case 6:
@@ -1238,6 +1303,10 @@ int main() {
 							player.SetHP(player.GetHP() + player.m_Healing[playerChoice - 1]->GetHpHealAmount());
 							std::cout << "You heal " << player.m_Healing[playerChoice - 1]->GetHpHealAmount() << " hp" << std::endl;
 							std::cout << player.GetHP() << "/" << player.GetMaxHP() << std::endl;
+							std::vector<Healing*>::iterator healingIter = std::find(player.m_Healing.begin(), player.m_Healing.end(), player.m_Healing[playerChoice - 1]);
+							if (healingIter != player.m_Healing.end()) {
+								player.m_Healing.erase(healingIter);
+							}
 							break;
 						}
 					case 6:
@@ -1539,6 +1608,10 @@ int main() {
 							player.SetHP(player.GetHP() + player.m_Healing[playerChoice - 1]->GetHpHealAmount());
 							std::cout << "You heal " << player.m_Healing[playerChoice - 1]->GetHpHealAmount() << " hp" << std::endl;
 							std::cout << player.GetHP() << "/" << player.GetMaxHP() << std::endl;
+							std::vector<Healing*>::iterator healingIter = std::find(player.m_Healing.begin(), player.m_Healing.end(), player.m_Healing[playerChoice - 1]);
+							if (healingIter != player.m_Healing.end()) {
+								player.m_Healing.erase(healingIter);
+							}
 							break;
 						}
 					case 6:
@@ -1642,15 +1715,18 @@ int main() {
 					}
 				} while (playerChoice != 4 && player.GetHP() != 0);
 			}
-			// MISTY HOLLOW SOUTH
+			// MISTY HOLLOW 
+			//mistyHollow.m_Enemies.push_back(&goblin2);//hunters path
+			//mistyHollow.m_Enemies.push_back(&goblin3);// boars head exterior
+			//mistyHollow.m_Enemies.push_back(&goblin4);// abandoned crate 1
+			//mistyHollow.m_Enemies.push_back(&goblin5);// abandoned crate 2
+			//mistyHollow.m_Enemies.push_back(&goblin6);// abandoned crate 3
+			//mistyHollow.m_Enemies.push_back(&corruptedDog2);//farm road
 			if (currentLocation == &mistyHollow && player.GetHP() != 0) {
 				
 				do {
 					std::cout << std::endl << currentLocation->m_Name << "\n--------------------------\n";
 					std::cout << currentLocation->m_ShortDescription << std::endl;
-					if (!goblin1.GetEnemyDead()) {
-						"\nYou can hear cackling on the road ahead.";
-					}
 
 					std::cout << "\n\n[1] Look\n";
 					std::cout << "[2] Interact\n";
@@ -1666,134 +1742,254 @@ int main() {
 					std::vector<std::string>::iterator iter;
 
 					switch (playerChoice) {
+					//LOOK
 					case 1:
-						do {
-							if (!goblin1.GetEnemyDead()) {
-								std::cout << "\n" << currentLocation->m_LongDescription;
-								std::cout << "\nYou can see " << goblin1.GetName() << " blocking the way forward.";
-								std::cout << "\n\n[0] Back\n";
-								std::cout << "\n[1] Look";
-								std::cout << "\n[2] Fight";
-								std::cout << "\n[3] Talk";
-								playerChoice = askNumber("> ", 3, 0);
-								switch (playerChoice) {
-								case 0:
-									break;
-								case 1:
-									std::cout << goblin1.GetEnemyDescription();
-									break;
-								case 2:
-									CombatEnemy(player, goblin1);
-									goblin1.SetEnemyDead(true);
-									break;
-								case 3:
-									std::cout << "You try and speak to the creature. It turns and attacks you!";
-									CombatEnemy(player, goblin1);
-									if (player.GetHP() > 0) {
-										goblin1.SetEnemyDead(true);
-									}
-									break;
-								}
+							std::cout << "\n" << currentLocation->m_LongDescription;
+							if (!goblin2.GetEnemyDead()) {
+								std::cout << "\nYou can see a " << goblin2.GetName() << " blocking the way to the Hunter's Path.";
 							}
-							else {
-								std::cout << "\n" << currentLocation->m_LongDescription;
+							if (!goblin3.GetEnemyDead()) {
+								std::cout << "\nYou can see a " << goblin3.GetName() << " blocking the way to the Boar's Head Inn.";
 							}
-						} while (playerChoice != 0 && !goblin1.GetEnemyDead());
+							if (!goblin4.GetEnemyDead()) {
+								std::cout << "\nYou can see a " << goblin4.GetName() << " trying to open " << abandonedCrate1.GetInteractableName();
+							}
+							if (!goblin5.GetEnemyDead()) {
+								std::cout << "\nYou can see a " << goblin5.GetName() << " trying to open " << abandonedCrate2.GetInteractableName();
+							}
+							if (!goblin6.GetEnemyDead()) {
+								std::cout << "\nYou can see a " << goblin6.GetName() << " trying to open " << abandonedCrate3.GetInteractableName();
+							}
+							if (!corruptedDog2.GetEnemyDead()) {
+								std::cout << "\nYou can see a " << corruptedDog2.GetName() << " blocking the way to the Farm Road.";
+							}
+							if (!corruptedDog1.GetEnemyDead()) {
+								std::cout << "\nYou can see a " << corruptedDog1.GetName() << " blocking the way to the Old Road.";
+							}
 						break;
+					// INTERACT
 					case 2:
 						do {
 							currentLocation->DisplayInteractables();
-							playerChoice = askNumber("Choose a number: ", 2, 0);
+							playerChoice = askNumber("Choose a number: ", 3, 0);
 
 							switch (playerChoice) {
 							case 0:
 								break;
 							case 1:
-								if (!oldChest.GetContainerEmpty()) {
+								if (!goblin4.GetEnemyDead()) {
+									std::cout << "A " << goblin4.GetName() << " blocks the way! He is struggling to open the crate.";
+									playerChoice = askNumber("\nWhat do you want to do?\n[0] Back\n[1] Fight\n[2] Talk\n", 2, 0);
+									switch (playerChoice) {
+									case 0:
+										break;
+									case 1:
+										CombatEnemy(player, goblin4);
+										if (player.GetHP() != 0) {
+											goblin4.SetEnemyDead(true);
+											std::cout << std::endl << "Items Collected!" << std::endl;
+											player.m_Weapons.push_back(&goblinShortSword);
+											player.m_Armours.push_back(&wornLeather);
+										}
+										break;
+									case 2:
+										std::cout << std::endl << "You try to talk to the creature. It turns and attacks!" << std::endl;
+										CombatEnemy(player, goblin4);
+										if (player.GetHP() != 0) {
+											goblin4.SetEnemyDead(true);
+											std::cout << std::endl << "Items Collected!" << std::endl;
+											player.m_Weapons.push_back(&goblinShortSword);
+											player.m_Armours.push_back(&wornLeather);
+										}
+										break;
+									}
+								}
+								else if (!abandonedCrate1.GetContainerEmpty()) {
 									itemIter = std::find(player.m_Items.begin(), player.m_Items.end(), static_cast<Item*>(&crowbar));
 									if (itemIter == player.m_Items.end()) {
-										std::cout << oldChest.GetInteractableDescription();
-										std::cout << oldChest.GetInteractableInteraction();
+										std::cout << abandonedCrate1.GetInteractableDescription();
+										std::cout << abandonedCrate1.GetInteractableInteraction();
+										break;
 									}
 									else {
 										std::cout << "\n\nYou jam a crowbar into the lid and push. The lock breaks and the lid opens!";
-										std::cout << "\nYou find a " << elvenRapier.GetItemName() << ", " << dwarvenPlate.GetItemName() << ", a " << wizardsWand.GetItemName() << " and a " << goldPouch.GetItemName() << " containing 500 gold!" << std::endl;
+										std::cout << "\nYou find " << cheese.GetItemName() << ", " << bread.GetItemName() << ", and a " << dagger.GetItemName() << std::endl;
 										std::cout << std::endl << "ITEMS COLLECTED!" << std::endl;
-										player.m_Weapons.push_back(&elvenRapier);
-										player.m_Armours.push_back(&dwarvenPlate);
-										player.m_SpellWeapons.push_back(&wizardsWand);
-										player.SetCharacterGold(player.GetCharacterGold() + 500);
-										std::cout << "\n500 gold added to your pouch!";
-										oldChest.SetContainerEmpty(true);
+										player.m_Healing.push_back(&cheese);
+										player.m_Healing.push_back(&bread);
+										player.m_Weapons.push_back(&dagger);
+										abandonedCrate1.SetContainerEmpty(true);
+										break;
 									}
 								}
 								else {
 									std::cout << "\nThe chest seems to be empty.";
+									break;
 								}
 								break;
-								break;
 							case 2:
-								if (!looseDirt2.GetContainerEmpty()) {
-									itemIter = std::find(player.m_Items.begin(), player.m_Items.end(), static_cast<Item*>(&shovel));
+								if (!goblin5.GetEnemyDead()) {
+									std::cout << "A " << goblin5.GetName() << " blocks the way! He is struggling to open the crate.";
+									playerChoice = askNumber("\nWhat do you want to do?\n[0] Back\n[1] Fight\n[2] Talk\n", 2, 0);
+									switch (playerChoice) {
+									case 0:
+										break;
+									case 1:
+										CombatEnemy(player, goblin5);
+										if (player.GetHP() != 0) {
+											goblin5.SetEnemyDead(true);
+											std::cout << std::endl << "Items Collected!" << std::endl;
+											player.m_Weapons.push_back(&goblinShortSword);
+											player.m_Armours.push_back(&wornLeather);
+										}
+										break;
+									case 2:
+										std::cout << std::endl << "You try to talk to the creature. It turns and attacks!" << std::endl;
+										CombatEnemy(player, goblin5);
+										if (player.GetHP() != 0) {
+											goblin5.SetEnemyDead(true);
+											std::cout << std::endl << "Items Collected!" << std::endl;
+											player.m_Weapons.push_back(&goblinShortSword);
+											player.m_Armours.push_back(&wornLeather);
+										}
+										break;
+									}
+								}
+								else if (!abandonedCrate2.GetContainerEmpty()) {
+									itemIter = std::find(player.m_Items.begin(), player.m_Items.end(), static_cast<Item*>(&crowbar));
 									if (itemIter == player.m_Items.end()) {
-										std::cout << looseDirt2.GetInteractableDescription();
-										std::cout << looseDirt2.GetInteractableInteraction();
+										std::cout << abandonedCrate2.GetInteractableDescription();
+										std::cout << abandonedCrate2.GetInteractableInteraction();
+										break;
 									}
 									else {
-										std::cout << "\n\nYou use a shovel to dig the loose dirt.";
-										std::cout << "\nYou find a " << goldPouch.GetItemName() << goldPouch.GetItemDescription();
-										player.SetCharacterGold(player.GetCharacterGold() + 100);
-										std::cout << "\n100 gold added to your pouch!";
-										looseDirt2.SetContainerEmpty(true);
+										std::cout << "\n\nYou jam a crowbar into the lid and push. The lock breaks and the lid opens!";
+										std::cout << "\nYou find a " << lute.GetItemName() << ", a " << healingPotion.GetItemName() << ", and " << studdedLeather.GetItemName() << std::endl;
+										std::cout << std::endl << "ITEMS COLLECTED!" << std::endl;
+										player.m_SpellWeapons.push_back(&lute);
+										player.m_Healing.push_back(&healingPotion);
+										player.m_Armours.push_back(&studdedLeather);
+										abandonedCrate2.SetContainerEmpty(true);
+										break;
 									}
 								}
 								else {
-									std::cout << "\nThe hole seems to be empty.";
+									std::cout << "\nThe chest seems to be empty.";
+									break;
 								}
 								break;
+							case 3:
+								if (!goblin6.GetEnemyDead()) {
+									std::cout << "A " << goblin6.GetName() << " blocks the way! He is struggling to open the crate.";
+									playerChoice = askNumber("\nWhat do you want to do?\n[0] Back\n[1] Fight\n[2] Talk\n", 2, 0);
+									switch (playerChoice) {
+									case 0:
+										break;
+									case 1:
+										CombatEnemy(player, goblin6);
+										if (player.GetHP() != 0) {
+											goblin6.SetEnemyDead(true);
+											std::cout << std::endl << "Items Collected!" << std::endl;
+											player.m_Weapons.push_back(&goblinShortSword);
+											player.m_Armours.push_back(&wornLeather);
+										}
+										break;
+									case 2:
+										std::cout << std::endl << "You try to talk to the creature. It turns and attacks!" << std::endl;
+										CombatEnemy(player, goblin6);
+										if (player.GetHP() != 0) {
+											goblin6.SetEnemyDead(true);
+											std::cout << std::endl << "Items Collected!" << std::endl;
+											player.m_Weapons.push_back(&goblinShortSword);
+											player.m_Armours.push_back(&wornLeather);
+										}
+										break;
+									}
+								}
+								else if (!abandonedCrate3.GetContainerEmpty()) {
+									itemIter = std::find(player.m_Items.begin(), player.m_Items.end(), static_cast<Item*>(&crowbar));
+									if (itemIter == player.m_Items.end()) {
+										std::cout << abandonedCrate3.GetInteractableDescription();
+										std::cout << abandonedCrate3.GetInteractableInteraction();
+										break;
+									}
+									else {
+										std::cout << "\n\nYou jam a crowbar into the lid and push. The lock breaks and the lid opens!";
+										std::cout << "\nYou find a " << mastersRobe.GetItemName() << ", a " << dwarvenWarhammer.GetItemName() << ", and " << robeOfTheArchmage.GetItemName() << std::endl;
+										std::cout << std::endl << "ITEMS COLLECTED!" << std::endl;
+										player.m_Armours.push_back(&mastersRobe);
+										player.m_Weapons.push_back(&dwarvenWarhammer);
+										player.m_Armours.push_back(&robeOfTheArchmage);
+										abandonedCrate2.SetContainerEmpty(true);
+										break;
+									}
+								}
 							}
+							break;
 						} while (playerChoice != 0);
 						break;
+					// TALK
 					case 3:
-						if (!goblin1.GetEnemyDead()) {
-							std::cout << "\nYou speak out. A " << goblin1.GetName() << " attacks!";
-							CombatEnemy(player, goblin1);
-							if (player.GetHP() > 0) {
-								goblin1.SetEnemyDead(true);
-							}
-						}
-						else {
-							std::cout << std::endl << "There's no one to talk to." << std::endl;
-						}
+						std::cout << std::endl << "There is no one to talk to." << std::endl;
 						break;
+					// MOVE
 					case 4:
 						int moveChoice;
 						currentLocation->DisplayExits();
-						moveChoice = askNumber("\nWhere would you like to go?", 2, 0);
+						moveChoice = askNumber("\nWhere would you like to go?", 4, 0);
 						switch (moveChoice) {
 						case 0:
 							break;
 						case 1:
-							currentLocation = currentLocation->m_Exits[moveChoice - 1];
-							break;
-						case 2:
-							if (!goblin1.GetEnemyDead()) {
-								std::cout << "\nA " << goblin1.GetName() << " blocks the way!";
+							if (!corruptedDog1.GetEnemyDead()) {
+								std::cout << "\nA " << corruptedDog1.GetName() << " blocks the way!" << std::endl;
 								playerChoice = askNumber("What do you do?\n[0] Back\n[1] Fight\n[2] Talk", 2, 0);
 								switch (playerChoice) {
 								case 0:
 									break;
 								case 1:
-									CombatEnemy(player, goblin1);
+									CombatEnemy(player, corruptedDog1);
 									if (player.GetHP() > 0) {
-										goblin1.SetEnemyDead(true);
+										corruptedDog1.SetEnemyDead(true);
 									}
 									break;
 								case 2:
 									std::cout << "You try and speak to the creature. It turns and attacks you!";
-									CombatEnemy(player, goblin1);
+									CombatEnemy(player, corruptedDog1);
 									if (player.GetHP() > 0) {
-										goblin1.SetEnemyDead(true);
+										corruptedDog1.SetEnemyDead(true);
+									}
+									break;
+								}
+							}
+							else {
+								currentLocation = currentLocation->m_Exits[moveChoice - 1];
+							}
+							break;
+						case 2:
+							if (!goblin3.GetEnemyDead()) {
+								std::cout << "\nA " << goblin3.GetName() << " blocks the way!";
+								playerChoice = askNumber("What do you do?\n[0] Back\n[1] Fight\n[2] Talk", 2, 0);
+								switch (playerChoice) {
+								case 0:
+									break;
+								case 1:
+									CombatEnemy(player, goblin3);
+									if (player.GetHP() > 0) {
+										goblin3.SetEnemyDead(true);
+										std::cout << std::endl << "Items Collected!" << std::endl;
+										player.m_Weapons.push_back(&goblinShortSword);
+										player.m_Armours.push_back(&wornLeather);
+									}
+									break;
+								case 2:
+									std::cout << "You try and speak to the creature. It turns and attacks you!";
+									CombatEnemy(player, goblin3);
+									if (player.GetHP() > 0) {
+										goblin3.SetEnemyDead(true);
+										std::cout << std::endl << "Items Collected!" << std::endl;
+										player.m_Weapons.push_back(&goblinShortSword);
+										player.m_Armours.push_back(&wornLeather);
 									}
 									break;
 								}
@@ -1813,6 +2009,9 @@ int main() {
 									CombatEnemy(player, goblin2);
 									if (player.GetHP() > 0) {
 										goblin2.SetEnemyDead(true);
+										std::cout << std::endl << "Items Collected!" << std::endl;
+										player.m_Weapons.push_back(&goblinShortSword);
+										player.m_Armours.push_back(&wornLeather);
 									}
 									break;
 								case 2:
@@ -1820,6 +2019,9 @@ int main() {
 									CombatEnemy(player, goblin2);
 									if (player.GetHP() > 0) {
 										goblin2.SetEnemyDead(true);
+										std::cout << std::endl << "Items Collected!" << std::endl;
+										player.m_Weapons.push_back(&goblinShortSword);
+										player.m_Armours.push_back(&wornLeather);
 									}
 									break;
 								}
@@ -1828,8 +2030,35 @@ int main() {
 								currentLocation = currentLocation->m_Exits[moveChoice - 1];
 								break;
 							}
+						case 4:
+							if (!corruptedDog2.GetEnemyDead()) {
+								std::cout << "\nA " << corruptedDog2.GetName() << " blocks the way!" << std::endl;
+								playerChoice = askNumber("What do you do?\n[0] Back\n[1] Fight\n[2] Talk", 2, 0);
+								switch (playerChoice) {
+								case 0:
+									break;
+								case 1:
+									CombatEnemy(player, corruptedDog2);
+									if (player.GetHP() > 0) {
+										corruptedDog2.SetEnemyDead(true);
+									}
+									break;
+								case 2:
+									std::cout << "You try and speak to the creature. It turns and attacks you!";
+									CombatEnemy(player, corruptedDog2);
+									if (player.GetHP() > 0) {
+										corruptedDog2.SetEnemyDead(true);
+									}
+									break;
+								}
+							}
+							else {
+								currentLocation = currentLocation->m_Exits[moveChoice - 1];
+							}
+							break;
 						}
 						break;
+					// HEALING
 					case 5:
 						std::cout << player.GetHP() << "/" << player.GetMaxHP();
 						player.DisplayHealingItems();
@@ -1841,14 +2070,21 @@ int main() {
 							player.SetHP(player.GetHP() + player.m_Healing[playerChoice - 1]->GetHpHealAmount());
 							std::cout << "You heal " << player.m_Healing[playerChoice - 1]->GetHpHealAmount() << " hp" << std::endl;
 							std::cout << player.GetHP() << "/" << player.GetMaxHP() << std::endl;
+							std::vector<Healing*>::iterator healingIter = std::find(player.m_Healing.begin(), player.m_Healing.end(), player.m_Healing[playerChoice - 1]);
+							if (healingIter != player.m_Healing.end()) {
+								player.m_Healing.erase(healingIter);
+							}
 							break;
 						}
+					// DISPLAY OBJECTIVES
 					case 6:
 						DisplayObjectives(Objectives);
 						break;
+					// DISPLAY INVENTORY
 					case 7:
 						player.DisplayInventory();
 						break;
+					// EQUIP
 					case 8:
 						player.DisplayEquippedWeapon();
 						player.DisplayEquippedArmour();
@@ -1921,6 +2157,7 @@ int main() {
 							} while (playerChoice != 0);
 						}
 						break;
+					// DISPLAY STATS
 					case 9:
 						std::cout << "\nName: " << player.GetName();
 						std::cout << "\nAncestry: " << player.GetCharacterAncestry(static_cast<characterAncestry>(ancestryChoice));
@@ -1944,14 +2181,664 @@ int main() {
 					}
 				} while (playerChoice != 4 && player.GetHP() != 0);
 			}
+			// BOAR'S HEAD EXTERIOR
 			if (currentLocation == &boarsHeadExterior && player.GetHP() != 0) {
+				do {
+					std::cout << std::endl << currentLocation->m_Name << "\n--------------------------\n";
+					std::cout << currentLocation->m_ShortDescription << std::endl;
 
+					std::cout << "\n\n[1] Look\n";
+					std::cout << "[2] Interact\n";
+					std::cout << "[3] Talk\n";
+					std::cout << "[4] Move\n";
+					std::cout << "[5] Use Health Items\n";
+					std::cout << "[6] Display Objectives\n";
+					std::cout << "[7] Display Inventory\n";
+					std::cout << "[8] Display Equipped Items\n";
+					std::cout << "[9] Display Character Stats\n";
+					playerChoice = askNumber("> ", 9, 1);
+
+					std::vector<std::string>::iterator iter;
+
+					switch (playerChoice) {
+					//LOOK
+					case 1:
+						std::cout << "\n" << currentLocation->m_LongDescription;
+						break;
+					// INTERACT
+					case 2:
+						std::cout << std::endl << "There is nothing to interact with." << std::endl;
+						break;
+					// TALK
+					case 3:
+						std::cout << std::endl << "There is no one to talk to." << std::endl;
+						break;
+					// MOVE
+					case 4:
+						int moveChoice;
+						currentLocation->DisplayExits();
+						moveChoice = askNumber("\nWhere would you like to go?", 2, 0);
+						switch (moveChoice) {
+						case 0:
+							break;
+						case 1:
+							currentLocation = currentLocation->m_Exits[moveChoice - 1];
+							break;
+						case 2:
+							currentLocation = currentLocation->m_Exits[moveChoice - 1];
+							break;
+						}
+						break;
+					// HEALING
+					case 5:
+						std::cout << player.GetHP() << "/" << player.GetMaxHP();
+						player.DisplayHealingItems();
+						playerChoice = askNumber("\n\nWhat would you like to use to heal?\n[0] Back", player.m_Healing.size(), 0);
+						if (playerChoice == 0) {
+							break;
+						}
+						else {
+							player.SetHP(player.GetHP() + player.m_Healing[playerChoice - 1]->GetHpHealAmount());
+							std::cout << "You heal " << player.m_Healing[playerChoice - 1]->GetHpHealAmount() << " hp" << std::endl;
+							std::cout << player.GetHP() << "/" << player.GetMaxHP() << std::endl;
+							std::vector<Healing*>::iterator healingIter = std::find(player.m_Healing.begin(), player.m_Healing.end(), player.m_Healing[playerChoice - 1]);
+							if (healingIter != player.m_Healing.end()) {
+								player.m_Healing.erase(healingIter);
+							}
+							break;
+						}
+					// DISPLAY OBJECTIVES
+					case 6:
+						DisplayObjectives(Objectives);
+						break;
+					// DISPLAY INVENTORY
+					case 7:
+						player.DisplayInventory();
+						break;
+					// EQUIP
+					case 8:
+						player.DisplayEquippedWeapon();
+						player.DisplayEquippedArmour();
+						player.DisplayEquippedShield();
+						player.DisplayEquippedSpellWeapon();
+						playerChoice = askNumber("\n[0] Back\n[1] Change Equipment\n", 1, 0);
+						switch (playerChoice) {
+						case 0:
+							break;
+						case 1:
+							do {
+								std::cout << "\n\nWhat would you like to equip?";
+								std::cout << "\n[0] Back";
+								std::cout << "\n[1] Weapon";
+								std::cout << "\n[2] Armour";
+								std::cout << "\n[3] Shield";
+								std::cout << "\n[4] Spell Weapon";
+								playerChoice = askNumber("", 4, 0);
+
+								switch (playerChoice) {
+								case 0:
+									break;
+								case 1:
+									player.DisplayEquippedWeapon();
+									player.DisplayWeapons();
+									weaponChoice = askNumber("\n\nWhat would you like to equip?\n", player.m_Weapons.size(), 1);
+									player.SetEquippedWeapon(player.m_Weapons[weaponChoice - 1]);
+									player.m_Weapons[weaponChoice - 1]->SetToHitBonus(player.m_Weapons[weaponChoice - 1]->GetToHitBonus());
+									player.m_Weapons[weaponChoice - 1]->SetDamage(player.m_Weapons[weaponChoice - 1]->GetDamage());
+									player.DisplayEquippedWeapon();
+									continue;
+								case 2:
+									player.DisplayEquippedArmour();
+									player.DisplayArmour();
+									armourChoice = askNumber("\n\nWhat would you like to equip?", player.m_Armours.size(), 1);
+									if (player.GetModifier(player.GetStrength()) < player.m_Armours[armourChoice - 1]->GetStrengthRequirement()) {
+										std::cout << "\nYou do not have the strength to wear this armour.\n" << std::endl;
+										continue;
+									}
+									else {
+										player.SetEquippedArmour(player.m_Armours[armourChoice - 1]);
+										player.SetArmorClass(10 + player.GetEquippedArmour()->GetACBonus() + player.GetEquippedShield()->GetACBonus() + player.GetModifier(player.GetDexterity()));
+										player.DisplayEquippedArmour();
+										continue;
+									}
+								case 3:
+									player.DisplayEquippedShield();
+									player.DisplayShields();
+									shieldChoice = askNumber("\n\nWhat would you like to equip?", player.m_Shields.size(), 1);
+									if (player.GetModifier(player.GetStrength()) < player.m_Shields[shieldChoice - 1]->GetStrengthRequirement()) {
+										std::cout << "\nYou do not have the strength to use this shield.\n" << std::endl;
+										continue;
+									}
+									else {
+										player.SetEquippedShield(player.m_Shields[shieldChoice - 1]);
+										player.SetArmorClass(10 + player.GetEquippedArmour()->GetACBonus() + player.GetEquippedShield()->GetACBonus() + player.GetModifier(player.GetDexterity()));
+										player.DisplayEquippedShield();
+										continue;
+									}
+								case 4:
+									player.DisplayEquippedSpellWeapon();
+									player.DisplaySpellWeapons();
+									spellWeaponChoice = askNumber("\n\nWhat would you like to equip?", player.m_SpellWeapons.size(), 1);
+									player.SetEquippedSpellWeapon(player.m_SpellWeapons[spellWeaponChoice - 1]);
+									player.m_SpellWeapons[spellWeaponChoice - 1]->SetToHitBonus(player.m_SpellWeapons[spellWeaponChoice - 1]->GetToHitBonus());
+									player.m_SpellWeapons[spellWeaponChoice - 1]->SetDamage(player.m_SpellWeapons[spellWeaponChoice - 1]->GetDamage());
+									player.DisplayEquippedSpellWeapon();
+									continue;
+								}
+							} while (playerChoice != 0);
+						}
+						break;
+					// DISPLAY STATS
+					case 9:
+						std::cout << "\nName: " << player.GetName();
+						std::cout << "\nAncestry: " << player.GetCharacterAncestry(static_cast<characterAncestry>(ancestryChoice));
+						std::cout << "\nClass: " << player.GetCharacterWarrior(static_cast<characterWarrior>(warriorChoice));
+						std::cout << "\n\nLevel: " << player.GetCharacterLevel();
+						std::cout << "\nCurrent Experience Points: " << player.GetCharacterEXP();
+						std::cout << "\nHit Points: " << player.GetHP() << "/" << player.GetMaxHP();
+						std::cout << "\nArmour Class: " << player.GetArmorClass();
+						std::cout << "\nGold: " << player.GetCharacterGold();
+						std::cout << "\n\nABILITY SCORES\n";
+						std::cout << "------------------------------";
+						std::cout << "\nSTR: " << player.GetStrength() << "\t\tModifier = " << player.GetModifier(player.GetStrength());
+						std::cout << "\nDEX: " << player.GetDexterity() << "\t\tModifier = " << player.GetModifier(player.GetDexterity());
+						std::cout << "\nCON: " << player.GetConstitution() << "\t\tModifier = " << player.GetModifier(player.GetConstitution());
+						std::cout << "\nINT: " << player.GetIntelligence() << "\t\tModifier = " << player.GetModifier(player.GetIntelligence());
+						std::cout << "\nWIS: " << player.GetWisdom() << "\t\tModifier = " << player.GetModifier(player.GetWisdom());
+						std::cout << "\nCHA: " << player.GetCharisma() << "\t\tModifier = " << player.GetModifier(player.GetCharisma());
+						std::cout << "\n\nSpell Attack Ability: " << player.GetSpellAbility(static_cast<characterWarrior>(warriorChoice));
+						std::cout << "\nSpell Attack Modifier: " << player.GetSpellModifier(static_cast<characterWarrior>(warriorChoice));
+						break;
+					}
+				} while (playerChoice != 4 && player.GetHP() != 0);
 			}
+			// BOAR'S HEAD INTERIOR
 			if (currentLocation == &boarsHeadInterior && player.GetHP() != 0) {
+				do {
+					std::cout << std::endl << currentLocation->m_Name << "\n--------------------------\n";
+					std::cout << currentLocation->m_ShortDescription << std::endl;
 
+					std::cout << "\n\n[1] Look\n";
+					std::cout << "[2] Interact\n";
+					std::cout << "[3] Talk\n";
+					std::cout << "[4] Move\n";
+					std::cout << "[5] Use Health Items\n";
+					std::cout << "[6] Display Objectives\n";
+					std::cout << "[7] Display Inventory\n";
+					std::cout << "[8] Display Equipped Items\n";
+					std::cout << "[9] Display Character Stats\n";
+					playerChoice = askNumber("> ", 9, 1);
+
+					std::vector<std::string>::iterator iter;
+
+					switch (playerChoice) {
+					//LOOK
+					case 1:
+						std::cout << "\n" << currentLocation->m_LongDescription;
+						break;
+					// INTERACT
+					case 2:
+						currentLocation->DisplayInteractables();
+						playerChoice = askNumber("Choose a number: ", 1, 0);
+
+						switch (playerChoice) {
+						case 0:
+							break;
+						case 1:
+							std::cout << "\n\nYou rest.\n";
+							player.SetHP(player.GetMaxHP());
+							std::cout << "Hit Points reset: ";
+							std::cout << player.GetHP();
+							std::cout << "\nYou are fully healed\n\n";
+							break;
+						}
+					// TALK
+					case 3:
+						std::cout << std::endl << "Who would you like to talk to?";
+						playerChoice = askNumber("\n[0] Back\n[1] Barkeep\n[2] Loud Patron\n[3] Hysterical Patron", 3, 0);
+						switch (playerChoice) {
+						case 0:
+							break;
+						case 1:
+							std::cout << std::endl << "Barkeep: Hello there. What can I get ya?";
+							playerChoice = askNumber("\n[0] Back\n[1] Buy/Sell\n[2] Is there a trader around here?\n[3] What do you know about the thing that fell on Jeremiah's farm?", 3, 0);
+							switch (playerChoice) {
+							case 0:
+								break;
+							case 1:
+								std::cout << std::endl << "Barkeep: Sure thing.";
+								Merchant(player, boarsHeadBarkeep);
+								break;
+							case 2:
+								std::cout << std::endl << "Barkeep: Well I have food and drink for sale. \nBut if you're looking for weapons and armour I've heard tell of a trader just outside of town somewhere down the old hunter path.\nWatch out for goblins if you go that way.";
+								Objectives.push_back("Check out the trader beyond the hunter's path");
+								DisplayObjectives(Objectives);
+								break;
+							case 3:
+								std::cout << std::endl << "Barkeep: Strange that. Some stone fell from the sky the other night. Now folk've started going missing.\nAnd then Jeremiah himself shows up here acting crazy. Bit one of my patrons on the arm.\nWe had to wrestle him down, now he's locked up in the cellar.";
+								Objectives.push_back("Speak with Jeremiah");
+								DisplayObjectives(Objectives);
+								break;
+							}
+							break;
+						case 2:
+							std::cout << std::endl << "Loud Patron: This town is going to hell, I tell ya!";
+							playerChoice = askNumber("\n[0] Back\n[1] What do you mean?", 1, 0);
+							switch (playerChoice) {
+							case 0:
+								break;
+							case 1:
+								std::cout << std::endl << "Loud Patron: Isn't it obvious! Between the constant goblin raids and this madness with Jeremiah it's only a matter of time. On top of that no one has heard from any of his farmhands in days.";
+								playerChoice = askNumber("\n[0] Back\n[1] Goblin Raids?\n[2] Jeremiah?\n[3] Farmhands?", 3, 0);
+								switch (playerChoice) {
+								case 0:
+									break;
+								case 1:
+									std::cout << std::endl << "Loud Patron: Yeah. The little shits have been terrorizing us for weeks. Would be great if someone drove them off.";
+									break;
+								case 2:
+									std::cout << std::endl << "Loud Patron: He bit one of the patrons! I swear there's a madness going around!";
+									break;
+								case 3:
+									std::cout << std::endl << "Loud Patron: Yeah the folks who work for Jeremiah.\nNormally they show up in town every few days to have drinks but they haven't been around in a few days.\nAnd with Jeremiah obviously losing his mind who knows what happened to them.";
+									break;
+							}
+								break;
+							}
+							break;
+						case 3:
+							std::cout << std::endl << "Hysterical Patron: He bit me! I can't believe he bit me!";
+							playerChoice = askNumber("\n[0] Back\n[1] Who bit you?", 1, 0);
+							switch (playerChoice) {
+							case 0:
+								break;
+							case 1:
+								std::cout << std::endl << "Hysterical Patron: The farmer Jeremiah! He came in here spewing nonsense about some voices he heard or something. I asked if he was okay and then he bit me!";
+								playerChoice = askNumber("\n[0] Back\n[1] Voices?", 1, 0);
+								switch (playerChoice) {
+								case 0:
+									break;
+								case 1:
+									std::cout << std::endl << "Hysterical Patron: I don't know. Why don't you go ask him! He's locked in the cellar.";
+									break;
+								}
+								break;
+							}
+							break;
+						}
+						break;
+					// MOVE
+					case 4:
+						int moveChoice;
+						currentLocation->DisplayExits();
+						moveChoice = askNumber("\nWhere would you like to go?", 2, 0);
+						switch (moveChoice) {
+						case 0:
+							break;
+						case 1:
+							currentLocation = currentLocation->m_Exits[moveChoice - 1];
+							break;
+						case 2:
+							currentLocation = currentLocation->m_Exits[moveChoice - 1];
+							break;
+						}
+						break;
+					// HEALING
+					case 5:
+						std::cout << player.GetHP() << "/" << player.GetMaxHP();
+						player.DisplayHealingItems();
+						playerChoice = askNumber("\n\nWhat would you like to use to heal?\n[0] Back", player.m_Healing.size(), 0);
+						if (playerChoice == 0) {
+							break;
+						}
+						else {
+							player.SetHP(player.GetHP() + player.m_Healing[playerChoice - 1]->GetHpHealAmount());
+							std::cout << "You heal " << player.m_Healing[playerChoice - 1]->GetHpHealAmount() << " hp" << std::endl;
+							std::cout << player.GetHP() << "/" << player.GetMaxHP() << std::endl;
+							std::vector<Healing*>::iterator healingIter = std::find(player.m_Healing.begin(), player.m_Healing.end(), player.m_Healing[playerChoice - 1]);
+							if (healingIter != player.m_Healing.end()) {
+								player.m_Healing.erase(healingIter);
+							}
+							break;
+						}
+						// DISPLAY OBJECTIVES
+					case 6:
+						DisplayObjectives(Objectives);
+						break;
+						// DISPLAY INVENTORY
+					case 7:
+						player.DisplayInventory();
+						break;
+						// EQUIP
+					case 8:
+						player.DisplayEquippedWeapon();
+						player.DisplayEquippedArmour();
+						player.DisplayEquippedShield();
+						player.DisplayEquippedSpellWeapon();
+						playerChoice = askNumber("\n[0] Back\n[1] Change Equipment\n", 1, 0);
+						switch (playerChoice) {
+						case 0:
+							break;
+						case 1:
+							do {
+								std::cout << "\n\nWhat would you like to equip?";
+								std::cout << "\n[0] Back";
+								std::cout << "\n[1] Weapon";
+								std::cout << "\n[2] Armour";
+								std::cout << "\n[3] Shield";
+								std::cout << "\n[4] Spell Weapon";
+								playerChoice = askNumber("", 4, 0);
+
+								switch (playerChoice) {
+								case 0:
+									break;
+								case 1:
+									player.DisplayEquippedWeapon();
+									player.DisplayWeapons();
+									weaponChoice = askNumber("\n\nWhat would you like to equip?\n", player.m_Weapons.size(), 1);
+									player.SetEquippedWeapon(player.m_Weapons[weaponChoice - 1]);
+									player.m_Weapons[weaponChoice - 1]->SetToHitBonus(player.m_Weapons[weaponChoice - 1]->GetToHitBonus());
+									player.m_Weapons[weaponChoice - 1]->SetDamage(player.m_Weapons[weaponChoice - 1]->GetDamage());
+									player.DisplayEquippedWeapon();
+									continue;
+								case 2:
+									player.DisplayEquippedArmour();
+									player.DisplayArmour();
+									armourChoice = askNumber("\n\nWhat would you like to equip?", player.m_Armours.size(), 1);
+									if (player.GetModifier(player.GetStrength()) < player.m_Armours[armourChoice - 1]->GetStrengthRequirement()) {
+										std::cout << "\nYou do not have the strength to wear this armour.\n" << std::endl;
+										continue;
+									}
+									else {
+										player.SetEquippedArmour(player.m_Armours[armourChoice - 1]);
+										player.SetArmorClass(10 + player.GetEquippedArmour()->GetACBonus() + player.GetEquippedShield()->GetACBonus() + player.GetModifier(player.GetDexterity()));
+										player.DisplayEquippedArmour();
+										continue;
+									}
+								case 3:
+									player.DisplayEquippedShield();
+									player.DisplayShields();
+									shieldChoice = askNumber("\n\nWhat would you like to equip?", player.m_Shields.size(), 1);
+									if (player.GetModifier(player.GetStrength()) < player.m_Shields[shieldChoice - 1]->GetStrengthRequirement()) {
+										std::cout << "\nYou do not have the strength to use this shield.\n" << std::endl;
+										continue;
+									}
+									else {
+										player.SetEquippedShield(player.m_Shields[shieldChoice - 1]);
+										player.SetArmorClass(10 + player.GetEquippedArmour()->GetACBonus() + player.GetEquippedShield()->GetACBonus() + player.GetModifier(player.GetDexterity()));
+										player.DisplayEquippedShield();
+										continue;
+									}
+								case 4:
+									player.DisplayEquippedSpellWeapon();
+									player.DisplaySpellWeapons();
+									spellWeaponChoice = askNumber("\n\nWhat would you like to equip?", player.m_SpellWeapons.size(), 1);
+									player.SetEquippedSpellWeapon(player.m_SpellWeapons[spellWeaponChoice - 1]);
+									player.m_SpellWeapons[spellWeaponChoice - 1]->SetToHitBonus(player.m_SpellWeapons[spellWeaponChoice - 1]->GetToHitBonus());
+									player.m_SpellWeapons[spellWeaponChoice - 1]->SetDamage(player.m_SpellWeapons[spellWeaponChoice - 1]->GetDamage());
+									player.DisplayEquippedSpellWeapon();
+									continue;
+								}
+							} while (playerChoice != 0);
+						}
+						break;
+						// DISPLAY STATS
+					case 9:
+						std::cout << "\nName: " << player.GetName();
+						std::cout << "\nAncestry: " << player.GetCharacterAncestry(static_cast<characterAncestry>(ancestryChoice));
+						std::cout << "\nClass: " << player.GetCharacterWarrior(static_cast<characterWarrior>(warriorChoice));
+						std::cout << "\n\nLevel: " << player.GetCharacterLevel();
+						std::cout << "\nCurrent Experience Points: " << player.GetCharacterEXP();
+						std::cout << "\nHit Points: " << player.GetHP() << "/" << player.GetMaxHP();
+						std::cout << "\nArmour Class: " << player.GetArmorClass();
+						std::cout << "\nGold: " << player.GetCharacterGold();
+						std::cout << "\n\nABILITY SCORES\n";
+						std::cout << "------------------------------";
+						std::cout << "\nSTR: " << player.GetStrength() << "\t\tModifier = " << player.GetModifier(player.GetStrength());
+						std::cout << "\nDEX: " << player.GetDexterity() << "\t\tModifier = " << player.GetModifier(player.GetDexterity());
+						std::cout << "\nCON: " << player.GetConstitution() << "\t\tModifier = " << player.GetModifier(player.GetConstitution());
+						std::cout << "\nINT: " << player.GetIntelligence() << "\t\tModifier = " << player.GetModifier(player.GetIntelligence());
+						std::cout << "\nWIS: " << player.GetWisdom() << "\t\tModifier = " << player.GetModifier(player.GetWisdom());
+						std::cout << "\nCHA: " << player.GetCharisma() << "\t\tModifier = " << player.GetModifier(player.GetCharisma());
+						std::cout << "\n\nSpell Attack Ability: " << player.GetSpellAbility(static_cast<characterWarrior>(warriorChoice));
+						std::cout << "\nSpell Attack Modifier: " << player.GetSpellModifier(static_cast<characterWarrior>(warriorChoice));
+						break;
+					}
+				} while (playerChoice != 4 && player.GetHP() != 0);
 			}
+			// BOARS HEAD CELLAR
 			if (currentLocation == &boarsHeadCellar && player.GetHP() != 0) {
+				do {
+					std::cout << std::endl << currentLocation->m_Name << "\n--------------------------\n";
+					std::cout << currentLocation->m_ShortDescription << std::endl;
 
+					std::cout << "\n\n[1] Look\n";
+					std::cout << "[2] Interact\n";
+					std::cout << "[3] Talk\n";
+					std::cout << "[4] Move\n";
+					std::cout << "[5] Use Health Items\n";
+					std::cout << "[6] Display Objectives\n";
+					std::cout << "[7] Display Inventory\n";
+					std::cout << "[8] Display Equipped Items\n";
+					std::cout << "[9] Display Character Stats\n";
+					playerChoice = askNumber("> ", 9, 1);
+
+					std::vector<std::string>::iterator iter;
+
+					switch (playerChoice) {
+						//LOOK
+					case 1:
+						std::cout << "\n" << currentLocation->m_LongDescription;
+						if (!huskOfJeremiah.GetEnemyDead()) {
+							std::cout << std::endl << "You can hear someone moving around in the shadows.";
+						}
+						break;
+						// INTERACT
+					case 2:
+						std::cout << std::endl << "There is nothing to interact with." << std::endl;
+						break;
+						// TALK
+					case 3:
+						if (!huskOfJeremiah.GetEnemyDead()) {
+							playerChoice = askNumber("\n[0] Back\n[1] Jeremiah?", 1, 0);
+							switch (playerChoice) {
+							case 0:
+								break;
+							case 1:
+								std::cout << std::endl << "You speak to the figure in the shadows. They turn towards you, moving slowly.";
+								std::cout << std::endl << "Jeremiah: Do you hear the voices?";
+								playerChoice = askNumber("\n[0] Back\n[1] Voices?\n[2] No", 2, 0);
+								switch (playerChoice) {
+								case 0:
+									break;
+								case 1:
+									std::cout << std::endl << "Jeremiah: Yes. They call to us. To all of us. They want us to join them. To become one with them. Won't you join us?";
+									playerChoice = askNumber("\n[0] Back\n[1] Hmm, I think I'll pass\n[2] Sure. Why not?", 2, 0);
+									switch (playerChoice) {
+									case 0:
+										break;
+									case 1:
+										std::cout << std::endl << "Jeremiah: A shame. It's so much easier when they're willing.";
+										std::cout << std::endl << "You hear a loud tearing sound as Jeremiah's flesh splits. Long black tentacles burst from beneath his skin and lash out at you!";
+										CombatBoss(player, huskOfJeremiah);
+										if (player.GetHP() > 0) {
+											huskOfJeremiah.SetEnemyDead(true);
+											std::vector<Item*>::iterator iter = std::find(player.m_Items.begin(), player.m_Items.end(), static_cast<Item*>(&ChainKey));
+											if (iter == player.m_Items.end()) {
+												std::cout << std::endl << "You found a " << ChainKey.GetItemName();
+												std::cout << std::endl << "Items Collected!";
+												player.m_Items.push_back(&ChainKey);
+											}
+										}
+										break;
+									case 2:
+										std::cout << std::endl << "Jeremiah: Wonderful! Here take this key. Once you've joined the fold come back to me. The rest will join soon.";
+										std::cout << std::endl << "Jeremiah hands you a " << ChainKey.GetItemName();
+										std::cout << std::endl << "Items Collected!";
+										player.m_Items.push_back(&ChainKey);
+										break;
+									}
+									break;
+								case 2:
+									std::cout << std::endl << "Jeremiah: Oh. Well you will. Soon enough.";
+									std::cout << std::endl << "You hear a loud tearing sound as Jeremiah's flesh splits. Long black tentacles burst from beneath his skin and lash out at you!";
+									CombatBoss(player, huskOfJeremiah);
+									if (player.GetHP() > 0) {
+										huskOfJeremiah.SetEnemyDead(true);
+										std::vector<Item*>::iterator iter = std::find(player.m_Items.begin(), player.m_Items.end(), static_cast<Item*>(&ChainKey));
+										if (iter == player.m_Items.end()) {
+											std::cout << std::endl << "You found a " << ChainKey.GetItemName();
+											std::cout << std::endl << "Items Collected!";
+											player.m_Items.push_back(&ChainKey);
+										}
+									}
+									break;
+								}
+							}
+							break;
+						}
+						else {
+						std::cout << std::endl << "There's no one to talk to.";
+						}
+						
+						// MOVE
+					case 4:
+						int moveChoice;
+						currentLocation->DisplayExits();
+						moveChoice = askNumber("\nWhere would you like to go?", 2, 0);
+						switch (moveChoice) {
+						case 0:
+							break;
+						case 1:
+							currentLocation = currentLocation->m_Exits[moveChoice - 1];
+							break;
+						case 2:
+							currentLocation = currentLocation->m_Exits[moveChoice - 1];
+							break;
+						}
+						break;
+						// HEALING
+					case 5:
+						std::cout << player.GetHP() << "/" << player.GetMaxHP();
+						player.DisplayHealingItems();
+						playerChoice = askNumber("\n\nWhat would you like to use to heal?\n[0] Back", player.m_Healing.size(), 0);
+						if (playerChoice == 0) {
+							break;
+						}
+						else {
+							player.SetHP(player.GetHP() + player.m_Healing[playerChoice - 1]->GetHpHealAmount());
+							std::cout << "You heal " << player.m_Healing[playerChoice - 1]->GetHpHealAmount() << " hp" << std::endl;
+							std::cout << player.GetHP() << "/" << player.GetMaxHP() << std::endl;
+							std::vector<Healing*>::iterator healingIter = std::find(player.m_Healing.begin(), player.m_Healing.end(), player.m_Healing[playerChoice - 1]);
+							if (healingIter != player.m_Healing.end()) {
+								player.m_Healing.erase(healingIter);
+							}
+							break;
+						}
+						// DISPLAY OBJECTIVES
+					case 6:
+						DisplayObjectives(Objectives);
+						break;
+						// DISPLAY INVENTORY
+					case 7:
+						player.DisplayInventory();
+						break;
+						// EQUIP
+					case 8:
+						player.DisplayEquippedWeapon();
+						player.DisplayEquippedArmour();
+						player.DisplayEquippedShield();
+						player.DisplayEquippedSpellWeapon();
+						playerChoice = askNumber("\n[0] Back\n[1] Change Equipment\n", 1, 0);
+						switch (playerChoice) {
+						case 0:
+							break;
+						case 1:
+							do {
+								std::cout << "\n\nWhat would you like to equip?";
+								std::cout << "\n[0] Back";
+								std::cout << "\n[1] Weapon";
+								std::cout << "\n[2] Armour";
+								std::cout << "\n[3] Shield";
+								std::cout << "\n[4] Spell Weapon";
+								playerChoice = askNumber("", 4, 0);
+
+								switch (playerChoice) {
+								case 0:
+									break;
+								case 1:
+									player.DisplayEquippedWeapon();
+									player.DisplayWeapons();
+									weaponChoice = askNumber("\n\nWhat would you like to equip?\n", player.m_Weapons.size(), 1);
+									player.SetEquippedWeapon(player.m_Weapons[weaponChoice - 1]);
+									player.m_Weapons[weaponChoice - 1]->SetToHitBonus(player.m_Weapons[weaponChoice - 1]->GetToHitBonus());
+									player.m_Weapons[weaponChoice - 1]->SetDamage(player.m_Weapons[weaponChoice - 1]->GetDamage());
+									player.DisplayEquippedWeapon();
+									continue;
+								case 2:
+									player.DisplayEquippedArmour();
+									player.DisplayArmour();
+									armourChoice = askNumber("\n\nWhat would you like to equip?", player.m_Armours.size(), 1);
+									if (player.GetModifier(player.GetStrength()) < player.m_Armours[armourChoice - 1]->GetStrengthRequirement()) {
+										std::cout << "\nYou do not have the strength to wear this armour.\n" << std::endl;
+										continue;
+									}
+									else {
+										player.SetEquippedArmour(player.m_Armours[armourChoice - 1]);
+										player.SetArmorClass(10 + player.GetEquippedArmour()->GetACBonus() + player.GetEquippedShield()->GetACBonus() + player.GetModifier(player.GetDexterity()));
+										player.DisplayEquippedArmour();
+										continue;
+									}
+								case 3:
+									player.DisplayEquippedShield();
+									player.DisplayShields();
+									shieldChoice = askNumber("\n\nWhat would you like to equip?", player.m_Shields.size(), 1);
+									if (player.GetModifier(player.GetStrength()) < player.m_Shields[shieldChoice - 1]->GetStrengthRequirement()) {
+										std::cout << "\nYou do not have the strength to use this shield.\n" << std::endl;
+										continue;
+									}
+									else {
+										player.SetEquippedShield(player.m_Shields[shieldChoice - 1]);
+										player.SetArmorClass(10 + player.GetEquippedArmour()->GetACBonus() + player.GetEquippedShield()->GetACBonus() + player.GetModifier(player.GetDexterity()));
+										player.DisplayEquippedShield();
+										continue;
+									}
+								case 4:
+									player.DisplayEquippedSpellWeapon();
+									player.DisplaySpellWeapons();
+									spellWeaponChoice = askNumber("\n\nWhat would you like to equip?", player.m_SpellWeapons.size(), 1);
+									player.SetEquippedSpellWeapon(player.m_SpellWeapons[spellWeaponChoice - 1]);
+									player.m_SpellWeapons[spellWeaponChoice - 1]->SetToHitBonus(player.m_SpellWeapons[spellWeaponChoice - 1]->GetToHitBonus());
+									player.m_SpellWeapons[spellWeaponChoice - 1]->SetDamage(player.m_SpellWeapons[spellWeaponChoice - 1]->GetDamage());
+									player.DisplayEquippedSpellWeapon();
+									continue;
+								}
+							} while (playerChoice != 0);
+						}
+						break;
+						// DISPLAY STATS
+					case 9:
+						std::cout << "\nName: " << player.GetName();
+						std::cout << "\nAncestry: " << player.GetCharacterAncestry(static_cast<characterAncestry>(ancestryChoice));
+						std::cout << "\nClass: " << player.GetCharacterWarrior(static_cast<characterWarrior>(warriorChoice));
+						std::cout << "\n\nLevel: " << player.GetCharacterLevel();
+						std::cout << "\nCurrent Experience Points: " << player.GetCharacterEXP();
+						std::cout << "\nHit Points: " << player.GetHP() << "/" << player.GetMaxHP();
+						std::cout << "\nArmour Class: " << player.GetArmorClass();
+						std::cout << "\nGold: " << player.GetCharacterGold();
+						std::cout << "\n\nABILITY SCORES\n";
+						std::cout << "------------------------------";
+						std::cout << "\nSTR: " << player.GetStrength() << "\t\tModifier = " << player.GetModifier(player.GetStrength());
+						std::cout << "\nDEX: " << player.GetDexterity() << "\t\tModifier = " << player.GetModifier(player.GetDexterity());
+						std::cout << "\nCON: " << player.GetConstitution() << "\t\tModifier = " << player.GetModifier(player.GetConstitution());
+						std::cout << "\nINT: " << player.GetIntelligence() << "\t\tModifier = " << player.GetModifier(player.GetIntelligence());
+						std::cout << "\nWIS: " << player.GetWisdom() << "\t\tModifier = " << player.GetModifier(player.GetWisdom());
+						std::cout << "\nCHA: " << player.GetCharisma() << "\t\tModifier = " << player.GetModifier(player.GetCharisma());
+						std::cout << "\n\nSpell Attack Ability: " << player.GetSpellAbility(static_cast<characterWarrior>(warriorChoice));
+						std::cout << "\nSpell Attack Modifier: " << player.GetSpellModifier(static_cast<characterWarrior>(warriorChoice));
+						break;
+					}
+				} while (playerChoice != 4 && player.GetHP() != 0);
 			}
 			if (currentLocation == &tradersHutExterior && player.GetHP() != 0) {
 
@@ -2026,6 +2913,27 @@ void DisplayObjectives(std::vector<std::string> objectives) {
 	for (int i = 0; i < objectives.size(); ++i) {
 		std::cout << objectives[i] << std::endl;
 	}
+}
+
+void DisplayStats(Character& player) {
+	std::cout << "\nName: " << player.GetName();
+	std::cout << "\nAncestry: " << player.GetCharacterAncestry(static_cast<characterAncestry>(player.m_Ancestry));
+	std::cout << "\nClass: " << player.GetCharacterWarrior(static_cast<characterWarrior>(player.m_Warrior));
+	std::cout << "\n\nLevel: " << player.GetCharacterLevel();
+	std::cout << "\nCurrent Experience Points: " << player.GetCharacterEXP();
+	std::cout << "\nHit Points: " << player.GetHP() << "/" << player.GetMaxHP();
+	std::cout << "\nArmour Class: " << player.GetArmorClass();
+	std::cout << "\nGold: " << player.GetCharacterGold();
+	std::cout << "\n\nABILITY SCORES\n";
+	std::cout << "------------------------------";
+	std::cout << "\nSTR: " << player.GetStrength() << "\t\tModifier = " << player.GetModifier(player.GetStrength());
+	std::cout << "\nDEX: " << player.GetDexterity() << "\t\tModifier = " << player.GetModifier(player.GetDexterity());
+	std::cout << "\nCON: " << player.GetConstitution() << "\t\tModifier = " << player.GetModifier(player.GetConstitution());
+	std::cout << "\nINT: " << player.GetIntelligence() << "\t\tModifier = " << player.GetModifier(player.GetIntelligence());
+	std::cout << "\nWIS: " << player.GetWisdom() << "\t\tModifier = " << player.GetModifier(player.GetWisdom());
+	std::cout << "\nCHA: " << player.GetCharisma() << "\t\tModifier = " << player.GetModifier(player.GetCharisma());
+	std::cout << "\n\nSpell Attack Ability: " << player.GetSpellAbility(static_cast<characterWarrior>(player.m_Warrior));
+	std::cout << "\nSpell Attack Modifier: " << player.GetSpellModifier(static_cast<characterWarrior>(player.m_Warrior));
 }
 
 void CombatEnemy(Character& player, Enemy& enemy) {
@@ -2266,5 +3174,261 @@ void CombatBoss(Character& player, Boss& enemy) {
 		std::cout << "\nYou gain " << enemy.GetCharacterGold() << " gold!";
 		player.LevelUp();
 		std::cout << "Your current level is: " << player.GetCharacterLevel();
+	}
+}
+
+void Merchant(Character& player, Character& merchant) {
+	int playerChoice = 0;
+	std::cout << "\n[0] Back";
+	std::cout << "\n[1] Buy";
+	std::cout << "\n[2] Sell";
+	std::cout << "\n[3] Display Inventory";
+	std::cout << "\n[4] Display Merchant Inventory";
+	playerChoice = askNumber("", 4, 0);
+	switch (playerChoice) {
+	case 0: 
+		break;
+	case 1:
+		merchant.DisplayInventory();
+		std::cout << "\n\nWhat would you like to buy?\n";
+		std::cout << "\n[0] Back";
+		std::cout << "\n[1] Weapons";
+		std::cout << "\n[2] Armour";
+		std::cout << "\n[3] Shields";
+		std::cout << "\n[4] Spell Weapons";
+		std::cout << "\n[5] Healing Items";
+		playerChoice = askNumber("", 5, 0);
+		switch (playerChoice) {
+		case 0:
+			break;
+		case 1:
+			merchant.DisplayWeapons();
+			playerChoice = askNumber("\n[0] Back\n", merchant.m_Weapons.size(), 0);
+			if (playerChoice == 0){
+				break;
+			}
+			//make player has enough gold to purchase
+			if (player.GetCharacterGold() < merchant.m_Weapons[playerChoice - 1]->GetItemValue()) {
+				std::cout << std::endl << "Sorry, You dont have the coin for that item." << std::endl;
+				break;
+				}
+			// Do Transaction
+			// remove gold from player
+			player.SetCharacterGold(player.GetCharacterGold() - merchant.m_Weapons[playerChoice - 1]->GetItemValue());
+			// remove item from merchant
+			merchant.m_Weapons[playerChoice - 1]--;
+			// add item to player inventory
+			player.m_Weapons.push_back(merchant.m_Weapons[playerChoice - 1]);
+			break;
+		case 2:
+			merchant.DisplayArmour();
+			playerChoice = askNumber("\n[0] Back\n", merchant.m_Armours.size(), 0);
+			if (playerChoice == 0) {
+				break;
+			}
+			//make player has enough gold to purchase
+			if (player.GetCharacterGold() < merchant.m_Armours[playerChoice - 1]->GetItemValue()) {
+				std::cout << std::endl << "Sorry, You dont have the coin for that item." << std::endl;
+				break;
+			}
+			// Do Transaction
+			// remove gold from player
+			player.SetCharacterGold(player.GetCharacterGold() - merchant.m_Armours[playerChoice - 1]->GetItemValue());
+			// remove item from merchant
+			merchant.m_Armours[playerChoice - 1]--;
+			// add item to player inventory
+			player.m_Armours.push_back(merchant.m_Armours[playerChoice - 1]);
+			break;
+		case 3:
+			merchant.DisplayShields();
+			playerChoice = askNumber("\n[0] Back\n", merchant.m_Shields.size(), 0);
+			if (playerChoice == 0) {
+				break;
+			}
+			//make player has enough gold to purchase
+			if (player.GetCharacterGold() < merchant.m_Shields[playerChoice - 1]->GetItemValue()) {
+				std::cout << std::endl << "Sorry, You dont have the coin for that item." << std::endl;
+				break;
+			}
+			// Do Transaction
+			// remove gold from player
+			player.SetCharacterGold(player.GetCharacterGold() - merchant.m_Shields[playerChoice - 1]->GetItemValue());
+			// remove item from merchant
+			merchant.m_Shields[playerChoice - 1]--;
+			// add item to player inventory
+			player.m_Shields.push_back(merchant.m_Shields[playerChoice - 1]);
+			break;
+		case 4:
+			merchant.DisplaySpellWeapons();
+			playerChoice = askNumber("\n[0] Back\n", merchant.m_SpellWeapons.size(), 0);
+			if (playerChoice == 0) {
+				break;
+			}
+			//make player has enough gold to purchase
+			if (player.GetCharacterGold() < merchant.m_SpellWeapons[playerChoice - 1]->GetItemValue()) {
+				std::cout << std::endl << "Sorry, You dont have the coin for that item." << std::endl;
+				break;
+			}
+			// Do Transaction
+			// remove gold from player
+			player.SetCharacterGold(player.GetCharacterGold() - merchant.m_SpellWeapons[playerChoice - 1]->GetItemValue());
+			// remove item from merchant
+			merchant.m_SpellWeapons[playerChoice - 1]--;
+			// add item to player inventory
+			player.m_SpellWeapons.push_back(merchant.m_SpellWeapons[playerChoice - 1]);
+			break;
+		case 5:
+			merchant.DisplayHealingItems();
+			playerChoice = askNumber("\n[0] Back\n", merchant.m_Healing.size(), 0);
+			if (playerChoice == 0) {
+				break;
+			}
+			//make player has enough gold to purchase
+			if (player.GetCharacterGold() < merchant.m_Healing[playerChoice - 1]->GetItemValue()) {
+				std::cout << std::endl << "Sorry, You dont have the coin for that item." << std::endl;
+				break;
+			}
+			// Do Transaction
+			// remove gold from player
+			player.SetCharacterGold(player.GetCharacterGold() - merchant.m_Healing[playerChoice - 1]->GetItemValue());
+			// remove item from merchant
+			merchant.m_Healing[playerChoice - 1]--;
+			// add item to player inventory
+			player.m_Healing.push_back(merchant.m_Healing[playerChoice - 1]);
+			break;
+		}
+		break;
+	case 2:
+		player.DisplayInventory();
+		std::cout << "\n\nWhat would you like to sell?\n";
+		std::cout << "\n[0] Back";
+		std::cout << "\n[1] Weapons";
+		std::cout << "\n[2] Armour";
+		std::cout << "\n[3] Shields";
+		std::cout << "\n[4] Spell Weapons";
+		std::cout << "\n[5] Healing Items";
+		playerChoice = askNumber("", 5, 0);
+		switch (playerChoice) {
+		case 0:
+			break;
+		case 1:
+			player.DisplayWeapons();
+			playerChoice = askNumber("\n[0] Back\n", player.m_Weapons.size(), 0);
+			if (playerChoice == 0) {
+				break;
+			}
+			if (playerChoice == 1) {
+				std::cout << "There is nothing to sell.";
+				break;
+			}
+			//make merchant has enough gold to purchase
+			if (merchant.GetCharacterGold() < player.m_Weapons[playerChoice - 1]->GetItemValue()) {
+				std::cout << std::endl << "Sorry, I don't have the coin for that item." << std::endl;
+				break;
+			}
+			// Do Transaction
+			// remove gold from merchant
+			merchant.SetCharacterGold(merchant.GetCharacterGold() - player.m_Weapons[playerChoice - 1]->GetItemValue());
+			// remove item from player
+			player.m_Weapons[playerChoice - 1]--;
+			// add item to merchant inventory
+			merchant.m_Weapons.push_back(player.m_Weapons[playerChoice - 1]);
+			break;
+		case 2:
+			player.DisplayArmour();
+			playerChoice = askNumber("\n[0] Back\n", player.m_Armours.size(), 0);
+			if (playerChoice == 0) {
+				break;
+			}
+			if (playerChoice == 1) {
+				std::cout << "There is nothing to sell.";
+				break;
+			}
+			//make sure merchant has enough gold to purchase
+			if (merchant.GetCharacterGold() < player.m_Armours[playerChoice - 1]->GetItemValue()) {
+				std::cout << std::endl << "Sorry, You dont have the coin for that item." << std::endl;
+				break;
+			}
+			// Do Transaction
+			// remove gold from merchant
+			merchant.SetCharacterGold(merchant.GetCharacterGold() - player.m_Armours[playerChoice - 1]->GetItemValue());
+			// remove item from player
+			player.m_Armours[playerChoice - 1]--;
+			// add item to merchant inventory
+			merchant.m_Armours.push_back(player.m_Armours[playerChoice - 1]);
+			break;
+		case 3:
+			player.DisplayShields();
+			playerChoice = askNumber("\n[0] Back\n", player.m_Shields.size(), 0);
+			if (playerChoice == 0) {
+				break;
+			}
+			if (playerChoice == 1) {
+				std::cout << "There is nothing to sell.";
+				break;
+			}
+			//make sure merchant has enough gold to purchase
+			if (merchant.GetCharacterGold() < player.m_Shields[playerChoice - 1]->GetItemValue()) {
+				std::cout << std::endl << "Sorry, You dont have the coin for that item." << std::endl;
+				break;
+			}
+			// Do Transaction
+			// remove gold from merchant
+			merchant.SetCharacterGold(merchant.GetCharacterGold() - player.m_Shields[playerChoice - 1]->GetItemValue());
+			// remove item from player
+			player.m_Shields[playerChoice - 1]--;
+			// add item to merchant inventory
+			merchant.m_Shields.push_back(player.m_Shields[playerChoice - 1]);
+			break;
+		case 4:
+			player.DisplaySpellWeapons();
+			playerChoice = askNumber("\n[0] Back\n", player.m_SpellWeapons.size(), 0);
+			if (playerChoice == 0) {
+				break;
+			}
+			if (playerChoice == 1) {
+				std::cout << "There is nothing to sell.";
+				break;
+			}
+			//make merchant has enough gold to purchase
+			if (merchant.GetCharacterGold() < player.m_SpellWeapons[playerChoice - 1]->GetItemValue()) {
+				std::cout << std::endl << "Sorry, I don't have the coin for that item." << std::endl;
+				break;
+			}
+			// Do Transaction
+			// remove gold from merchant
+			merchant.SetCharacterGold(merchant.GetCharacterGold() - player.m_SpellWeapons[playerChoice - 1]->GetItemValue());
+			// remove item from player
+			player.m_SpellWeapons[playerChoice - 1]--;
+			// add item to merchant inventory
+			merchant.m_SpellWeapons.push_back(player.m_SpellWeapons[playerChoice - 1]);
+			break;
+		case 5:
+			player.DisplayHealingItems();
+			playerChoice = askNumber("\n[0] Back\n", player.m_Healing.size(), 0);
+			if (playerChoice == 0) {
+				break;
+			}
+			//make merchant has enough gold to purchase
+			if (merchant.GetCharacterGold() < player.m_Healing[playerChoice - 1]->GetItemValue()) {
+				std::cout << std::endl << "Sorry, I don't have the coin for that item." << std::endl;
+				break;
+			}
+			// Do Transaction
+			// remove gold from merchant
+			merchant.SetCharacterGold(merchant.GetCharacterGold() - player.m_Healing[playerChoice - 1]->GetItemValue());
+			// remove item from player
+			player.m_Healing[playerChoice - 1]--;
+			// add item to merchant inventory
+			merchant.m_Healing.push_back(player.m_Healing[playerChoice - 1]);
+			break;
+		}
+		break;
+	case 3:
+		player.DisplayInventory();
+		break;
+	case 4:
+		merchant.DisplayInventory();
+		break;
 	}
 }

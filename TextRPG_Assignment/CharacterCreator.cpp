@@ -414,11 +414,12 @@ void Character::Heal(int heal) {
 
 void Character::LevelUp() {
 	static const int requiredEXP[] = {
-		0, 500, 1500, 3000, 5000, 7500, 10500, 14000, 18000, 23000
+		0, 250, 750, 1500, 3000, 6000, 12000, 24000, 48000, 96000
 	};
 	while (m_EXP >= requiredEXP[m_Level]) {
 		++m_Level;
 		m_MaxHP = m_MaxHP + 10 + GetModifier(m_Constitution);
+		m_CurrentHP = m_MaxHP;
 		++m_Strength;
 		++m_Dexterity;
 		++m_Constitution;
