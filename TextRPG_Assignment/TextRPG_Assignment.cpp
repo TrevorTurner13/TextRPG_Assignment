@@ -893,7 +893,6 @@ int main() {
 								std::cout << std::endl << "You find a " << shovel.GetItemName();
 								std::cout << "\nItems Collected!";
 								player.m_Items.push_back(&shovel);
-								preachersExterior.m_Items.clear();
 								oldShed1.SetContainerEmpty(true);
 								break;
 							}
@@ -2833,11 +2832,6 @@ int main() {
 					}
 				} while (playerChoice != 4 && player.GetHP() > 0);
 			}		
-			
-	
-	jeremiahsFarmFront.m_StrongEnemies.push_back(&corruptedFarmhand1); // jeremiahs farm front to homestead interior
-	jeremiahsFarmFront.m_Enemies.push_back(&corruptedDog3); // jeremiahs farm front to farm rear
-	jeremiahsFarmFront.m_Enemies.push_back(&corruptedFarmhand3); // jeremiahs farm front to old shed 2 interactable*/
 			// JEREMIAHS FARM FRONT
 			if (currentLocation == &jeremiahsFarmFront && player.GetHP() > 0) {
 				do {
@@ -2874,7 +2868,6 @@ int main() {
 							std::cout << std::endl << corruptedFarmhand3.GetEnemyDescription();
 						}
 						break;
-						// jeremiahsFarmFront.m_Interactables.push_back(&oldShed2);
 						// INTERACT
 					case 2:
 						currentLocation->DisplayInteractables();
@@ -2884,15 +2877,15 @@ int main() {
 							break;
 						case 1:
 							if (!corruptedFarmhand3.GetEnemyDead()) {
-								std::cout << std::endl << "A " << corruptedFarmhand1.GetName() << " is digging through the old shed beside the farmhouse.";
+								std::cout << std::endl << "A " << corruptedFarmhand3.GetName() << " is digging through the old shed beside the farmhouse.";
 								playerChoice = askNumber("\n[0] Back\n[1] Fight\n[2] Talk", 2, 0);
 								switch (playerChoice) {
 								case 0:
 									break;
 								case 1:
-									CombatStrongEnemy(player, corruptedFarmhand1);
+									CombatStrongEnemy(player, corruptedFarmhand3);
 									if (player.GetHP() > 0) {
-										corruptedFarmhand1.SetEnemyDead(true);
+										corruptedFarmhand3.SetEnemyDead(true);
 										std::cout << std::endl << "You find a " << bloodySickle.GetItemName() << " and " << studdedLeather.GetItemName();
 										std::cout << std::endl << "Items Collected!";
 										player.m_Weapons.push_back(&bloodySickle);
@@ -2901,9 +2894,9 @@ int main() {
 									break;
 								case 2:
 									std::cout << std::endl << "You pat the man on his shoulder and say 'Howdy'. He doesn't seem to like that as he lashes out his tentacles at you.";
-									CombatStrongEnemy(player, corruptedFarmhand1);
+									CombatStrongEnemy(player, corruptedFarmhand3);
 									if (player.GetHP() > 0) {
-										corruptedFarmhand1.SetEnemyDead(true);
+										corruptedFarmhand3.SetEnemyDead(true);
 										std::cout << std::endl << "You find a " << bloodySickle.GetItemName() << " and " << studdedLeather.GetItemName();
 										std::cout << std::endl << "Items Collected!";
 										player.m_Weapons.push_back(&bloodySickle);
@@ -2914,11 +2907,10 @@ int main() {
 							}
 							else if (!oldShed2.GetContainerEmpty()) {
 								std::cout << "\nThe door to the old shed creaks loudly, sending a shower of dust off the roof.";
-								std::cout << std::endl << "You find a " << shovel.GetItemName();
+								std::cout << std::endl << "You find a " << crowbar.GetItemName();
 								std::cout << "\nItems Collected!";
-								player.m_Items.push_back(&shovel);
-								preachersExterior.m_Items.clear();
-								oldShed1.SetContainerEmpty(true);
+								player.m_Items.push_back(&crowbar);
+								oldShed2.SetContainerEmpty(true);
 								break;
 							}
 							else {
@@ -2929,26 +2921,13 @@ int main() {
 						break;
 						// TALK
 					case 3:
-						if (!corruptedPlowHorse1.GetEnemyDead()) {
-							std::cout << std::endl << "You try to talk to the horse in a soothing tone. It turns on you with murderous intent!";
-							CombatStrongEnemy(player, corruptedPlowHorse1);
-							if (player.GetHP() > 0) {
-								corruptedPlowHorse1.SetEnemyDead(true);
-								break;
-							}
-						}
-						else {
-							std::cout << std::endl << "There is no one to talk to." << std::endl;
-							break;
-						}
-						/*jeremiahsFarmFront.m_Exits.push_back(&farmRoad);
-	jeremiahsFarmFront.m_Exits.push_back(&jeremiahsHomesteadInterior);
-	jeremiahsFarmFront.m_Exits.push_back(&jeremiahsFarmRear);*/
+						std::cout << std::endl << "There is no one to talk to." << std::endl;
+						break;
 						// MOVE
 					case 4:
 						int moveChoice;
 						currentLocation->DisplayExits();
-						moveChoice = askNumber("\nWhere would you like to go?", 2, 0);
+						moveChoice = askNumber("\nWhere would you like to go?", 3, 0);
 						switch (moveChoice) {
 						case 0:
 							break;
@@ -2956,29 +2935,61 @@ int main() {
 							currentLocation = currentLocation->m_Exits[moveChoice - 1];
 							break;
 						case 2:
-							if (!corruptedPlowHorse1.GetEnemyDead()) {
-								std::cout << std::endl << "A " << corruptedPlowHorse1.GetName() << " blocks the way!";
+							if (!corruptedFarmhand1.GetEnemyDead()) {
+								std::cout << std::endl << "A " << corruptedFarmhand1.GetName() << " is looming on the front porch of the farmhouse.";
 								playerChoice = askNumber("[0] Back\n[1] Fight\n[2] Talk", 2, 0);
 								switch (playerChoice) {
 								case 0:
 									break;
 								case 1:
-									CombatStrongEnemy(player, corruptedPlowHorse1);
+									CombatStrongEnemy(player, corruptedFarmhand1);
 									if (player.GetHP() > 0) {
-										corruptedPlowHorse1.SetEnemyDead(true);
-										break;
+										corruptedFarmhand1.SetEnemyDead(true);
+										std::cout << std::endl << "You find a " << bloodySickle.GetItemName() << " and a " << healingPotion.GetItemName();
+										std::cout << std::endl << "Items Collected!";
+										player.m_Weapons.push_back(&bloodySickle);
+										player.m_Healing.push_back(&healingPotion);
 									}
 									break;
 								case 2:
-									std::cout << std::endl << "You try to talk to the horse in a soothing tone. It turns on you with murderous intent!";
-									CombatStrongEnemy(player, corruptedPlowHorse1);
+									std::cout << std::endl << "You say 'Good Morning!' and wave as you march onto the front porch. He must not like visitors as he turns and attacks you!";
+									CombatStrongEnemy(player, corruptedFarmhand1);
 									if (player.GetHP() > 0) {
-										corruptedPlowHorse1.SetEnemyDead(true);
-										break;
+										corruptedFarmhand1.SetEnemyDead(true);
+										std::cout << std::endl << "You find a " << bloodySickle.GetItemName() << " and " << healingPotion.GetItemName();
+										std::cout << std::endl << "Items Collected!";
+										player.m_Weapons.push_back(&bloodySickle);
+										player.m_Healing.push_back(&healingPotion);
 									}
 									break;
 								}
+							}
+							else {
+								currentLocation = currentLocation->m_Exits[moveChoice - 1];
 								break;
+							}
+							break;
+						case 3:
+							if (!corruptedDog3.GetEnemyDead()) {
+								std::cout << std::endl << "A " << corruptedDog3.GetName() << " is blocking the way to the rear of the farm.";
+								playerChoice = askNumber("[0] Back\n[1] Fight\n[2] Talk", 2, 0);
+								switch (playerChoice) {
+								case 0:
+									break;
+								case 1:
+									CombatEnemy(player, corruptedDog3);
+									if (player.GetHP() > 0) {
+										corruptedDog3.SetEnemyDead(true);
+									}
+									break;
+								case 2:
+									std::cout << std::endl << "You pull out a ball and throw it for the dog! He must not like fetch as he tries to bite your face!";
+									CombatEnemy(player, corruptedDog3);
+									if (player.GetHP() > 0) {
+										corruptedDog3.SetEnemyDead(true);
+									}
+									break;
+								}
 							}
 							else {
 								currentLocation = currentLocation->m_Exits[moveChoice - 1];
@@ -2986,6 +2997,7 @@ int main() {
 							}
 							break;
 						}
+						break;
 						// HEALING
 					case 5:
 						std::cout << player.GetHP() << "/" << player.GetMaxHP();
