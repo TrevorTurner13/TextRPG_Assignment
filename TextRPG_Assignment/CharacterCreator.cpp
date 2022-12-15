@@ -1,6 +1,6 @@
 #include "CharacterCreator.h"
 
-Character::Character(std::string name, int str, int dex, int con, int iq, int wis, int cha, int hp, int ac, int gold, int exp, int level) :
+Character::Character(std::string name, int str, int dex, int con, int iq, int wis, int cha, int hp, int ac, double gold, int exp, int level) :
 	m_Name(name),
 	m_Strength(str),
 	m_Dexterity(dex),
@@ -71,7 +71,7 @@ void Character::SetArmorClass(int ac) {
 	m_ArmorClass = ac;
 }
 
-void Character::SetCharacterGold(int gold) {
+void Character::SetCharacterGold(double gold) {
 	m_Gold = gold;
 }
 void Character::SetCharacterEXP(int exp) {

@@ -9,7 +9,7 @@ enum characterWarrior { BARD = 1, FIGHTER, MONK, PALADIN, ROGUE, WIZARD };
 
 class Character {
 public:
-	Character(std::string name, int str, int dex, int con, int iq, int wis, int cha, int hp, int ac, int gold, int exp, int level);
+	Character(std::string name, int str, int dex, int con, int iq, int wis, int cha, int hp, int ac, double gold, int exp, int level);
 	
 	characterAncestry m_Ancestry{};
 	characterWarrior m_Warrior{};
@@ -54,7 +54,7 @@ public:
 	void SetSpellAbility(characterWarrior warrior);
 	void SetSpellModifier(characterWarrior warrior);
 	void SetArmorClass(int dex);
-	void SetCharacterGold(int gold);
+	void SetCharacterGold(double gold);
 	void SetCharacterLevel(int level);
 	void SetCharacterEXP(int exp);
 	void SetInventory(std::vector<Item*> inventory);
@@ -104,7 +104,7 @@ private:
 	int m_MaxHP;
 	int m_SpellModifier;
 	int m_ArmorClass;
-	int m_Gold;
+	double m_Gold;
 	int m_EXP;
 	int m_Level;
 	
