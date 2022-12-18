@@ -252,53 +252,54 @@ std::vector<Item*> Character::GetInventory(std::vector<Item*> items, std::vector
 void Character::DisplayInventory() {
 	std::cout << std::endl << "Inventory" << std::endl;
 	std::cout << "-----------------------------------" << std::endl;
-	std::cout << std::left << std::setw(30) << "Item Name" << std::left << std::setw(12) << "Rarity";
+	std::cout << std::left << std::setw(50) << "Item Name" << std::left << std::setw(12) << "Rarity";
 	std::cout << std::right << std::setw(12) << "Value\n\n";
 	std::vector<Weapon*>::iterator weaponIter;
 	for (weaponIter = m_Weapons.begin(); weaponIter < m_Weapons.end(); ++weaponIter) {
-		std::cout << std::left << std::setw(30) << (*weaponIter)->GetItemName() << std::left << std::setw(12) << (*weaponIter)->GetItemRarity();
+		std::cout << std::left << std::setw(50) << (*weaponIter)->GetItemName() << std::left << std::setw(12) << (*weaponIter)->GetItemRarity();
 		std::cout << std::right << std::setw(12) << (*weaponIter)->GetItemValue() << std::endl << std::endl;
 	}
 	std::vector<Armour*>::iterator armourIter;
 	for (armourIter = m_Armours.begin(); armourIter < m_Armours.end(); ++armourIter) {
-		std::cout << std::left << std::setw(30) << (*armourIter)->GetItemName() << std::left << std::setw(12) << (*armourIter)->GetItemRarity();
+		std::cout << std::left << std::setw(50) << (*armourIter)->GetItemName() << std::left << std::setw(12) << (*armourIter)->GetItemRarity();
 		std::cout << std::right << std::setw(12) << (*armourIter)->GetItemValue() << std::endl << std::endl;
 	}
 	std::vector<Shield*>::iterator shieldIter;
 	for (shieldIter = m_Shields.begin(); shieldIter < m_Shields.end(); ++shieldIter) {
-		std::cout << std::left << std::setw(30) << (*shieldIter)->GetItemName() << std::left << std::setw(12) << (*shieldIter)->GetItemRarity();
+		std::cout << std::left << std::setw(50) << (*shieldIter)->GetItemName() << std::left << std::setw(12) << (*shieldIter)->GetItemRarity();
 		std::cout << std::right << std::setw(12) << (*shieldIter)->GetItemValue() << std::endl << std::endl;
 
 	}
 	std::vector<SpellWeapon*> ::iterator spellIter;
 	for (spellIter = m_SpellWeapons.begin(); spellIter < m_SpellWeapons.end(); ++spellIter) {
-		std::cout << std::left << std::setw(30) << (*spellIter)->GetItemName() << std::left << std::setw(12) << (*spellIter)->GetItemRarity();
+		std::cout << std::left << std::setw(50) << (*spellIter)->GetItemName() << std::left << std::setw(12) << (*spellIter)->GetItemRarity();
 		std::cout << std::right << std::setw(12) << (*spellIter)->GetItemValue() << std::endl << std::endl;
 	}
 	std::vector<Healing*>::iterator healingIter;
 	for (healingIter = m_Healing.begin(); healingIter < m_Healing.end(); ++healingIter) {
-		std::cout << std::left << std::setw(30) << (*healingIter)->GetItemName() << std::left << std::setw(12) << (*healingIter)->GetItemRarity();
+		std::cout << std::left << std::setw(50) << (*healingIter)->GetItemName() << std::left << std::setw(12) << (*healingIter)->GetItemRarity();
 		std::cout << std::right << std::setw(12) << (*healingIter)->GetItemValue() << std::endl << std::endl;
 	}
 	std::vector<Item*>::iterator itemIter;
 	for (itemIter = m_Items.begin(); itemIter < m_Items.end(); ++itemIter) {
-		std::cout << std::left << std::setw(30) << (*itemIter)->GetItemName() << std::left << std::setw(12) << (*itemIter)->GetItemRarity();
+		std::cout << std::left << std::setw(50) << (*itemIter)->GetItemName() << std::left << std::setw(12) << (*itemIter)->GetItemRarity();
 		std::cout << std::right << std::setw(12) << (*itemIter)->GetItemValue() << std::endl << std::endl;
 	}
 }
 
 void Character::DisplayHealingItems() {
-	std::cout << "\nYou have the following healing items: " << std::endl;
+	std::cout << std::endl << std::endl << "The following healing items are available: " << std::endl;
+	std::cout << std::endl << "[0] Back";
 	std::vector<Healing*>::iterator iter;
 	for (iter = m_Healing.begin(); iter < m_Healing.end(); ++iter) {
 		std::cout << "[" << iter - m_Healing.begin() + 1 << "]" << (*iter)->GetItemName() << std::endl;
-		std::cout << "Heals " << (*iter)->GetHpHealAmount() << " HP";
+		std::cout << "Heals " << (*iter)->GetHpHealAmount() << " HP" << std::endl;
 		std::cout << (*iter)->GetItemDescription() << std::endl;
 	}
 }
 
 void Character::DisplayWeapons() {
-	std::cout << "\nYou have the following weapons: " << std::endl;
+	std::cout << "\nThe following weapons are available: " << std::endl;
 	std::vector<Weapon*>::iterator iter;
 	for (iter = m_Weapons.begin(); iter < m_Weapons.end(); ++iter) {
 		std::cout << "[" << iter - m_Weapons.begin() + 1 << "] " << (*iter)->GetItemName() << std::endl;
@@ -312,7 +313,7 @@ void Character::DisplayEquippedWeapon() {
 }
 
 void Character::DisplayArmour() {
-	std::cout << "\nYou have the following Armour: " << std::endl;
+	std::cout << "\nThe following Armour are available: " << std::endl;
 	std::vector<Armour*>::iterator iter;
 	for (iter = m_Armours.begin(); iter < m_Armours.end(); ++iter) {
 		std::cout << "\n[" << iter - m_Armours.begin() + 1 << "] " << (*iter)->GetItemName() << std::endl;
@@ -326,7 +327,7 @@ void Character::DisplayEquippedArmour() {
 }
 
 void Character::DisplayShields() {
-	std::cout << "\nYou have the following Shields: " << std::endl;
+	std::cout << "\nThe following Shields are available: " << std::endl;
 	std::vector<Shield*>::iterator iter;
 	for (iter = m_Shields.begin(); iter < m_Shields.end(); ++iter) {
 		std::cout << "\n[" << iter - m_Shields.begin() + 1 << "] " << (*iter)->GetItemName() << std::endl;
@@ -340,7 +341,7 @@ void Character::DisplayEquippedShield() {
 }
 
 void Character::DisplaySpellWeapons() {
-	std::cout << "\nYou have the following spell weapons: " << std::endl;
+	std::cout << "\nThe following spell weapons are available: " << std::endl;
 	std::vector<SpellWeapon*>::iterator iter;
 	for (iter = m_SpellWeapons.begin(); iter < m_SpellWeapons.end(); ++iter) {
 		std::cout << "[" << iter - m_SpellWeapons.begin() + 1 << "] " << (*iter)->GetItemName() << std::endl;
@@ -392,7 +393,7 @@ void Character::Heal(int heal) {
 
 void Character::LevelUp() {
 	static const int requiredEXP[] = {
-		0, 250, 750, 1500, 3000, 6000, 12000, 24000, 48000, 96000
+		0, 500, 1500, 3000, 6000, 12000, 24000, 48000, 96000
 	};
 	while (m_EXP >= requiredEXP[m_Level]) {
 		++m_Level;
